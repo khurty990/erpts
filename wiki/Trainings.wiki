@@ -11,6 +11,7 @@ Trainings to be oriented towards the roles on the various groups involved with t
  * Systems operations
  * eRPTS operations management
 
+Issues encountered in the eBPLS trainings 
 
 = Details =
 
