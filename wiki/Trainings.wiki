@@ -4,12 +4,12 @@
 
 Trainings to be oriented towards the roles on the various groups involved with the system:
 
-* Orientation (awareness training) to a broad group of staff and other stakeholders in the LGU.
-* Hands-on operation (testing the functionality of the system) for the 
-* Data-entry system
-* Reporting
-* Systems operations
-* eRPTS operations management
+ * Orientation (awareness training) to a broad group of staff and other stakeholders in the LGU.
+ * Hands-on operation (testing the functionality of the system) for the 
+ * Data-entry system
+ * Reporting
+ * Systems operations
+ * eRPTS operations management
 
 
 = Details =
