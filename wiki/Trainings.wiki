@@ -11,7 +11,12 @@ Trainings to be oriented towards the roles on the various groups involved with t
  * Systems operations
  * eRPTS operations management
 
-Issues encountered in the eBPLS trainings 
+Issues encountered in the eBPLS trainings:
+ * wrong people sent on training
+ * long delay between training and implementation
+ * need for retraining
+ * building Linux expertise
+ * oversight/management training lacking 
 
 = Details =
 
