@@ -1,3 +1,5 @@
+#summary VMWare on Fedora 9
+
 == Running VMWare on FC9   ,,by JC (2008 Nov 5),, ==
 
 Running VMWare Workstation on FC9 generates an error message something like 
