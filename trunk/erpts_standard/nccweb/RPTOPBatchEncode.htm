@@ -66,6 +66,22 @@ function getFormElementByName(elementName){
 	}
 	return false;
 }
+
+function generateRPTOP(){
+	doc = document.RPTOPBatchEncode;
+	doc.formAction.value = "runBatchEncode";
+
+	if(doc.total.value=="0"){
+		alert("There are no RPTOPs to generate.");
+		return false;
+	}
+
+	if(confirm("Generate RPTOPs Now?\n")){
+		document.RPTOPBatchEncode.nextBtn.disabled = true;
+		document.RPTOPBatchEncode.nextBtn.value = "Processing, please wait... >";
+		document.RPTOPBatchEncode.submit();
+	}
+}
 </script>
 
 </head>
@@ -157,7 +173,7 @@ function getFormElementByName(elementName){
                     <tr> 
                       <td align="center" valign="top"> 
 <form name="RPTOPBatchEncode" method="post" action="RPTOPBatchEncode.php{Session}">
-  <input type="hidden" name="formAction" value="runBatchEncode">
+  <input type="hidden" name="formAction" value="generateOwnerList">
   <!-- BEGIN RPTOPNumberForm -->
   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
     <tr> 
@@ -166,7 +182,7 @@ function getFormElementByName(elementName){
         <table width="570" border="0" cellspacing="1" cellpadding="5" align="center" class="fileds_comment">
 	 <tr bgcolor="#F6F6F6"> 
 	  <td colspan="3" class="fileds_comment" valign="middle" align="left"><b>RPTOP 
-	   INFORMATION</b></td>
+	   INFORMATION and initial BATCH FILTERS</b></td>
 	 </tr>
 	 <tr bgcolor="#F6F6F6"> 
 	  <td class="fileds_comment" align="right" valign="middle" nowrap rowspan=2>RPTOP Number
@@ -236,17 +252,50 @@ function getFormElementByName(elementName){
 	   </select></td>
 	 </tr>
 	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" align="right" valign="middle" nowrap>owner type</td>
+	  <td class="fileds_comment" colspan="2"><select name="ownerType">
+		<option value="Person">Person</option>
+		<option value="Company">Company</option>
+	   </select></td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" align="right" valign="middle" nowrap>alphabetic filter</td>
+	  <td class="fileds_comment" colspan="2"><select name="alphaFilter">
+		<!-- BEGIN AlphaFilterList -->
+		<option value="{alphaFilterValue}">{alphaFilterValue}</option>
+		<!-- END AlphaFilterList -->
+	   </select>
+	   (Filters Company Names or Person Last Names ; '%' = Special Chars)
+	   </td>
+	 </tr>
+
+	 <tr bgcolor="#F6F6F6">
 	  <td class="fileds_comment" align="right" valign="middle" nowrap>set limit</td>
 	  <td class="fileds_comment" colspan="2"><select name="limit">
 		<option value="5">5</option>
 		<option value="10">10</option>
 		<option value="20">20</option>
 		<option value="30">30</option>
+		<option value="40">40</option>
+		<option value="50">50</option>
+		<option value="60">60</option>
+		<option value="70">70</option>
+		<option value="80">80</option>
+		<option value="90">90</option>
+		<option value="100">100</option>
+		<option value="150">150</option>
+		<option value="200">200</option>
+		<option value="250">250</option>
+		<option value="300">300</option>
+		<option value="350">350</option>
+		<option value="400">400</option>
+		<option value="450">450</option>
+		<option value="500">500</option>
 	   </select></td>
 	 </tr>
 	 <tr>
 	  <td class="fileds_comment" align="right" colspan=3>
-		<input name="nextBtn" type="button" value="Start RPTOP Batch Encode >" onClick="validateForm();">
+		<input name="nextBtn" type="button" value="Generate Owner List >" onClick="validateForm();">
 	  </td>
 	 </tr>
 
@@ -294,7 +343,7 @@ function getFormElementByName(elementName){
 			return false;
 		}
 
-		if(confirm("This may take a few minutes to process. Are you sure you want to start RPTOP Batch Encode now?\n")){
+		if(confirm("Generate Owner List Now?\n")){
 			document.RPTOPBatchEncode.nextBtn.disabled = true;
 			document.RPTOPBatchEncode.nextBtn.value = "Processing, please wait... >";
 			document.RPTOPBatchEncode.submit();
@@ -362,8 +411,11 @@ function getFormElementByName(elementName){
         <table width="570" border="0" cellspacing="1" cellpadding="5" align="center" class="fileds_comment">
 
 	 <tr> 
-	  <td colspan="4" class="fileds_comment" valign="middle" align="left">
+	  <td colspan="2" class="fileds_comment" valign="middle" align="left">
 		<input type="button" value="< Previous" onClick="javascript:history.back();">
+	  </td>
+	  <td colspan="2" class="fileds_comment" valign="middle" align="right">
+		<input name="nextBtn" type="button" value="Generate RPTOPS >" onClick="generateRPTOP();">
 	  </td>
 	 </tr>
 
@@ -379,12 +431,15 @@ function getFormElementByName(elementName){
 		<tr>
 			<td class="fileds_comment" align=center>
 				<b>{rptopNumber[prefix]}</b>
+				<input type="hidden" name="rptopNumber[prefix]" value="{rptopNumber[prefix]}">
 			</td>
 			<td class="fileds_comment" align=center>
 				<b>{rptopNumber[delimeter]}</b>
+				<input type="hidden" name="rptopNumber[delimeter]" value="{rptopNumber[delimeter]}">
 			</td>
 			<td class="fileds_comment" align=center>
 				<b>{rptopNumber[startNumber]}</b>
+				<input type="hidden" name="rptopNumber[startNumber]" value="{rptopNumber[startNumber]}">
 			</td>
 		</tr>
 		<tr>
@@ -407,18 +462,196 @@ function getFormElementByName(elementName){
 	  </td>
 	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
 	    <b>{taxableYear}</b>
+		<input type="hidden" name="taxableYear" value="{taxableYear}">
 	  </td>
 	 </tr>
 	 <tr bgcolor="#F6F6F6">
 	  <td class="fileds_comment" valign="middle" nowrap>city Assessor:</td>
 	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
 	    <b>{cityAssessor}</b>
+		<input type="hidden" name="cityAssessorID" value="{cityAssessorID}">
 	  </td>
 	 </tr>
 	 <tr bgcolor="#F6F6F6">
 	  <td class="fileds_comment" valign="middle" nowrap>city Treasurer:</td>
 	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
 	    <b>{cityTreasurer}</b>
+		<input type="hidden" name="cityTreasurerID" value="{cityTreasurerID}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>owner Type:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{ownerType}</b>
+		<input type="hidden" name="ownerType" value="{ownerType}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>alpha filter:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{alphaFilter}</b>
+		<input type="hidden" name="alphaFilter" value="{alphaFilter}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>limit:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{limit}</b>
+		<input type="hidden" name="limit" value="{limit}">
+	  </td>
+	 </tr>
+
+	 <tr> 
+	  <td colspan="4" class="fileds_comment" valign="middle" align="left">&nbsp;</td>
+	 </tr>
+
+	 </table>
+
+	 <table width="570" border="0" cellspacing="1" cellpadding="5" align="center" class="fileds_comment">
+
+	 <tr bgcolor="#F6F6F6"> 
+	  <td colspan="4" class="fileds_comment" valign="middle" align="left">
+		<b><font size=4>{total}</font></b>
+		<b>Owners ready for RPTOP GENERATION</b></td>
+		<input type="hidden" name="total" value="{total}">
+	 </tr>
+
+	 <!-- BEGIN OwnerListColumns -->
+	 <tr bgcolor="#F6F6F6"> 
+	  <td class="fileds_comment" valign="middle" align="left">
+			owner name (id)
+  	  </td>
+	 </tr>
+	 <!-- END OwnerListColumns -->
+
+	 <!-- BEGIN OwnerList -->
+	 <tr bgcolor="#F6F6F6"> 
+	  <td class="fileds_comment" valign="middle" align="left">
+			{i}.
+			<B>{ownerName}</B> ({personOrCompanyID})
+			<input type="hidden" name="personOrCompanyID[{i}]" value="{personOrCompanyID}">
+			<input type="hidden" name="ownerName[{i}]" value="{ownerName}">
+  	  </td>
+	 </tr>
+	 <!-- END OwnerList -->
+	 <!-- BEGIN OwnerListEmpty -->
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" align="center">
+	   no owners generated
+	  </td>
+	 </tr>
+	 <!-- END OwnerListEmpty -->
+
+
+		</table>
+	  </td>
+	</tr>
+	<tr>
+	  <td colspan="3">
+		&nbsp;
+	  </td>
+	</tr>
+  </table>
+
+  <!-- END OwnerListForm -->
+
+
+  <!-- BEGIN RPTOPListForm -->
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+
+    <tr> 
+      <td>&nbsp;</td>
+      <td align=center> 
+        <table width="570" border="0" cellspacing="1" cellpadding="5" align="center" class="fileds_comment">
+
+	 <tr> 
+	  <td colspan="2" class="fileds_comment" valign="middle" align="left">
+		&nbsp;
+	  </td>
+	  <td colspan="2" class="fileds_comment" valign="middle" align="right">
+		<input name="nextBtn" type="button" value="Generate some more RPTOPs >>" onClick="window.location.href='RPTOPBatchEncode.php{Session}';">
+	  </td>
+	 </tr>
+
+	 <tr bgcolor="#F6F6F6"> 
+	  <td colspan="4" class="fileds_comment" valign="middle" align="left"><b>RPTOP INFORMATION</b></td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6"> 
+	  <td class="fileds_comment" valign="middle" align="left" width="100">
+		RPTOP Number:
+	  </td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+		<table border=0>
+		<tr>
+			<td class="fileds_comment" align=center>
+				<b>{rptopNumber[prefix]}</b>
+				<input type="hidden" name="rptopNumber[prefix]" value="{rptopNumber[prefix]}">
+			</td>
+			<td class="fileds_comment" align=center>
+				<b>{rptopNumber[delimeter]}</b>
+				<input type="hidden" name="rptopNumber[delimeter]" value="{rptopNumber[delimeter]}">
+			</td>
+			<td class="fileds_comment" align=center>
+				<b>{rptopNumber[startNumber]}</b>
+				<input type="hidden" name="rptopNumber[startNumber]" value="{rptopNumber[startNumber]}">
+			</td>
+		</tr>
+		<tr>
+			<td class="fileds_comment" align=center>
+				(prefix)
+			</td>
+			<td class="fileds_comment" align=center>
+				(delimeter)
+			</td>
+			<td class="fileds_comment" align=center>
+				(start number)
+			</td>
+		</tr>
+		</table>
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6"> 
+	  <td class="fileds_comment" valign="middle" align="left" width="100">
+		taxableYear:
+	  </td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{taxableYear}</b>
+		<input type="hidden" name="taxableYear" value="{taxableYear}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>city Assessor:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{cityAssessor}</b>
+		<input type="hidden" name="cityAssessorID" value="{cityAssessorID}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>city Treasurer:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{cityTreasurer}</b>
+		<input type="hidden" name="cityTreasurerID" value="{cityTreasurerID}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>owner Type:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{ownerType}</b>
+		<input type="hidden" name="ownerType" value="{ownerType}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>alpha filter:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{alphaFilter}</b>
+		<input type="hidden" name="alphaFilter" value="{alphaFilter}">
+	  </td>
+	 </tr>
+	 <tr bgcolor="#F6F6F6">
+	  <td class="fileds_comment" valign="middle" nowrap>limit:</td>
+	  <td class="fileds_comment" valign="middle" align="left" colspan="3">
+	    <b>{limit}</b>
+		<input type="hidden" name="limit" value="{limit}">
 	  </td>
 	 </tr>
 
@@ -434,34 +667,34 @@ function getFormElementByName(elementName){
 	  <td colspan="4" class="fileds_comment" valign="middle" align="left"><b><font size=4>{total}</font></b> <b>NEW RPTOPS Created</b></td>
 	 </tr>
 
-	 <!-- BEGIN OwnerListColumns -->
+	 <!-- BEGIN RPTOPListColumns -->
 	 <tr bgcolor="#F6F6F6"> 
 	  <td class="fileds_comment" valign="middle" align="left" width="150" nowrap>
 	   rptop number
 	  </td>
 	  <td class="fileds_comment" valign="middle" align="left" width="185">
-			owner name
+			owner name (id)
   	  </td>
 	 </tr>
-	 <!-- END OwnerListColumns -->
+	 <!-- END RPTOPListColumns -->
 
-	 <!-- BEGIN OwnerList -->
+	 <!-- BEGIN RPTOPList -->
 	 <tr bgcolor="#F6F6F6"> 
 	  <td bgcolor="#F6F6F6" class="fileds_comment" align=left> 
-			{i}. <a href="RPTOPDetails.php{Session}&rptopID={newRPTOP[rptopID]}&formAction=view"><b>{newRPTOP[rptopNumber]}</b></a>
+			{i}. <a href="RPTOPDetails.php{Session}&rptopID={rptopID}&formAction=view"><b>{rptopNumber}</b></a>
 	  </td>
 	  <td class="fileds_comment" valign="middle" align="left" width="250">
-			<B>{ownerName}</B>
+			<B>{ownerName}</B> ({personOrCompanyID})
   	  </td>
 	 </tr>
-	 <!-- END OwnerList -->
-	 <!-- BEGIN OwnerListEmpty -->
+	 <!-- END RPTOPList -->
+	 <!-- BEGIN RPTOPListEmpty -->
 	 <tr bgcolor="#F6F6F6">
 	  <td colspan=4 class="fileds_comment" align="center">
 	   no new RPTOPs created
 	  </td>
 	 </tr>
-	 <!-- END OwnerListEmpty -->
+	 <!-- END RPTOPListEmpty -->
 
 
 		</table>
@@ -473,7 +706,9 @@ function getFormElementByName(elementName){
 	  </td>
 	</tr>
   </table>
-  <!-- END OwnerListForm -->
+
+  <!-- END RPTOPListForm -->
+
 
 
 </form>

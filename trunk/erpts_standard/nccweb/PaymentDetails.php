@@ -472,6 +472,10 @@ class RPTOPDetails{
 					foreach ($backTaxTDList as $key => $val){
 						// get paymentHistory
 
+						$defaultDueType = "Annual";
+						$allowableDueTypesArray = array("Annual","Q1","Q2","Q3","Q4");
+
+						/* alxjvr 2006.03.22
 						if(!$paymentHistory = $this->getPaymentHistory("",$val->getBacktaxTDID())){
 							$defaultDueType = "Annual";
 							$allowableDueTypesArray = array("Annual","Q1");
@@ -498,6 +502,7 @@ class RPTOPDetails{
 								}
 							}
 						}
+						*/
 
 						// check Paid values from Payments and increment to paid value in BacktaxTD
 						$condition = " WHERE status='' ";
@@ -641,10 +646,15 @@ class RPTOPDetails{
 						}
 
 						// if Backtax Penalties is greater than 0, allow only "Annual" payments
+						$defaultDueType = "Annual";
+						$allowableDueTypesArray = array("Annual","Q1","Q2","Q3","Q4");
+
+						/* alxjvr 2006.03.22
 						if($btPenalty>0){
 							$defaultDueType = "Annual";
 							$allowableDueTypesArray = array("Annual");
 						}
+						*/
 
 						foreach($allowableDueTypesArray as $allowableDueType){
 							$this->tpl->set_var("backtaxAllowableDueType",$allowableDueType);
@@ -1466,6 +1476,10 @@ function getTotalAdvancedPaymentDiscountForDue($dueArrayList){
 
 											// get paymentHistory
 
+											$defaultDueType = "Annual";
+											$allowableDueTypesArray = array("Annual","Q1","Q2","Q3","Q4");
+
+											/* alxjvr 2006.03.22
 											if(!$paymentHistory = $this->getPaymentHistory($dueArrayList,"")){
 												$defaultDueType = "Annual";
 												$allowableDueTypesArray = array("Annual","Q1");
@@ -1493,6 +1507,7 @@ function getTotalAdvancedPaymentDiscountForDue($dueArrayList){
 													}
 												}
 											}
+											*/
 
 											foreach($dueArrayList as $dKey => $due){
 												$dueArrayList[$dKey]->setEarlyPaymentDiscountPeriod($this->formArray["discountPeriod"]);

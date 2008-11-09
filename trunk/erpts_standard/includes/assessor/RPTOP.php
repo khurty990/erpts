@@ -612,6 +612,10 @@ class RPTOP
 	}
 	
 	function deleteRptopTd($rptopID,$tdID){
+		// NCC Modification checked and implemented by K2 : November 10, 2005
+		// details:
+		//		added lines 620 to 666 to update RPTOP totals when TDs are removed
+		//		commented out $f related commands (line 620, 627, 634, 665, 666)
 
 		//$f = fopen("/home/site/log/rptopremove.txt","w+");
 		$sql =	"select ".
@@ -620,7 +624,7 @@ class RPTOP
 				"AFS.bldgTotalAssessedValue, AFS.bldgTotalMarketValue, ".
 				"AFS.machTotalAssessedValue, AFS.machTotalMarketValue ".
 				"from RPTOPTD,TD,AFS where RPTOPTD.rptopID = ". $rptopID ." and RPTOPTD.tdID = TD.tdID and TD.afsID = AFS.afsID";
-		fwrite($f,$sql."\r\n");
+		//fwrite($f,$sql."\r\n");
 		$this->setDB();
 		$this->db->query($sql);
 		$landMarketLess = 0;  $plantMarketLess = 0;  $bldgMarketLess = 0;  $machMarketLess = 0;
@@ -663,7 +667,7 @@ class RPTOP
 
 		$sql = sprintf("SELECT * FROM  %s WHERE rptopID='%s' AND tdID='%s';",
 			RPTOPTD_TABLE, $rptopID, $tdID);
-//		$this->setDB();
+		//$this->setDB();
 		$this->db->query($sql);
 		//echo $sql."<br>";
 		if (!$this->db->next_record()) {

@@ -16,7 +16,7 @@
 		<lineitem x1="82" y1="639" x2="541" y2="639"></lineitem> 
 		<textitem xpos="380" ypos="631" font="Helvetica" size="8">Address</textitem> 
 		<textitem xpos="58" ypos="619" font="Helvetica" size="8">Administrator</textitem>
-		<textitem xpos="110" ypos="621" font="Helvetica" size="8">{administrator}</textitem> 
+		<textitem xpos="110" ypos="626" font="Helvetica" size="8">{administrator}</textitem> 
 		<textitem xpos="541" ypos="621" font="Helvetica" size="7" align="right">{adminAddress}</textitem> 
 		<lineitem x1="106" y1="618" x2="541" y2="618"></lineitem> 
 		<textitem xpos="380" ypos="610" font="Helvetica" size="8">Address</textitem> 
@@ -34,10 +34,10 @@
 		<textitem xpos="140" ypos="561" font="Helvetica" size="7">{certificateOfTitleNumber}</textitem>
 		<lineitem x1="134" y1="558" x2="257" y2="558"></lineitem>
 		<textitem xpos="258" ypos="558" font="Helvetica" size="8">Cadastral Lot No.</textitem>
-		<textitem xpos="325" ypos="561" font="Helvetica" size="7">{cadastralLotNumber}</textitem>
+		<textitem xpos="325" ypos="561" font="Helvetica" size="7">{lotNumber}</textitem>
 		<lineitem x1="321" y1="558" x2="402" y2="558"></lineitem>
 		<textitem xpos="405" ypos="558" font="Helvetica" size="8">Assessor's Lot No.</textitem>
-		<textitem xpos="475" ypos="561" font="Helvetica" size="7">{lotNumber}</textitem>
+		<textitem xpos="475" ypos="561" font="Helvetica" size="7">{cadastralLotNumber}</textitem>
 		<lineitem x1="472" y1="558" x2="541" y2="558"></lineitem>
 		<textitem xpos="58" ypos="545" font="Helvetica" size="8">Boundaries</textitem>
 		<textitem xpos="437" ypos="545" font="Helvetica" size="8">Block No.</textitem>
@@ -142,6 +142,8 @@
 		<lineitem x1="244" y1="376" x2="541" y2="376"></lineitem>
 		<textitem xpos="540" ypos="365" font="Helvetica" size="6" align="right">{lTotalMarketValue}</textitem>
 		<lineitem x1="244" y1="362" x2="541" y2="362"></lineitem>
+		<textitem xpos="420" ypos="351" font="Helvetica" size="6" align="right">{lTotalPercAdjustment} %</textitem>
+		<textitem xpos="470" ypos="351" font="Helvetica" size="6" align="right">( {lTotalValueAdjustment} )</textitem>
 		<textitem xpos="540" ypos="351" font="Helvetica" size="6" align="right">{lTotalAdjMarketValue}</textitem>
 		<lineitem x1="244" y1="348" x2="541" y2="348"></lineitem>
 		<lineitem x1="117" y1="474" x2="117" y2="348"></lineitem>
@@ -157,7 +159,8 @@
 		<lineitem x1="418" y1="474" x2="418" y2="362"></lineitem>
 		<lineitem x1="480" y1="474" x2="480" y2="348"></lineitem>
 		<textitem xpos="265" ypos="465" font="Helvetica" size="6">Kind</textitem>
-		<textitem xpos="322" ypos="465" font="Helvetica" size="6">Area</textitem>
+		<textitem xpos="326" ypos="465" font="Helvetica" size="6">Area</textitem>
+		<textitem xpos="355" ypos="366" font="Helvetica" size="6" align="right">{findingsTotalArea}</textitem>
 		<textitem xpos="379" ypos="465" font="Helvetica" size="6">Class</textitem>
 		<textitem xpos="433" ypos="465" font="Helvetica" size="6">Unit Values</textitem>
 		<textitem xpos="491" ypos="465" font="Helvetica" size="6">Market Values</textitem>
@@ -312,7 +315,7 @@
 		<textitem xpos="259" ypos="247" font="Helvetica" size="6">weather rd. --------------%</textitem>
 		<textitem xpos="250" ypos="230" font="Helvetica" size="6">(c) -----Kms. to%</textitem>
 		<textitem xpos="259" ypos="219" font="Helvetica" size="6">market (pob) ------------%</textitem>
-		<textitem xpos="250" ypos="202" font="Helvetica" size="6">Total Adjustment -----------%</textitem>
+		<textitem xpos="250" ypos="202" font="Helvetica-Bold" size="6">Total Adjustment = {adjperc} %</textitem>
 		
 		<textitem xpos="302" ypos="139" font="Helvetica-Bold" size="8" align="center">II LAND (RESIDENTIAL, COMMERCIAL, INDUSTRIAL, SPECIAL)</textitem>
 
@@ -568,7 +571,8 @@
 		<lineitem x1="465" y1="577" x2="465" y2="527"></lineitem>
 		
 		<lineitem x1="58" y1="513" x2="541" y2="513"></lineitem>
-		<textitem xpos="309" ypos="517" font="Helvetica-Bold" size="7" align="center">2. ASSESSOR'S FINDINGS</textitem>
+		<textitem xpos="309" ypos="517" font="Helvetica-Bold" size="7" align="center">2. ASSESSOR'S 
+FINDINGS</textitem>
 		<textitem xpos="102" ypos="506" font="Helvetica" size="7">DESCRIPTION</textitem>
 		<textitem xpos="214" ypos="506" font="Helvetica" size="6">Date of Operation</textitem>
 		<textitem xpos="312" ypos="506" font="Helvetica" size="6">Replacement Cost</textitem>
@@ -609,20 +613,24 @@
 		<textitem xpos="309" ypos="452" font="Helvetica-Bold" size="8" align="center">SWORN STATEMENT OF OWNER</textitem>
 		<textitem xpos="125" ypos="442" font="Helvetica" size="8">Under the provisions of Republic Act No. 7160, I HEREBY CERTIFY that the current and fair market</textitem>
 		<textitem xpos="115" ypos="435" font="Helvetica" size="8">value (x) of the foregoing described property of which I am the owner/administrator, is to the best of my</textitem>
-		<textitem xpos="115" ypos="428" font="Helvetica" size="8">knowledge and belief, as follows:</textitem>
+		<textitem xpos="115" ypos="428" font="Helvetica" size="8">knowledge and belief, as follows:</textitem> 
 		<textitem xpos="150" ypos="419" font="Helvetica" size="8">Land</textitem>
+		<textitem xpos="400" ypos="421" font="Helvetica" size="7" align="right">{swornLandTotal}</textitem>
 		<textitem xpos="150" ypos="411" font="Helvetica" size="8">Improvements</textitem>
+		<textitem xpos="400" ypos="413" font="Helvetica" size="7" 
+align="right">{swornImprovementTotal}</textitem>
 		<textitem xpos="170" ypos="403" font="Helvetica" size="8">TOTAL VALUE</textitem>
-		<lineitem x1="169" y1="419" x2="335" y2="419"></lineitem>
-		<lineitem x1="202" y1="411" x2="335" y2="411"></lineitem>
-		<lineitem x1="225" y1="403" x2="335" y2="403"></lineitem>
+		<textitem xpos="400" ypos="405" font="Helvetica" size="7" align="right">{swornOverallTotal}</textitem>
+		<lineitem x1="169" y1="419" x2="335" y2="419"></lineitem>   
+		<lineitem x1="202" y1="411" x2="335" y2="411"></lineitem>   
+		<lineitem x1="225" y1="403" x2="335" y2="403"></lineitem>   
 		<textitem xpos="337" ypos="419" font="Helvetica" size="7">P</textitem>
 		<textitem xpos="337" ypos="411" font="Helvetica" size="7">P</textitem>
 		<textitem xpos="337" ypos="403" font="Helvetica" size="7">P</textitem>
 		<lineitem x1="342" y1="419" x2="445" y2="419"></lineitem>
 		<lineitem x1="342" y1="411" x2="445" y2="411"></lineitem>
 		<lineitem x1="342" y1="403" x2="445" y2="403"></lineitem>
-		<lineitem x1="338" y1="385" x2="479" y2="385"></lineitem>
+		<lineitem x1="338" y1="385" x2="479" y2="385"></lineitem>  
 		<textitem xpos="389" ypos="377" font="Helvetica" size="7">(Signature)</textitem>
 		<textitem xpos="350" ypos="365" font="Helvetica" size="8">TIN</textitem>
 		<lineitem x1="364" y1="365" x2="479" y2="365"></lineitem>
@@ -643,12 +651,14 @@
 		<textitem xpos="151" ypos="341" font="Helvetica" size="8">at</textitem>
 		<lineitem x1="159" y1="341" x2="280" y2="341"></lineitem>
 		<textitem xpos="281" ypos="341" font="Helvetica" size="8">.</textitem>
-		<lineitem x1="345" y1="332" x2="470" y2="332"></lineitem>
-		<textitem xpos="348" ypos="325" font="Helvetica" size="7">Signature of official administering oath</textitem>
+<!--		<lineitem x1="345" y1="332" x2="470" y2="332"></lineitem> -->
+<!--		<textitem xpos="348" ypos="325" font="Helvetica" size="7">Signature of official administering oath</textitem> -->
 		<textitem xpos="115" ypos="315" font="Helvetica" size="8">(x) State in the nearest multiple of 10 as P950</textitem>
 		<textitem xpos="115" ypos="308" font="Helvetica" size="8">instead of P948; P1000 instead of P1,004.</textitem>
-		<lineitem x1="345" y1="310" x2="470" y2="310"></lineitem>
-		<textitem xpos="389" ypos="303" font="Helvetica" size="7">Official Title</textitem>
+		<lineitem x1="345" y1="315" x2="470" y2="315"></lineitem>
+		<textitem xpos="410" ypos="320" font="Helvetica" size="8" align="center">{cityMunicipalAssessorName}</textitem>
+		<textitem xpos="410" ypos="308" font="Helvetica" size="7" align="center">Municipal Assessor</textitem>
+		<textitem xpos="410" ypos="300" font="Helvetica" size="7" align="center">(Official Title)</textitem>
 		<textitem xpos="345" ypos="288" font="Helvetica" size="8">TIN</textitem>
 		<lineitem x1="359" y1="288" x2="470" y2="288"></lineitem>
 		<lineitem x1="58" y1="285" x2="541" y2="285"></lineitem>
@@ -658,7 +668,7 @@
 		<textitem xpos="245" ypos="271" font="Helvetica-Bold" size="7" align="center">ASSESSMENT BY</textitem>
 		<textitem xpos="70" ypos="254" font="Helvetica" size="7">Kind of Property</textitem>
 		<textitem xpos="178" ypos="254" font="Helvetica" size="7">Actual Use</textitem>
-		<textitem xpos="280" ypos="254" font="Helvetica" size="7">Market Value</textitem>
+		<textitem xpos="263" ypos="254" font="Helvetica" size="7">Adjusted Market Value</textitem>
 		<textitem xpos="380" ypos="254" font="Helvetica" size="7">Assessment Level</textitem>
 		<textitem xpos="480" ypos="254" font="Helvetica" size="7">Assessed Value</textitem>
 
@@ -738,46 +748,55 @@
 		<textitem xpos="70" ypos="192" font="Helvetica-Bold" size="7">TOTAL ASSESSED VALUE</textitem>
 		<lineitem x1="170" y1="192" x2="541" y2="192"></lineitem>
 		<textitem xpos="320" ypos="185" font="Helvetica" size="7">(AMOUNT IN WORDS)</textitem>
-		<lineitem x1="375" y1="170" x2="541" y2="170"></lineitem>
-		<textitem xpos="426" ypos="162" font="Helvetica" size="7">Provincial/City Assessor</textitem>
-		<textitem xpos="426" ypos="173" font="Helvetica" size="7">{provincialAssessorName}</textitem>
-		<textitem xpos="70" ypos="150" font="Helvetica" size="8">APPROVED:</textitem>
-		<lineitem x1="70" y1="135" x2="200" y2="135"></lineitem>
-		<textitem xpos="98" ypos="137" font="Helvetica" size="7">{provincialAssessorName}</textitem>
-		<textitem xpos="98" ypos="128" font="Helvetica" size="7">Provincial/City Assessor</textitem>
+
+		<textitem xpos="70" ypos="173" font="Helvetica" size="8">APPROVED:</textitem>
+
+		<textitem xpos="456" ypos="150" font="Helvetica-Bold" size="8" align="center">{cityMunicipalAssessorName}</textitem>
+		<lineitem x1="375" y1="148" x2="541" y2="148"></lineitem>
+		<textitem xpos="456" ypos="141" font="Helvetica" size="7" align="center">Municipal Assessor</textitem>
+
+		<textitem xpos="148" ypos="150" font="Helvetica-Bold" size="8" align="center">{provincialAssessorName}</textitem>
+		<lineitem x1="70" y1="148" x2="220" y2="148"></lineitem>
+		<textitem xpos="148" ypos="141" font="Helvetica" size="7" align="center">Provincial Assessor</textitem>
+<!--
 		<textitem xpos="363" ypos="135" font="Helvetica" size="8">By</textitem>
 		<lineitem x1="375" y1="135" x2="541" y2="135"></lineitem>
 		<textitem xpos="450" ypos="128" font="Helvetica" size="7">Deputy</textitem>
 		<textitem xpos="363" ypos="118" font="Helvetica" size="8">DATE</textitem>
-		
-		<lineitem x1="58" y1="115" x2="541" y2="115"></lineitem>
-		<lineitem x1="58" y1="113" x2="541" y2="113"></lineitem>
-		<textitem xpos="58" ypos="103" font="Helvetica" size="8">THIS DECLARATION CANCELS TAX NOS.</textitem>
-		<textitem xpos="220" ypos="105" font="Helvetica" size="7">{cancelsTDNumber}</textitem>
-		<lineitem x1="217" y1="103" x2="465" y2="103"></lineitem>
-		<textitem xpos="466" ypos="103" font="Helvetica" size="8">:IS CANCELLED BY</textitem>
-		<textitem xpos="58" ypos="93" font="Helvetica" size="8">TAX NOS.</textitem>
-		<textitem xpos="100" ypos="95" font="Helvetica" size="7">{canceledByTDNumber}</textitem>
-		<lineitem x1="96" y1="93" x2="333" y2="93"></lineitem>
-		<textitem xpos="334" ypos="93" font="Helvetica" size="8">TAX UNDER THIS DECLARATION BEGINS WITH THE</textitem>
-		<textitem xpos="58" ypos="83" font="Helvetica" size="8">YEAR</textitem>
-		<textitem xpos="85" ypos="85" font="Helvetica" size="7">{taxBeginsWithTheYear}</textitem>
-		<lineitem x1="81" y1="83" x2="120" y2="83"></lineitem>
-		<textitem xpos="121" ypos="83" font="Helvetica" size="8">CEASES WITH THE YEAR</textitem>
-		<textitem xpos="223" ypos="85" font="Helvetica" size="7">{ceasesWithTheYear}</textitem>
-		<lineitem x1="220" y1="83" x2="321" y2="83"></lineitem>
-		<textitem xpos="322" ypos="83" font="Helvetica" size="8">ENTERED IN THE REAL PROPERTY ASSESSMENT ROLL</textitem>
-		<textitem xpos="58" ypos="73" font="Helvetica" size="8">FOR</textitem>
-		<textitem xpos="90" ypos="75" font="Helvetica" size="7">{enteredInRPARForYear}</textitem>
-		<lineitem x1="87" y1="73" x2="120" y2="73"></lineitem>
-		<textitem xpos="121" ypos="73" font="Helvetica" size="8">BY</textitem>
-		<lineitem x1="132" y1="73" x2="170" y2="73"></lineitem>
-		<textitem xpos="171" ypos="73" font="Helvetica" size="8">PREVIOUS OWNER</textitem>
-		<textitem xpos="253" ypos="75" font="Helvetica" size="7">{previousOwner}</textitem>
-		<lineitem x1="248" y1="73" x2="541" y2="73"></lineitem>
-		<textitem xpos="58" ypos="63" font="Helvetica" size="8">PREVIOUS ASSESSED VALUE: LAND P</textitem>
-		<lineitem x1="205" y1="63" x2="300" y2="63"></lineitem>
-		<textitem xpos="301" ypos="63" font="Helvetica" size="8">IMPROVEMENT P</textitem>
-		<lineitem x1="368" y1="63" x2="541" y2="63"></lineitem>		
+-->		
+		<lineitem x1="58" y1="135" x2="541" y2="135"></lineitem>
+		<lineitem x1="58" y1="133" x2="541" y2="133"></lineitem>
+		<textitem xpos="58" ypos="123" font="Helvetica" size="8">THIS DECLARATION CANCELS TAX NOS.</textitem>
+		<textitem xpos="220" ypos="125" font="Helvetica" size="7">{cancelsTDNumber}</textitem>
+		<lineitem x1="217" y1="123" x2="465" y2="123"></lineitem>
+		<textitem xpos="466" ypos="123" font="Helvetica" size="8">:IS CANCELLED BY</textitem>
+		<textitem xpos="58" ypos="113" font="Helvetica" size="8">TAX NOS.</textitem>
+		<textitem xpos="100" ypos="115" font="Helvetica" size="7">{canceledByTDNumber}</textitem>
+		<lineitem x1="96" y1="113" x2="333" y2="113"></lineitem>
+		<textitem xpos="334" ypos="113" font="Helvetica" size="8">TAX UNDER THIS DECLARATION BEGINS WITH THE</textitem>
+		<textitem xpos="58" ypos="103" font="Helvetica" size="8">YEAR</textitem>
+		<textitem xpos="85" ypos="105" font="Helvetica" size="7">{taxBeginsWithTheYear}</textitem>
+		<lineitem x1="81" y1="103" x2="120" y2="103"></lineitem>
+		<textitem xpos="121" ypos="103" font="Helvetica" size="8">CEASES WITH THE YEAR</textitem>
+		<textitem xpos="223" ypos="105" font="Helvetica" size="7">{ceasesWithTheYear}</textitem>
+		<lineitem x1="220" y1="103" x2="321" y2="103"></lineitem>
+		<textitem xpos="322" ypos="103" font="Helvetica" size="8">ENTERED IN THE REAL PROPERTY ASSESSMENT ROLL</textitem>
+		<textitem xpos="58" ypos="93" font="Helvetica" size="8">FOR</textitem>
+		<textitem xpos="90" ypos="95" font="Helvetica" size="7">{enteredInRPARForYear}</textitem>
+		<lineitem x1="87" y1="93" x2="120" y2="93"></lineitem>
+		<textitem xpos="121" ypos="93" font="Helvetica" size="8">BY</textitem>
+		<lineitem x1="132" y1="93" x2="170" y2="93"></lineitem>
+		<textitem xpos="171" ypos="93" font="Helvetica" size="8">PREVIOUS OWNER</textitem>
+		<textitem xpos="253" ypos="95" font="Helvetica" size="7">{previousOwner}</textitem>
+		<lineitem x1="248" y1="93" x2="541" y2="93"></lineitem>
+		<textitem xpos="58" ypos="83" font="Helvetica" size="8">PREVIOUS ASSESSED VALUE: LAND P {previousAssessedValue}</textitem>
+		<lineitem x1="205" y1="81" x2="300" y2="81"></lineitem>
+		<textitem xpos="301" ypos="83" font="Helvetica" size="8">IMPROVEMENT P</textitem>
+		<lineitem x1="368" y1="81" x2="541" y2="81"></lineitem>		
+
+		<lineitem x1="58" y1="78" x2="541" y2="78"></lineitem>
+		<lineitem x1="58" y1="76" x2="541" y2="76"></lineitem>
+		<textitem xpos="58" ypos="65" font="Helvetica" size="8">MEMORANDA:</textitem>
+		<textbox x1="120" y1="65" x2="541" y2="35" font="Helvetica" size="8" hmode="left">{memoranda}</textbox>
 	</page>
 </contents>

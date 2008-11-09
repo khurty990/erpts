@@ -79,6 +79,10 @@ class ODRecords
 		return $ret;
 	}//*/
 
+	// NCC Modification checked and implemented by K2 : November 16, 2005
+	// details:
+	//      added function selectLatestActiveRecordsGenRevBrgy() in line 86
+
 	function selectLatestActiveRecordsGenRevBrgy($brgy=0){
 		$sql = "SELECT ".OD_TABLE.".odID as odID FROM ".OD_TABLE
 				." LEFT JOIN ".ODHISTORY_TABLE
@@ -87,11 +91,11 @@ class ODRecords
 				." LEFT JOIN LocationAddress on Location.locationAddressID = LocationAddress.locationAddressID"
 				." WHERE ".ODHISTORY_TABLE.".previousODID IS NULL "
 				." and LocationAddress.barangayID = " . $brgy; //alex: set brgy code here!!!
-//alex
+		//alex
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
@@ -121,8 +125,8 @@ class ODRecords
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
@@ -178,8 +182,8 @@ class ODRecords
 
 		$this->setDB();
 
-//		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-//		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
@@ -204,6 +208,136 @@ class ODRecords
 			return false;
 		}
 	}
+
+	function getFullNameSearchCondition($condition,$searchKey){
+		// October 07, 2005
+		// return condition that searches by Person's FULL NAME
+
+		// {firstName}<space>{lastName} e.g.: PEDRO BALINGIT
+		if(strstr(strtoupper($condition),"OR")!=false){
+			$condition .= " OR ";
+		}
+		else{
+			if($condition!=""){
+				$condition .= " OR ";
+			}
+		}
+
+		$condition .= " CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{lastNameInitial} e.g.: PEDRO B
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1)))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleName} e.g.: PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleInitial} e.g.: PEDRO R
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(LEFT(".PERSON_TABLE.".lastName,1)))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {middleName}<space>{firstName} e.g.: ROCES PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+
+		// {firstName}<space>{middleName}<space>{lastName} e.g.: PEDRO ROCES BALINGIT
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleInitial}<dot><space>{lastName} e.g.: PEDRO R. BALINGIT
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName} e.g.: BALINGIT, PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName}<space>{middleName} e.g.: BALINGIT, PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName}<space>{middleInitial}<dot> e.g.: BALINGIT, PEDRO R.
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName} e.g.: BALINGIT PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName}<space>{middleName} e.g.: BALINGIT PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName}<space>{middleInitial}<dot> e.g.: BALINGIT PEDRO R.
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+
+
+
+
+		return $condition;
+	}
 	
 	function searchRecords($searchKey,$fields,$limit=""){
 		if($limit!=""){
@@ -216,7 +350,10 @@ class ODRecords
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition." or ".$value." like '%".$searchKey."%' ";
 		}
-		
+
+		// October 07, 2005
+		$condition = $this->getFullNameSearchCondition($condition,$searchKey);
+
         $sql = "SELECT distinct (" . OD_TABLE . ".odID) as odID
 				  , CONCAT(".PERSON_TABLE.".lastName,".PERSON_TABLE.".firstName,".PERSON_TABLE.".middleName) as PersonFullName
 				  FROM " . OD_TABLE . "
@@ -249,6 +386,9 @@ class ODRecords
         $sql = $sql . $condition . ") " . $limit;
 
 		$this->setDB();
+
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		while ($this->db->next_record()) {
@@ -303,8 +443,8 @@ class ODRecords
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		if($this->db->next_record()){
@@ -326,6 +466,9 @@ class ODRecords
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition." or ".$value." like '%".$searchKey."%' ";
 		}
+
+		// October 07, 2005
+		$condition = $this->getFullNameSearchCondition($condition,$searchKey);
 
         $sql = "SELECT distinct (" . OD_TABLE . ".odID) as odID
 				  , CONCAT(".PERSON_TABLE.".lastName,".PERSON_TABLE.".firstName,".PERSON_TABLE.".middleName) as PersonFullName
@@ -360,8 +503,8 @@ class ODRecords
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		if($this->db->next_record()){

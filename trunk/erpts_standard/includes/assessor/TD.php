@@ -133,6 +133,8 @@ class TD
 
 		$trans = get_html_translation_table(HTML_ENTITIES);
 		$elementValue = strtr(htmlentities($elementValue), $trans);
+		$elementValue = html_entity_to_alpha($elementValue);
+	
 		$nodeText = $domDoc->create_text_node($elementValue);
 
 		//$nodeText = $domDoc->create_text_node(htmlentities($elementValue));
@@ -629,8 +631,8 @@ class TD
 
 		$this->setDB();
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);

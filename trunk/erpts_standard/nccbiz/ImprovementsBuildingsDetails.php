@@ -1,6 +1,6 @@
 <?php
 include_once("web/prepend.php");
-include_once("assessor/ImprovementsBuildings01.php");
+include_once("assessor/ImprovementsBuildings.php");
 include_once("assessor/ImprovementsBuildingsRecords.php");
 //*
 $server = new SoapServer("urn:Object");

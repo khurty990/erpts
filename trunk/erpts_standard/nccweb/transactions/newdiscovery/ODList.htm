@@ -188,7 +188,7 @@ function setDefaults(){
 
                           <table width="90%" border="0" cellspacing="1" cellpadding="2">
                             <tr>
-                              <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">
+                              <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
                                 search:
                                 <input type="text" name="searchKey" value="{searchKey}">
                                 <input type="button" name="SubmitSearch" value="Search" onClick="document.ODList.formAction.value='search'; document.ODList.submit();">
@@ -197,7 +197,7 @@ function setDefaults(){
                             </tr>
 
 							<tr> 
-							   <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6"> 
+							   <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6"> 
 								   <table border=0 cellpadding=0 cellspacing=0 width="100%">
 								   <tr>
 										<td class="fileds_comment" bgcolor="#f6f6f6">
@@ -226,7 +226,7 @@ function setDefaults(){
 
                             <!-- BEGIN NotFound -->
                             <tr>
-                                <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">
+                                <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
                                   &lt;&lt; back to <a href="ODList.php{Session}">RPUList</a>
                                   
                                   <br><br>
@@ -276,12 +276,9 @@ function setDefaults(){
                                 <p><b>&nbsp;Location</b></p>
                               </td>
                               <td class="fields" width="75"><b>&nbsp;Land Area</b></td>
+							  <td class="fileds_comment">&nbsp;</td>
                               <td class="fields" width="50" align="center"><b></b> 
                               </td>
-                              <!--<td class="common" width="50" align="center"> <font color="#FFFFFF"> 
-        <input type="button" name="Submit" value="Delete" onClick="javascript: checkAction('delete');">
-        <input type="button" name="Button" value="Remove" onClick="javascript: checkAction('remove');">
-        </font></td>-->
                             </tr>
                             <!-- BEGIN ODList -->
                             <tr valign="top" align="left"> 
@@ -299,12 +296,10 @@ function setDefaults(){
                                 </a>{none}</td>
                               <td class="fileds_comment" bgcolor="#F6F6F6"><b>{locationAddress}</b></td>
                               <td class="fileds_comment" bgcolor="#F6F6F6" align=right><b>{landArea}</b></td>
+							  <td class="fileds_comment" align="center" bgcolor="#F6F6F6" nowrap>({propertyType})</td>
                               <td class="fileds_comment" align="center" bgcolor="#F6F6F6">
                                 <a href="ODDetails.php{Session}&odID={odID}&formAction=view">{odDetailsLinkLabel} >></a>
                               </td>
-                              <!--<td class="common" align="center"> 
-        <input type="checkbox" name="odID[]" value="{odID}">
-      </td>-->
                             </tr>
                             <!-- END ODList -->
                             <!-- END ODTable -->
@@ -312,7 +307,7 @@ function setDefaults(){
 							<!-- BEGIN PageNavigator -->
 							<tr>
                               <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="ODList.php{Session}&page={previous}&sortBy={sortBy}&sortOrder={sortOrder}">{previousTxt}</a></td>
-                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="3" align="center"> 
+                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="4" align="center"> 
 									<table border=0 cellpadding=0 cellspacing=0 width="100%">
 									<tr>
 										<td nowrap class="fileds_comment" align="left">
@@ -341,7 +336,7 @@ function setDefaults(){
 
                             <!-- BEGIN ODDBEmpty -->
                             <tr> 
-                              <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">database 
+                              <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">database 
                                 empty</td>
                             </tr>
                             <!-- END ODDBEmpty -->

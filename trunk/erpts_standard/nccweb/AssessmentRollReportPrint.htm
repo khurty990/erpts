@@ -91,13 +91,13 @@ function goLast(){
 		  <tr>
 		   <td align="center" valign="top"><table width="90%" border="0" cellpadding="4" cellspacing="1" bgcolor="#333333" class="fields">
                           <tr bgcolor="#aaaaaa"> 
-                            <td colspan="16" align="center" class="subtitle"><strong>A S S E S 
+                            <td colspan="20" align="center" class="subtitle"><strong>A S S E S 
                               S M E N T&nbsp;&nbsp;R O L L </strong></td>
                           </tr>
 
 						  <!-- BEGIN FilterDateDetails -->
                           <tr bgcolor="#F6F6F6"> 
-                            <td colspan="16" align="center"><strong>From: {filterFrom_month}/{filterFrom_day}/{filterFrom_year} to {filterTo_month}/{filterTo_day}/{filterTo_year}</strong><strong></strong></td>
+      <td colspan="20" align="center"><strong>From: {filterFrom_month}/{filterFrom_day}/{filterFrom_year} to {filterTo_month}/{filterTo_day}/{filterTo_year}</strong><strong></strong></td>
                           </tr>
 						  <!-- END FilterDateDetails -->
 
@@ -105,7 +105,7 @@ function goLast(){
 
 
                           <tr bgcolor="#F6F6F6"> 
-							<td colspan="16" align="center">
+							<td colspan="20" align="center">
 								<table border=0 cellpadding=0 cellspacing=0 width="100%">
 								<tr class="fields">
 			                        <td colspan="3"><B>PROVINCE/CITY:</B> &nbsp;{province}</td>
@@ -123,25 +123,29 @@ function goLast(){
                           <tr bgcolor="#DDDDDD"> 
                             <td rowspan="2" align="center"><B>PROPERTY OWNER</B></td>
                             <td rowspan="2" align="center"><B>PROPERTY INDEX NO.</B></td>
+                            <td rowspan="2" align="center"><B>TD&nbsp;NO.</B></td>
                             <td rowspan="2" align="center"><B>ARP&nbsp;NO.</B></td>
-                            <td rowspan="2" align="center"><B>OWNER'S&nbsp;ADDRESS </B>
+			    <td rowspan="2" align="center"><B>OWNER'S&nbsp;ADDRESS </B>
                               <B>&amp; Tel. Nos.</B></td>
                             <td rowspan="2" align="center"><B>KIND</B></td>
                             <td rowspan="2" align="center"><B>CLASS</B></td>
-                            <td rowspan="2" align="center"><B>LOCATION OF PROPERTY</B></td>
-                            <td rowspan="2" align="center"><B>Assessed 
+                            <td rowspan="2" align="center"><B>AREA</B></td>
+			    <td rowspan="2" align="center"><B>LOCATION OF PROPERTY</B></td>
+                            <td rowspan="2" align="center"><B>Market Value</B></td>
+			    <td rowspan="2" align="center"><B>Assessed 
                               Value</B></td>
                             <td rowspan="2" align="center"><B>Taxability</B></td>
                             <td rowspan="2" align="center"><B>Effectivity</B></td>
-                            <td colspan="3" align="center"><B>C A N C E L S</B></td>
-                            <td colspan="3" align="center"><B>CANCELLED BY</B></td>
+                            <td colspan="4" align="center"><B>C A N C E L S</B></td>
+                            <td colspan="3" align="center"><B>CANCELLED BY</B></td> 
                           </tr>
                           <tr bgcolor="#DDDDDD"> 
                             <td align="center">Update Code</td>
-                            <td align="center">ARP NO.</td>
+                            <td align="center">Cancels TD No.</td>
                             <td align="center">Assessed Value</td>
-                            <td align="center">Update Code</td>
-                            <td align="center">ARP No.</td>
+                            <td align="center">Previous Owner</td>
+			   <!-- <td align="center">Update Code</td>--> 
+                            <td align="center">Canceled By TD No.</td> 
                             <td align="center">Page REF</td>
                           </tr>
                           <!-- BEGIN ReportList -->
@@ -153,9 +157,13 @@ function goLast(){
 								<b>{propertyIndexNumber}</b>
 							</td>
                             <td width="48" align="center" valign="top">
-								{arpNumber}
+								<b>{taxDeclarationNumber}</b> <!-- {arpNumber} -->
 							</td>
-                            <td width="120" align="left" valign="top" class="fileds_comment">
+			    <td width="48" align="center" valign="top">
+                                                                <b>{arpNumber}</b> 
+                                                        </td>
+
+			    <td width="120" align="left" valign="top" class="fileds_comment">
 								{firstOwnerAddress}
 								<br>
 								Tel: {firstOwnerTelephone}
@@ -166,10 +174,16 @@ function goLast(){
                             <td width="39" align="center" valign="top">
 								{class}
 							</td>
-                            <td width="105" align="left" valign="top" class="fileds_comment">
+                            <td width="39" align="center" valign="top">
+								{area}
+							</td>
+			    <td width="105" align="left" valign="top" class="fileds_comment">
 								<b>{locationAddress}</b>
 							</td>
                             <td align="right" valign="top" class="fileds_comment">
+								{marketValue}
+							</td>
+			    <td align="right" valign="top" class="fileds_comment">
 								{assessedValue}
 							</td>
                             <td align="center" valign="top">
@@ -178,12 +192,14 @@ function goLast(){
                             <td align="center" valign="top">
 								{effectivity}
 							</td>
-                            <td width="43" align="right" valign="bottom">{precedingUpdateCode}</td>
-                            <td width="27" align="right" valign="bottom"><b>{precedingARPNumber}</b></td>
-                            <td align="right" valign="bottom">{precedingAssessedValue}</td>
-                            <td width="43" align="right" valign="bottom">{succeedingUpdateCode}</td>
-                            <td width="27" align="right" valign="bottom"><b>{succeedingARPNumber}</b></td>
-                            <td width="32" align="right" valign="bottom">&nbsp;</td>
+			  			  
+                            <td width="43" align="right" valign="bottom">{transactionCode}</td>
+                       	    <td width="27" align="right" valign="bottom"><b>{cancelsTDNumber}</b></td>
+		            <td align="right" valign="bottom">{previousAssessedValue}</td>
+                            <td align="right" valign="bottom">{previousOwner}</td>
+			    <!--<td width="43" align="right" valign="bottom">{succeedingtransactionCode}</td>-->
+                       	    <td width="27" align="right" valign="bottom"><b>{canceledByTDNumber}</b></td>
+                            <td width="32" align="right" valign="bottom">&nbsp;</td> 
                           </tr>
                           <!-- END ReportList -->
                         </table></td>

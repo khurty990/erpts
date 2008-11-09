@@ -38,8 +38,14 @@ function validateForm(){
 			}
 		}
 	}
-	
-	//jc	
+
+	/*
+		 NCC Modification checked and implemented by K2 : November 14, 2005
+		 details:
+			added lines 49 to 62
+	*/
+
+	// jc
 	var vcutoff=document.TreasurySettingsEncode.annualDueDate.value;		
     var message="Annual due date should be in this format month-day e.g. 03-31 for March 31";
      
@@ -54,7 +60,7 @@ function validateForm(){
 		alert(message);
 		return false;
 	}
-	
+
 	document.TreasurySettingsEncode.formAction.value = "save";
 	document.TreasurySettingsEncode.submit();
 }
@@ -128,7 +134,7 @@ function setDays(type) {
 
 		  <tr align="center"> 
 		   <td width="0" align=left class="common" colspan=4><b>{uname}</b> : {today}</td>
-		   <td width="0" align=right colspan=5>
+		   <td width="0" align=right colspan=7>
 			<a href="home.php{Session}" class="navi" title="Admin Home">Admin Home</a>
 		    <font class="navi">&lt;</font>
 			<a href="../home.php{Session}" class="navi" title="Home">Home</a>
@@ -148,6 +154,8 @@ function setDays(type) {
 		   <td width="0"><a href="MasterPropertyList.php{Session}" class="navi" title="Property">Property</a></td>
 		   <td width="0" class="navi">|</td>
 		   <td width="0"><a href="GeneralRevision.php{Session}" class="navi" title="General Revision">General Revision</a></td>
+		   <td width="0" class="navi">|</td>
+		   <td width="0"><a href="../../nccsms/home.php{Session}" class="navi" title="Alerts">Alerts</a></td>
 		  </tr>
 
 		 </table></td>
@@ -176,6 +184,8 @@ function setDays(type) {
 							   <a href="AssessmentSettingsEncode.php{Session}" class="navi">Assessment Settings</a>
 							   | 
 							   <a href="TreasurySettingsEncode.php{Session}" class="navi"><u>Treasury Settings</u></a>
+							   |
+							   <a href="SharesEncode.php{Session}" class="navi">Shares</a>
 							   |
 							   <a href="DBTools.php{Session}" class="navi">DB Tools</a>
 							  </td>
@@ -303,9 +313,15 @@ function setDays(type) {
 					<td class="fields" align=right bgcolor="#cccccc" width="35%">
 						<b>Annual Due Date</b>
 					</td>
-					<td class="fileds_comment" align=left bgcolor="#ffffff" width="26%">
+					<td class="fileds_comment" align="right" bgcolor="#ffffff">
 						<table border=0 cellpadding=2 cellspacing=0>
 						<tr>
+						<!--
+							 NCC Modification checked and implemented by K2 : November 14, 2005
+							 details:
+								commented out lines 319 to 328
+								added lines 330 to 332
+						-->
 						<!--
 							<td class="fileds_comment" nowrap>
 							 <input name="annualDueDate" type="radio" style="background-color:#ffffff;" value="01-01" {annualDueDate_jan01_selected}>
@@ -317,14 +333,16 @@ function setDays(type) {
 							</td>
 						-->
 							<td class="fileds_comment" nowrap>
-							 <input name="annualDueDate" type="text" style="background-color:#ffffff;" value="{cutOff}" 
-							</td size="20">
+							 <input name="annualDueDate" type="text" style="background-color:#ffffff; text-align:right;" value="{cutOff}" size="10">
+							</td>
 						</tr>
 						</table>
 					</td>
 
 					<td class="fileds_comment" bgcolor="#eeeeee">
 					 format: mm-dd (month-day). For annual dues, Penalties are computed after selected period.
+					 <br><br>
+					 example:<br>type "01-01" for January 01,<br>or "01-31" for January 31
 					</td>
 				</tr>
 				</table>

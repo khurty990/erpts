@@ -292,19 +292,19 @@ class eRPTSSettings
 		return $fullName;
 	}
 	function getAssessorFullName(){
-		$fullName = $this->assessorLastName .", ". $this->assessorFirstName ." ". $this->assessorMiddleName;
+		$fullName = $this->assessorFirstName ."  ". $this->assessorMiddleName ." ". $this->assessorLastName;
 		return $fullName;
 	}
 	function getTreasurerFullName(){
-		$fullName = $this->treasurerLastName .", ". $this->treasurerFirstName ." ". $this->treasurerMiddleName;
+		$fullName = $this->treasurerFirstName ."  ". $this->treasurerMiddleName ." ". $this->treasurerLastName;
 		return $fullName;
 	}
 	function getProvincialAssessorFullName(){
-		$fullName = $this->provincialAssessorLastName. ", ". $this->provincialAssessorFirstName . " ". $this->provincialAssessorMiddleName;
+		$fullName = $this->provincialAssessorFirstName. "  ". $this->provincialAssessorMiddleName . " ". $this->provincialAssessorLastName;
 		return $fullName;
 	}
 	function getProvincialTreasurerFullName(){
-		$fullName = $this->provincialTreasurerLastName. ", ". $this->provincialAssessorFirstName . " ". $this->provincialTreasurerMiddleName;
+		$fullName = $this->provincialTreasurerFirstName. "  ". $this->provincialAssessorMiddleName . " ". $this->provincialTreasurerLastName;
 		return $fullName;
 	}
 

@@ -3,7 +3,7 @@
 include_once("web/prepend.php");
 include_once("assessor/Storey.php");
 include_once("assessor/Property.php");
-include_once("assessor/ImprovementsBuildings01.php");
+include_once("assessor/ImprovementsBuildings.php");
 
 //*
 $server = new SoapServer("urn:Object");
@@ -15,7 +15,7 @@ class ImprovementsBuildingsEncode
     function ImprovementsBuildingsEncode(){
 		
     }
-
+    
     function saveImprovementsBuildings($xmlStr) {
 		if(!$domDoc = domxml_open_mem($xmlStr)) {
  			return false;

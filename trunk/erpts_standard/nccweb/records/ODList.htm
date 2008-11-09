@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>eLGU - {TITLE}</title>
+<title>eLGU - RPTS - {TITLE}</title>
 <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <script language="JavaScript" type="text/JavaScript">
 <!--
@@ -66,85 +66,6 @@ function confirmSubmit(){
 function setDefaults(){
 	document.ODList.searchKey.focus();
 }
-
-// start checkbox toggling functions
-
-function unArchiveSelected(){
-	noneAreChecked = true;
-	for(i=0 ; i<document.ODList.elements.length ; i++){
-		if(document.ODList.elements[i].type == "checkbox"){
-			if(document.ODList.elements[i].checked==true && document.ODList.elements[i].name=='odIDArray[]'){
-				noneAreChecked = false;
-			}
-		}
-	}
-
-	if(noneAreChecked) return false;
-
-	if(confirm("Unarchive selected records?")){
-		document.ODList.formAction.value = "archive";
-		document.ODList.viewArchives.value = "true";
-		document.ODList.archiveValue.value = "false";
-		document.ODList.submit();
-	}
-	else{
-		return false;
-	}
-}
-
-function archiveSelected(){
-	noneAreChecked = true;
-	for(i=0 ; i<document.ODList.elements.length ; i++){
-		if(document.ODList.elements[i].type == "checkbox"){
-			if(document.ODList.elements[i].checked==true && document.ODList.elements[i].name=='odIDArray[]'){
-				noneAreChecked = false;
-			}
-		}
-	}
-
-	if(noneAreChecked) return false;
-
-	if(confirm("Archive selected records?")){
-		document.ODList.formAction.value = "archive";
-		document.ODList.viewArchives.value = "false";
-		document.ODList.archiveValue.value = "true";
-		document.ODList.submit();
-	}
-	else{
-		return false;
-	}
-}
-
-function toggleAll(){
-	for(i=0 ; i<document.ODList.elements.length ; i++){
-		if(document.ODList.elements[i].type == "checkbox")
-		{
-			if(document.ODList.elements[i].name=='odIDArray[]'){
-				document.ODList.elements[i].checked = document.ODList.checkAll.checked; 
-			}
-		}
-	}
-}
-
-function toggle(){
-	allAreChecked = true;
-	for(i=0 ; i<document.ODList.elements.length ; i++){
-		if(document.ODList.elements[i].type == "checkbox"){
-			if(document.ODList.elements[i].checked==false && document.ODList.elements[i].name=='odIDArray[]'){
-				allAreChecked = false;
-			}
-		}
-	}
-	if(allAreChecked==true){
-		document.ODList.checkAll.checked = true;
-	}
-	else{
-		document.ODList.checkAll.checked = false;		
-	}
-}
-
-// end checkbox toggling functions
-
 //-->
 </script>
 <link href="css/elgu.css" rel="stylesheet" type="text/css">
@@ -161,79 +82,54 @@ function toggle(){
         <tr> 
           <td> <img SRC="images/inner_05.jpg" WIDTH=18 HEIGHT=124 ></td>
           <td> <img SRC="images/inner_06.jpg" WIDTH=27 HEIGHT=124 ></td>
-          <td COLSPAN=2 bgcolor="#CCCCCC"> <img SRC="images/title/title_od.jpg" WIDTH=598 HEIGHT=124 ></td>
+          <td COLSPAN=2 bgcolor="#CCCCCC"> <img SRC="images/title/title_rpu_management.jpg" WIDTH=598 HEIGHT=124 ></td>
         </tr>
-
-		<!-- start of navigation menu -->
-
-		<tr>
+        <tr> 
           <td> <img SRC="images/inner_08.jpg" WIDTH=18 HEIGHT=53 ></td>
           <td> <img SRC="images/inner_09.jpg" WIDTH=27 HEIGHT=53 ></td>
-          <td COLSPAN=3 align="left" valign="top" bgcolor="#CCCCCC">
-           <table WIDTH=702 BORDER=0 CELLPADDING=0 CELLSPACING=0>
-			<tr>
-				<td width="72"> <img SRC="images/nav/nav_a_01.jpg" WIDTH=72 HEIGHT=53 ></td>
-				<td align="center" valign="middle" background="images/nav_area_bg.jpg">
-					 <table width="100%%" border="0" cellspacing="0" cellpadding="2">
-					  <tr align="center"> 
-					   <td width="0">
-						    <a href="Reports.php{Session}" class="navi">Reports</a>
-					   </td>
-					   <td width="0" class="navi">|</td>
-			           <td width="0"><a href="change/ODList.php{Session}" class="navi" nowrap>Change Of Ownership<br>& Reassessment</a></td>
-					   <td width="0" class="navi">|</td>
-					   <td width="0"><a href="split/ODList.php{Session}" class="navi" nowrap>Split<br>& Consolidation</a></td>
-					   <td width="0" class="navi">|</td>
-					   <td width="0">
-							<a href="ODList.php{Session}" class="navi">OD List</a>
-					   </td>
-					   <td width="0" class="navi">|</td>
-					   <td width="0">
-							<a href="Logout.php" class="navi">Logout</a>
-					   </td>
-					  </tr>
-					 </table>
-				</td>
-				<td width="75"> <img SRC="images/nav/nav_a_08.jpg" WIDTH=75 HEIGHT=53 border=0 ></td>
-		   </tr>
-		  </table>
-         </td>
-         <td><img SRC="images/inner_11.jpg" WIDTH=36 HEIGHT=53></td>
-         <td><img SRC="images/inner_12.jpg" WIDTH=17 HEIGHT=53></td>
-        </tr>
-
-		<tr> 
-          <td><img SRC="images/inner_08.jpg" WIDTH=18 HEIGHT=53 ></td>
-          <td><img SRC="images/inner_09.jpg" WIDTH=27 HEIGHT=53 ></td>
           <td COLSPAN=3 align="left" valign="top" bgcolor="#CCCCCC"> 
             <table WIDTH=702 BORDER=0 CELLPADDING=0 CELLSPACING=0>
               <tr> 
-				<td width="72"> <img SRC="images/nav/nav_a_01.jpg" WIDTH=72 HEIGHT=53 ></td>
-				<td align="center" valign="middle" background="images/nav_area_bg.jpg">
-					<table width="100%%" border="0" cellspacing="0" cellpadding="2">
-					  <tr align="center"> 
-						   <td width="0"><a href="ODList.php{Session}" class="navi">Real Property Units</a></td>
-						   <td width="0" class="navi">|</td>
-						   <td width="0"><a href="AFSList.php{Session}" class="navi" nowrap>Field Appraisal <br>& Assessment Sheet</a></td>
-						   <td width="0" class="navi">|</td>
-						   <td width="0"><a href="TDList.php{Session}" class="navi">Tax Declaration</a></td>
-						   <td width="0" class="navi">|</td>
-						   <td width="0"><a href="RPTOPList.php{Session}" class="navi">RPTOP</a></td>
-						   <td width="0" class="navi">&nbsp;</td>
-						   <td width="0">&nbsp;</td>
-					  </tr>
-					</table>
-				</td>
-				<td width="75"> <img SRC="images/nav/nav_a_08.jpg" WIDTH=75 HEIGHT=53 ></td>
-			  </tr>
+		<td width="72"> <img SRC="images/nav/nav_a_01.jpg" WIDTH=72 HEIGHT=53 ></td>
+		<td align="center" valign="middle" background="images/nav_area_bg.jpg"><table width="100%%" border="0" cellspacing="0" cellpadding="0">
+
+		  <tr align="center"> 
+		   <td width="0" align=left class="common" colspan=4><b>{uname}</b> : {today}</td>
+		   <td width="0" align=right colspan=5>
+		    <a href="AssessorsHome.php{Session}" class="navi" title="Assessor's Module : Home">AM : Home</a>
+			<font class="navi">&lt;</font>
+			<a href="home.php{Session}" class="navi" title="Home">Home</a>		    
+		    <font class="navi">|</font>
+			<a href="Logout.php" class="navi" title="Logout">Logout</a>
+			<br>&nbsp;
+		   </td>
+		  </tr>
+
+		  <tr align="center"> 
+		   <td width="0" nowrap align=center><a href="RPUManagementHome.php{Session}" class="navi" title="RPU Management">RPU Management</a></td>
+		   <td width="0" class="navi">|</td>
+
+		   <td width="0" nowrap align=center><a href="ODList.php{Session}" class="navi" title="Real Property Units (RPU List)">RPU List</a></td>
+		   <td width="0" class="navi">|</td>
+
+		   <td width="0" nowrap><a href="AFSList.php{Session}" class="navi" title="Field Appraisal & Assessment Sheet (FAAS List)">FAAS List</a></td>
+		   <td width="0" class="navi">|</td>
+
+		   <td width="0" nowrap><a href="TDList.php{Session}" class="navi" title="Tax Declaration (TD List)">TD List</a></td>
+		   <td width="0" class="navi">|</td>
+
+		   <td width="0" nowrap><a href="RPTOPList.php{Session}" class="navi" title="Real Property Tax Order of Payment (RPTOP List)">RPTOP List</a></td>
+
+		  </tr>
+
+		 </table></td>
+		<td width="75"> <img SRC="images/nav/nav_a_08.jpg" WIDTH=75 HEIGHT=53 ></td>
+	   </tr>
             </table>
           </td>
           <td> <img SRC="images/inner_11.jpg" WIDTH=36 HEIGHT=53 ></td>
           <td> <img SRC="images/inner_12.jpg" WIDTH=17 HEIGHT=53 ></td>
         </tr>
-
-		<!-- end of navigation menu -->
-
         <tr> 
           
 	 <td align="center" valign="top"> <img SRC="images/inner_13.jpg" WIDTH=18 HEIGHT=375 ></td>
@@ -246,8 +142,9 @@ function toggle(){
                     <tr> 
                       <td align="center" valign="top" class="subtitle"> 
                         <table width="90%" border="0" cellspacing="0" cellpadding="0">
+						  <tr><td colspan=2>&nbsp;</td></tr>
                           <tr> 
-                            <td class="subtitle">RPU LIST {viewArchivesTitle}</td>
+                            <td class="subtitle">RPU LIST</td>
                             <td align="right" valign="top"><a href="#down"><img src="images/arrow_down.gif" width="40" height="30" border="0"></a></td>
                           </tr>
                         </table>
@@ -265,7 +162,6 @@ function toggle(){
 						  <input type="hidden" name="sortBy" value="{sortBy}">
 						  <input type="hidden" name="sortOrder" value="{sortOrder}">
 
-
                           <table width="90%" border="0" cellspacing="1" cellpadding="2">
                             <tr>
                               <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
@@ -277,40 +173,37 @@ function toggle(){
                             </tr>
 
                             <tr> 
-							  <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
-								<table border=0 cellpadding=2 cellspacing=0 width="100%">
-								<tr>
-									<td align=left valign=top class="fileds_comment">
-									    - <a href="javascript: openWin('PropertyInfoEncode.php{Session}','popupWindow',0,0,550,610);" class="common">add new RPU </a><br>
-										- <a href="ODList.php{Session}" class="common">view all</a>
-										| <a href="ODList.php{Session}&viewArchives=true" class="common">view archives</a>										
-										<br>
-										<br>
-		                                {pageOf}
-									</td>
-									<td align=right valign=bottom class="fileds_comment">
-										<!-- BEGIN ArchiveButton -->
-										&nbsp;
-										<input type="button" value="Archive" onClick="archiveSelected();">
-										&nbsp;&nbsp;
-										&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;
-										<!-- END ArchiveButton -->
-
-										<!-- BEGIN UnArchiveButton -->
-										&nbsp;
-										<input type="button" value="Unarchive" onClick="unArchiveSelected();">
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<!-- END UnArchiveButton -->
-									</td>
-								</tr>
-								</table>
-							  </td>
+							   <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6"> 
+								   <table border=0 cellpadding=0 cellspacing=0 width="100%">
+								   <tr>
+										<td class="fileds_comment" bgcolor="#f6f6f6">
+										    <!-- BEGIN PropertyInfoEncodeLink -->
+										    - <a href="javascript: openWin('PropertyInfoEncode.php{Session}','popupWindow',0,0,550,610);" class="common">add 
+											new RPU </a><br>
+											<!-- END PropertyInfoEncodeLink -->
+											- <a href="ODList.php{Session}" class="common">view all</a><br>
+											<br>
+			                                {pageOf}
+										</td>
+						                 <td class="fileds_comment" bgcolor="#F6F6F6" align=right valign=bottom>
+			                                Filter by Barangay:
+											<select name="barangay" style="font-size:10px; width=175;">
+											    <option value=""></option>
+												<!-- BEGIN BarangayList -->
+												<option value = "{barangay}" {barangay_sel}>{barangay}</option>
+												<!-- END BarangayList -->
+											</select>
+											<input type="button" value="Go" onClick="document.ODList.formAction.value='filterBarangay'; document.ODList.submit();">
+										 </td>
+								   </tr>
+								   </table>
+							   </td>
                             </tr>
+
                             <!-- BEGIN NotFound -->
                             <tr>
                                 <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
-                                  &lt;&lt; back to <a href="ODList.php{Session}&viewArchives={viewArchives}">RPUList</a>
+                                  &lt;&lt; back to <a href="ODList.php{Session}">RPUList</a>
                                   
                                   <br><br>
                                   
@@ -330,7 +223,7 @@ function toggle(){
 								<!-- BEGIN DescendingODID -->
 								 <img src="images/desc_order.png" border=0 alt="Descending"> 
 								<!-- END DescendingODID -->
-								<a href="ODList.php{Session}&sortBy=odID&sortOrder={odIDSortOrder}&viewArchives={viewArchives}"><b>OD ID</b></a>
+								<a href="ODList.php{Session}&sortBy=odID&sortOrder={odIDSortOrder}"><b>OD ID</b></a>
 							  </td>
                               <td class="fields" nowrap width="170">
 								<b>OWNER</b><br>
@@ -342,7 +235,7 @@ function toggle(){
 								<!-- BEGIN DescendingPerson -->
 								 <img src="images/desc_order.png" border=0 alt="Descending"> 
 								<!-- END DescendingPerson -->
-								<a href="ODList.php{Session}&sortBy=person&sortOrder={personSortOrder}&viewArchives={viewArchives}">Person</a>
+								<a href="ODList.php{Session}&sortBy=person&sortOrder={personSortOrder}">Person</a>
 								)
 								(
 								<!-- BEGIN AscendingCompany -->
@@ -351,7 +244,7 @@ function toggle(){
 								<!-- BEGIN DescendingCompany -->
 								 <img src="images/desc_order.png" border=0 alt="Descending"> 
 								<!-- END DescendingCompany -->
-								<a href="ODList.php{Session}&sortBy=company&sortOrder={companySortOrder}&viewArchives={viewArchives}">Company/Group</a>
+								<a href="ODList.php{Session}&sortBy=company&sortOrder={companySortOrder}">Company/Group</a>
 								)
 								</font>
 							  </td>
@@ -359,54 +252,59 @@ function toggle(){
                                 <p><b>&nbsp;Location</b></p>
                               </td>
                               <td class="fields" width="75"><b>&nbsp;Land Area</b></td>
-							  <td class="fields">
-							   <input type="checkbox" name="checkAll" onClick="toggleAll();" style="background:color:#dddddd;"  >
-							  </td>
-                              <td class="fields" width="50" align="center"><b></b> 
-                              </td>
-                              <!--<td class="common" width="50" align="center"> <font color="#FFFFFF"> 
-        <input type="button" name="Submit" value="Delete" onClick="javascript: checkAction('delete');">
-        <input type="button" name="Button" value="Remove" onClick="javascript: checkAction('remove');">
-        </font></td>-->
+							  <td class="fileds_comment">&nbsp;</td>
+                              <td class="fields" width="50" align="center"><b></b></td>
                             </tr>
                             <!-- BEGIN ODList -->
                             <tr valign="top" align="left"> 
                               <td class="fileds_comment" bgcolor="#F6F6F6" align=center><b>{odID}</b>&nbsp;</td>
                               <td class="fileds_comment" bgcolor="#F6F6F6"> 
                                 <!-- BEGIN PersonList -->
-                                <a href="javascript: openWin('PersonDetails.php{Session}&personID={personID}&formAction=viewOnly','popupWindow',300,150,350,400)" class="fields">{OwnerPerson}</a> 
+                                <a href="javascript: openWin('PersonDetails.php{Session}&personID={personID}&formAction={ownerViewAccess}','popupWindow',300,150,350,400)" class="fields">{OwnerPerson}</a> 
                                 <br>
                                 <!-- END PersonList -->
                                 <!-- BEGIN CompanyList -->
-                                <a href="javascript: openWin('CompanyDetails.php{Session}&companyID={companyID}&formAction=viewOnly','popupWindow',300,150,350,400)" class="fields">{OwnerCompany}</a> 
+                                <a href="javascript: openWin('CompanyDetails.php{Session}&companyID={companyID}&formAction={ownerViewAccess}','popupWindow',300,150,350,400)" class="fields">{OwnerCompany}</a> 
                                 <br>
                                 <!-- END CompanyList -->
                                 <a href="ODDetails.php{Session}&odID={odID}&formAction=view"> 
                                 </a>{none}</td>
                               <td class="fileds_comment" bgcolor="#F6F6F6"><b>{locationAddress}</b></td>
                               <td class="fileds_comment" bgcolor="#F6F6F6" align=right><b>{landArea}</b></td>
-							  <td class="fileds_comment" bgcolor="#F6f6f6" align=center valign=top>
-							   <input type="checkbox" name="odIDArray[]" value="{odID}" onClick="toggle();">
-							  </td>
-                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6"> 
-                                <a href="ODDetails.php{Session}&odID={odID}&formAction=view">Edit>></a> 
+							  <td class="fileds_comment" align="center" bgcolor="#F6F6F6" nowrap>({propertyType})</td>
+                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6">
+                                <a href="ODDetails.php{Session}&odID={odID}&formAction=view">{odDetailsLinkLabel} >></a>
                               </td>
-                              <!--<td class="common" align="center"> 
-        <input type="checkbox" name="odID[]" value="{odID}">
-      </td>-->
                             </tr>
                             <!-- END ODList -->
                             <!-- END ODTable -->
 
 							<!-- BEGIN PageNavigator -->
 							<tr>
-                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="ODList.php{Session}&page={previous}&sortBy={sortBy}&sortOrder={sortOrder}&viewArchives={viewArchives}">{previousTxt}</a></td>
-                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="4" align="center"> 
-                                <!-- BEGIN Pages -->
-                                <a href="ODList.php{Session}&page={pagesUrl}&sortBy={sortBy}&sortOrder={sortOrder}&viewArchives={viewArchives}">{pages}</a>{paged}
-                                <!-- END Pages -->
+                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="ODList.php{Session}&page={previous}&sortBy={sortBy}&sortOrder={sortOrder}">{previousTxt}</a></td>
+                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="4" align="center">
+									<table border=0 cellpadding=0 cellspacing=0 width="100%">
+									<tr>
+										<td nowrap class="fileds_comment" align="left">
+											[
+											<!-- BEGIN PagesList -->
+												<a href="ODList.php{Session}&page={pageListPagesUrl}&sortBy={sortBy}&sortOrder={sortOrder}">{pageListPages}</a> {pageListPaged}
+											<!-- END PagesList -->
+											]
+										</td>
+										<td nowrap class="fileds_comment" align="right">
+											Page : 
+											<select name="pageNavigatorURL" style="text-align:right;">
+			                                <!-- BEGIN Pages -->
+												<option value="ODList.php{Session}&page={pagesUrl}&sortBy={sortBy}&sortOrder={sortOrder}" {paged}>{pages}</option>
+			                                <!-- END Pages -->
+											</select>
+											<input type="button" value="Go" onClick="window.location.href(document.ODList.pageNavigatorURL.options[document.ODList.pageNavigatorURL.selectedIndex].value);">
+										</td>
+									</tr>
+									</table>
                               </td>
-                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="ODList.php{Session}&page={next}&sortBy={sortBy}&sortOrder={sortOrder}&viewArchives={viewArchives}">{nextTxt}</a></td>
+                              <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="ODList.php{Session}&page={next}&sortBy={sortBy}&sortOrder={sortOrder}">{nextTxt}</a></td>
                             </tr>
 							<!-- END PageNavigator -->
 
@@ -418,8 +316,6 @@ function toggle(){
                             </tr>
                             <!-- END ODDBEmpty -->
                           </table>
-                          <font color="#FFFFFF"> 
-                          </font> 
                         </form>
                       </td>
                     </tr>

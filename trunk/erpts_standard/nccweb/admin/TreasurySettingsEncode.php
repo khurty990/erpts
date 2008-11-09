@@ -34,6 +34,7 @@ class TreasurySettingsEncode{
 		$this->formArray = array(
 			"formAction" => $formAction
 			,"message" => ""
+			,"cutOff" => ""
 		);
 
 		foreach ($http_post_vars as $key=>$value) {
@@ -78,8 +79,7 @@ class TreasurySettingsEncode{
 		$this->formArray["discountPeriod_day"] = $discountPeriodArray[1];
 
 		$this->setDateDropDown("discountPeriod_");
-		$this->tpl->set_var("cutOff",$this->formArray["annualDueDate"]);
-/*
+
 		if($this->formArray["annualDueDate"]=="01-01"){
 			$this->tpl->set_var("annualDueDate_jan01_selected","checked");
 			$this->tpl->set_var("annualDueDate_jan31_selected","");
@@ -87,7 +87,9 @@ class TreasurySettingsEncode{
 		else{
 			$this->tpl->set_var("annualDueDate_jan01_selected","");			$this->tpl->set_var("annualDueDate_jan31_selected","checked");
 		}
-*/
+
+		$this->formArray["cutOff"] = $this->formArray["annualDueDate"];
+
 		foreach ($this->formArray as $key => $value){
 			$this->tpl->set_var($key, $value);
 		}

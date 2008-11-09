@@ -87,11 +87,18 @@ class PersonRecords
 		}
 	}
 	function searchRecords($searchKey,$fields,$limit){
+		/*
 		$condition = "where (";
 		foreach($fields as $key => $value){
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition."or ".$value." like '%".$searchKey."%' ";
 		}
+		*/
+
+		// November 22, 2005
+		// commented out old $condition generator
+		// use new search condition
+		$condition = "where (".$this->getFullNameSearchCondition("",$searchKey)." ";
 		
 		$sql = sprintf("select * from %s %s;",
 				PERSON_TABLE, $condition.") and personType = 'owner' ORDER BY lastName,firstName,middleName ASC ".$limit);
@@ -122,11 +129,18 @@ class PersonRecords
 	}
 	
 	function countSearchRecords($searchKey,$fields){
+		/*
 		$condition = "where (";
 		foreach($fields as $key => $value){
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition."or ".$value." like '%".$searchKey."%' ";
 		}
+		*/
+
+		// November 22, 2005
+		// commented out old $condition generator
+		// use new search condition
+		$condition = "where (".$this->getFullNameSearchCondition("",$searchKey)." ";
 		
 		$sql = sprintf("select count(*) as count from %s %s;",
 				PERSON_TABLE, $condition.") and personType = 'owner' ".$limit);
@@ -144,6 +158,132 @@ class PersonRecords
 			if ($person->deleteRecord($value)) $rows++;
 		}
 		return $rows;
+	}
+
+	function getFullNameSearchCondition($condition,$searchKey){
+		// November 22, 2005
+		// return condition that searches by Person's FULL NAME (taken from ODRecords.php)
+
+		// {firstName}<space>{lastName} e.g.: PEDRO BALINGIT
+		if(strstr(strtoupper($condition),"OR")!=false){
+			$condition .= " OR ";
+		}
+		else{
+			if($condition!=""){
+				$condition .= " OR ";
+			}
+		}
+
+		$condition .= " CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{lastNameInitial} e.g.: PEDRO B
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1)))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleName} e.g.: PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleInitial} e.g.: PEDRO R
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(LEFT(".PERSON_TABLE.".lastName,1)))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {middleName}<space>{firstName} e.g.: ROCES PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+
+		// {firstName}<space>{middleName}<space>{lastName} e.g.: PEDRO ROCES BALINGIT
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {firstName}<space>{middleInitial}<dot><space>{lastName} e.g.: PEDRO R. BALINGIT
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName} e.g.: BALINGIT, PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName}<space>{middleName} e.g.: BALINGIT, PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<comma>{firstName}<space>{middleInitial}<dot> e.g.: BALINGIT, PEDRO R.
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",CONCAT(TRIM(UCASE(".PERSON_TABLE.".lastName)),',')";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName} e.g.: BALINGIT PEDRO
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName}<space>{middleName} e.g.: BALINGIT PEDRO ROCES
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".middleName))";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		// {lastName}<space>{firstName}<space>{middleInitial}<dot> e.g.: BALINGIT PEDRO R.
+		$condition .= " OR ";
+		$condition .= "CONCAT_WS(' '";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".lastName))";
+		$condition .= ",TRIM(UCASE(".PERSON_TABLE.".firstName))";
+		$condition .= ",CONCAT(TRIM(UCASE(LEFT(".PERSON_TABLE.".middleName,1))),'.')";
+		$condition .= ")";
+		$condition .= " LIKE '%".strtoupper($searchKey)."%' ";
+
+		return $condition;
 	}
 }
 ?>

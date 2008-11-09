@@ -578,8 +578,8 @@ class OD
 		$this->setDB();
 
 		
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 
 		$this->db->beginTransaction();
@@ -621,8 +621,8 @@ class OD
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);
@@ -654,8 +654,8 @@ class OD
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);

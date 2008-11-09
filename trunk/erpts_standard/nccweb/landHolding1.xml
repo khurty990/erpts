@@ -17,7 +17,7 @@
 		<textbox hmode="0" x1="50" y1="600" x2="612" y2="540" font="Times New Roman" size="12">
 TO WHOM IT MAY CONCERN:
 
-						THIS IS TO CERTIFY that based on the records on file at this office, {nameList} is/are the registered owner/s of the following real property/ies, to wit:
+THIS IS TO CERTIFY that based on the records on file at this office, {nameList} is/are the registered owner/s of the following real property/ies, to wit:
 
 {tdNumberList}
 
@@ -28,7 +28,7 @@ TO WHOM IT MAY CONCERN:
 
 
 {signatory}
-OIC - {designation}
+{designation}
 
 
 

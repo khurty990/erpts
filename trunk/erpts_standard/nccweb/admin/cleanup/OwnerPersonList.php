@@ -21,8 +21,8 @@ class OwnerPersonList{
 		$this->formArray["sortOrder"] = "asc";
 		$this->formArray["page"] = 1;
 	
-		if($sortKey!="")
-			$this->formArray["sortKey"] = $sortKey;
+		//if($sortKey!="")
+		//	$this->formArray["sortKey"] = $sortKey;
 		if($sortOrder!="")
 			$this->formArray["sortOrder"] = $sortOrder;
 

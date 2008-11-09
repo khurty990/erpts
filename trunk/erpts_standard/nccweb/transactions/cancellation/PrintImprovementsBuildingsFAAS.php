@@ -18,6 +18,9 @@ include_once("assessor/OD.php");
 include_once("assessor/ImprovementsBuildingsClasses.php");
 include_once("assessor/ImprovementsBuildingsActualUses.php");
 
+include_once("assessor/ODHistory.php");
+include_once("assessor/ODHistoryRecords.php");
+
 #####################################
 # Define Interface Class
 #####################################
@@ -246,10 +249,10 @@ class PrintImprovementsBuildingsFAAS{
 
 						$telno = $personValue->getTelephone();
 
-						$ownerName = $personValue->getName();
+						$ownerName = $personValue->getProperName();
 					}
 					else{
-						$ownerName = $ownerName." , ".$personValue->getName();
+						$ownerName = $ownerName." , ".$personValue->getProperName();
 					}
 				}
 			}
@@ -437,11 +440,20 @@ class PrintImprovementsBuildingsFAAS{
 					$this->formArray["totalBuildingArea"] = $improvementsBuildings->getTotalBuildingArea();
 					$this->formArray["numberOfStoreys"] = $improvementsBuildings->getNumberOfStoreys();
 					$this->formArray["cctNumber"] = $improvementsBuildings->getCctNumber();
-					$this->formArray["bldgCore1"] = $improvementsBuildings->getBuildingCoreAndAdditionalItems();
-					$this->formArray["addItems"] = "";
+					
+					// NCC Modification checked and implemented by K2 : November 18, 2005
+		 			// details:
+		 			//		commented out line 448, changed lines 451 to 455
+		 			
+					//$this->formArray["bldgCore1"] = $improvementsBuildings->getBuildingCoreAndAdditionalItems();
+					$this->formArray["bldgCore1"] = number_format($improvementsBuildings->getUnitValue(),2);
+					$this->formArray["depMarketValue"] = $improvementsBuildings->getDepreciatedMarketValue();
+					$this->formArray["marketValue"] = number_format($improvementsBuildings->getMarketValue(),2);
+					$this->formArray["addItems"] = number_format($improvementsBuildings->getAddItems(),2);
 					$this->formArray["subTotal"] = "";
 
-					$this->formArray["adjustments"] = "";
+					$this->formArray["adjustments"] = number_format($improvementsBuildings->getMarketValue() + $improvementsBuildings->getAddItems(),2);
+					
 					$this->formArray["depreciationRate"] = $improvementsBuildings->getDepreciationRate();
 					$this->formArray["subTotal2"] = "";
 
@@ -537,8 +549,13 @@ class PrintImprovementsBuildingsFAAS{
 					else{
 						$this->formArray["actualUse".($i+1)] = $improvementsBuildings->getActualUse();
 					}
+					
+					// NCC Modification checked and implemented by K2 : November 18, 2005
+		 			// details:
+		 			//		commented out line 557, added line 558, changed "marketValue" to "depMarketValue"				
 
-					$this->formArray["marketValue".($i+1)] = $improvementsBuildings->getMarketValue();
+					//$this->formArray["marketValue".($i+1)] = $improvementsBuildings->getMarketValue();
+					$this->formArray["depMarketValue".($i+1)] = $improvementsBuildings->getDepreciatedMarketValue();
 					$this->formArray["assessmentLevel".($i+1)] = $improvementsBuildings->getAssessmentLevel();
 					$this->formArray["assessedValue".($i+1)] = $improvementsBuildings->getAssessedValue();
 
@@ -547,10 +564,49 @@ class PrintImprovementsBuildingsFAAS{
 
 				$i++;
 			}
+			
+			// NCC Modification checked and implemented by K2 : November 18, 2005
+		 	// details:
+		 	//		added for() loop in lines 572 to 578 that resets values to:
+		 	//			 "kind, actualUse, depMarketValue, assessmentLevel" and "assessedValue"			
+			
+			for ($j=$i;$j<4;$j++){
+				$this->formArray["kind".($j+1)] = '';
+				$this->formArray["actualUse".($j+1)] = '';
+				$this->formArray["depMarketValue".($j+1)] = '';
+				$this->formArray["assessmentLevel".($j+1)] = '';
+				$this->formArray["assessedValue".($j+1)] = '';
+			}			
 		}
 		$this->formArray["valAdjFacTotal"] = $valAdjFacTotal;
 		$this->formArray["propertyAdjMrktValTotal"] = $propertyAdjMrktValTotal;
 		$this->formArray["propertyTotal"] = $propertyTotal;
+	}
+
+	function displayPostingSummary($afs){
+		// previous
+		$presentODID = $afs->odID;
+		$condition = sprintf("WHERE presentODID='%s'",fixQuotes($presentODID));
+
+		$odHistoryRecords = new ODHistoryRecords;
+		if($odHistoryRecords->selectRecords($condition)){
+			$odHistory = $odHistoryRecords->arrayList[0];
+			$previousODID = $odHistory->previousODID;
+
+			$previousAFS = new AFS;
+			if($previousAFS->selectRecord("","",$previousODID,"")){
+				$this->formArray["previous1"] = $previousAFS->propertyIndexNumber;
+				$this->formArray["previous2"] = $previousAFS->arpNumber;
+				$this->formArray["prevPIN"] = $previousAFS->propertyIndexNumber;
+				$this->formArray["prevTD"] = $previousAFS->arpNumber;
+			}
+		}
+
+		// present
+		$this->formArray["present1"] = $afs->propertyIndexNumber;
+		$this->formArray["present2"] = $afs->arpNumber;
+		$this->formArray["presPIN"] = $afs->propertyIndexNumber;
+		$this->formArray["presTD"] = $afs->arpNumber;
 	}
 
 	function Main(){
@@ -573,8 +629,8 @@ class PrintImprovementsBuildingsFAAS{
 				$this->formArray["effectivity"] = $afs->effectivity;
 
 				$this->displayODAFS($this->formArray["afsID"]);
-
 				$this->displayTD($this->formArray["afsID"]);
+				$this->displayPostingSummary($afs);
 
 				$improvementsBuildingsList = $afs->getImprovementsBuildingsArray();
 

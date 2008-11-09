@@ -75,7 +75,7 @@ class ReceiptRecords
 		$sql = sprintf("select count(*) as count from %s %s",
 				RECEIPT_TABLE, $condition);
 
-		echo $sql;
+		//echo $sql;
 		$this->setDB();
 		$this->db->query($sql);
 		if($this->db->next_record()) $ret = $this->db->f("count");
@@ -87,8 +87,6 @@ class ReceiptRecords
 		$sql = sprintf("select * from %s %s;",
 				RECEIPT_TABLE, $condition);
 		$this->setDB();
-
-		echo $sql;
 
 		$this->db->query($sql);
 		while ($this->db->next_record()) {
@@ -113,11 +111,16 @@ class ReceiptRecords
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition."or ".$value." like '%".$searchKey."%' ";
 		}
-		
-		$sql = sprintf("select * from %s %s;",
-				RECEIPT_TABLE, $condition.") and status != 'cancelled' ORDER BY receiptID DESC ".$limit);
-		//echo $sql;
 
+		if(!strstr(strtoupper($limit), 'ORDER')){
+			$sql = sprintf("select * from %s %s;",RECEIPT_TABLE, $condition.") and status != 'cancelled' ORDER BY receiptID DESC ".$limit);
+		}
+		else{
+			$limit = str_replace("WHERE","and",$limit);
+			$sql = sprintf("select * from %s %s;",RECEIPT_TABLE, $condition.") ".$limit);
+		}		
+
+		//echo $sql;
 
 		$this->setDB();
 		$this->db->query($sql);

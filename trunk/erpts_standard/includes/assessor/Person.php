@@ -97,7 +97,7 @@ class Person
 		$list = $indexNode->append_child($list);
 		if (is_array($arrayList)){
 			foreach ($arrayList as $key => $value){
-                		$domTmp = $value->getDomDocument();
+                $domTmp = $value->getDomDocument();
 				//$list->append_child($domTmp->document_element());
 
 				// test clone_node()
@@ -202,6 +202,12 @@ class Person
 	}
 	function getFullName(){
 		//$fullName = $this->lastName .", ". $this->firstName ." ". $this->middleName;
+
+		// NCC Modification checked and implemented by K2 : November 10, 2005
+		// details:
+		//		the modification comments out line 204 (above) and replaces it with line 211 (below)
+		//         $fullName format: {firstName} {middleInitial}. {lastName}
+
 		$fullName=$this->firstName." ".substr($this->middleName,0,1).". ".$this->lastName;
 		return $fullName;
 	}

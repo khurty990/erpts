@@ -267,8 +267,8 @@ class CertificateOfLandHoldingPrint{
 				}
 			}
 
-			$tdNumberListLine = "\t \t \t \t \t " . $tdNumber . " --- " . $propertyType . " --- " . $classification;
-			return $tdNumberListLine;
+	$tdNumberListLine = "\t \t \t \t \t \t \t \t \t" . $tdNumber . " --- " . $propertyType . " --- " . $classification;
+		return $tdNumberListLine;
 		}
 		return "";
 	}

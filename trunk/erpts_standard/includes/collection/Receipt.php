@@ -387,6 +387,11 @@ class Receipt
 
 		$this->setDB();
 		$this->db->beginTransaction();
+
+
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
+
 		$this->db->query($sql);
 
 		$receiptID = $this->db->insert_id();

@@ -13,6 +13,8 @@ include_once("assessor/OD.php");
 include_once("assessor/ODRecords.php");
 include_once("assessor/AFS.php");
 include_once("assessor/AFSRecords.php");
+include_once("assessor/TD.php");
+include_once("assessor/TDRecords.php");
 
 include_once("assessor/Barangay.php");
 include_once("assessor/BarangayRecords.php");
@@ -145,7 +147,7 @@ class AssessmentRollReport{
 	}
 
 	function filterArchives(){
-		//$condition = " AND ".OD_TABLE.".archive <> 'true'";
+		$condition = " AND ".OD_TABLE.".transactionCode <> 'CA'";
 		$condition.= " GROUP BY ".OD_TABLE.".odID "; 
 		$condition.= " ORDER BY ".OD_TABLE.".odID ASC";
 		return $condition;
@@ -314,14 +316,16 @@ class AssessmentRollReport{
 	function displayPrecedingOD(){
 		$ODHistoryList = new SoapObject(NCCBIZ."ODHistoryList.php", "urn:Object");
 		if (!$xmlStr = $ODHistoryList->getPrecedingODList($this->formArray["odID"])){
-			$this->tpl->set_var("precedingUpdateCode", "");
-			$this->tpl->set_var("precedingARPNumber", "");
+			$this->tpl->set_var("precedingTransactionCode", "");
+
+			$this->tpl->set_var("precedingcancelsTDNumber", "");
 			$this->tpl->set_var("precedingAssessedValue", "");
 		}
 		else{
 			if(!$domDoc = domxml_open_mem($xmlStr)) {
-				$this->tpl->set_var("precedingUpdateCode", "");
-				$this->tpl->set_var("precedingARPNumber", "");
+				$this->tpl->set_var("precedingTransactionCode", "");
+				//diri edit nako
+				$this->tpl->set_var("precedingcancelsTDNumber", "");
 				$this->tpl->set_var("precedingAssessedValue", "");
 			}
 			else{
@@ -332,14 +336,16 @@ class AssessmentRollReport{
 					$value = $arrayList[0];
 						$ODDetails = new SoapObject(NCCBIZ."ODDetails.php", "urn:Object");
 						if(!$xmlStr = $ODDetails->getOD($value->getPreviousODID())){
-							$this->tpl->set_var("precedingUpdateCode", "");
-							$this->tpl->set_var("precedingARPNumber", "");
+							$this->tpl->set_var("precedingTransactionCode", "");
+							//diri edit nako
+							$this->tpl->set_var("precedingcancelsTDNumber", "");
 							$this->tpl->set_var("precedingAssessedValue", "");
 						}
 						else{
 							if(!$domDoc = domxml_open_mem($xmlStr)){
-								$this->tpl->set_var("precedingUpdateCode", "");
-								$this->tpl->set_var("precedingARPNumber", "");
+								$this->tpl->set_var("precedingTransactionCode", "");
+								// diri edit nako
+								$this->tpl->set_var("precedingcancelsTDNumber", "");
 								$this->tpl->set_var("precedingAssessedValue", "");
 							}
 							else{
@@ -349,9 +355,10 @@ class AssessmentRollReport{
 								$precedingODID = $precedingOD->getOdID();
 								$precedingAFS = $this->getAFSDetails($precedingODID);
 
-								$this->tpl->set_var("precedingUpdateCode", $value->getTransactionCode());
-								$this->tpl->set_var("precedingARPNumber", $precedingAFS->getARPNumber());
-								$this->tpl->set_var("precedingAssessedValue", number_format($precedingAFS->getTotalAssessedValue(), 2, ".", ","));
+				$this->tpl->set_var("precedingTransactionCode", $value->getTransactionCode());
+			// diri edit nako 					
+		$this->tpl->set_var("precedingcancelsTDNumber", $precedingTD->getcancelsTDNumber());
+	$this->tpl->set_var("precedingAssessedValue", number_format($precedingAFS->getTotalAssessedValue(), 2, ".", ","));
 							}
 					}
 				}
@@ -362,13 +369,13 @@ class AssessmentRollReport{
 	function displaySucceedingOD(){
 		$ODHistoryList = new SoapObject(NCCBIZ."ODHistoryList.php", "urn:Object");
 		if (!$xmlStr = $ODHistoryList->getSucceedingODList($this->formArray["odID"])){
-			$this->tpl->set_var("succeedingARPNumber", "");
-			$this->tpl->set_var("succeedingUpdateCode", "");
+			$this->tpl->set_var("succeedingcanceledByTDNumber", "");
+			$this->tpl->set_var("succeedingTransactionCode", "");
 		}
 		else{
 			if(!$domDoc = domxml_open_mem($xmlStr)) {
-				$this->tpl->set_var("succeedingARPNumber", "");
-				$this->tpl->set_var("succeedingUpdateCode", "");
+				$this->tpl->set_var("succeedingcanceledByTDNumber", "");
+				$this->tpl->set_var("succeedingTransactionCode", "");
 			}
 			else{
 				$odHistoryRecords = new ODHistoryRecords;
@@ -378,23 +385,23 @@ class AssessmentRollReport{
 					$value = $arrayList[0];
 						$ODDetails = new SoapObject(NCCBIZ."ODDetails.php", "urn:Object");
 						if(!$xmlStr = $ODDetails->getOD($value->getPresentODID())){
-							$this->tpl->set_var("succeedingARPNumber", "");
-							$this->tpl->set_var("succeedingUpdateCode", "");
+							$this->tpl->set_var("succeedingcanceledByTDNumber", "");
+							$this->tpl->set_var("succeedingTransactionCode", "");
 						}
 						else{
-							if(!$domDoc = domxml_open_mem($xmlStr)){
-								$this->tpl->set_var("succeedingARPNumber", "");
-								$this->tpl->set_var("succeedingUpdateCode", "");
-							}
-							else{
-								$succeedingOD = new OD;
-								$succeedingOD->parseDomDocument($domDoc);
+					if(!$domDoc = domxml_open_mem($xmlStr)){
+					$this->tpl->set_var("succeedingcanceledByTDNumber", "");
+					$this->tpl->set_var("succeedingTransactionCode", "");
+					}
+					else{
+					$succeedingOD = new OD;
+					$succeedingOD->parseDomDocument($domDoc);
 
-								$succeedingODID = $succeedingOD->getOdID();
-								$succeedingAFS = $this->getAFSDetails($succeedingODID);
+					$succeedingODID = $succeedingOD->getOdID();
+					$succeedingAFS = $this->getAFSDetails($succeedingODID);
 
-								$this->tpl->set_var("succeedingARPNumber", $succeedingAFS->getARPNumber());
-								$this->tpl->set_var("succeedingUpdateCode", $value->getTransactionCode());
+			$this->tpl->set_var("succeedingcanceledByTDNumber", $succeedingtd->getcanceledByTDNumber());
+				$this->tpl->set_var("succeedingTransactionCode", $value->getTransactionCode());
 							}
 						}
 				}
@@ -461,7 +468,6 @@ class AssessmentRollReport{
 				}
 
 				$condition .= $this->filterArchives();
-
 				$odRecords = new ODRecords;
 
 				// paging
@@ -515,10 +521,36 @@ class AssessmentRollReport{
 
 							if(is_object($afs)){
 
-								$this->tpl->set_var("propertyIndexNumber", $afs->getPropertyIndexNumber());
-							 	$this->tpl->set_var("arpNumber", $afs->getArpNumber());
+			$this->tpl->set_var("propertyIndexNumber", $afs->getPropertyIndexNumber());
+			$this->tpl->set_var("arpNumber", $afs->getArpNumber());
 
-								$this->tpl->set_var("assessedValue", number_format($afs->getTotalAssessedValue(), 2, '.', ','));
+				$this->formArray["odID"] = $value->getOdID();
+                        	$this->formArray["afsID"] = $afs->getAfsID();
+				//$od = $this->getODDetails($value->getOdID());
+				
+			
+			$this->tpl->set_var("transactionCode", $value->getTransactionCode());
+                     	
+			$td = new TD;
+                        if($td->selectRecord("", $this->formArray["afsID"])){
+                        $this->tpl->set_var("taxDeclarationNumber", $td->getTaxDeclarationNumber());
+                        }
+                        else{
+                        $this->tpl->set_var("taxDeclarationNumber","");
+                        }
+			
+                        
+			
+			$this->tpl->set_var("area", $value->getLandArea());
+ 			$this->tpl->set_var("marketValue", number_format($afs->getTotalMarketValue()));			
+
+			$this->tpl->set_var("assessedValue", number_format($afs->getTotalAssessedValue(), 2, '.', ','));
+			
+			$this->tpl->set_var("cancelsTDNumber", $td->getCancelsTDNumber());
+			$this->tpl->set_var("previousAssessedValue", $td->getPreviousAssessedValue());
+			$this->tpl->set_var("previousOwner", $td->getPreviousOwner());
+			$this->tpl->set_var("canceledByTDNumber", $td->getCanceledByTDNumber());	
+			
 
 								$landList = $afs->getLandArray();
 								$plantsTreesList = $afs->getPlantsTreesArray();
@@ -642,7 +674,8 @@ class AssessmentRollReport{
 
 								$this->displayPrecedingOD();
 								$this->displaySucceedingOD();
-
+						//$this->tpl->set_var("transactionCode", $value->getTransactionCode());
+								
 								$this->tpl->parse("ReportListBlock", "ReportList", true);
 
 							

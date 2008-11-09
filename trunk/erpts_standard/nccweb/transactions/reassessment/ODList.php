@@ -11,6 +11,8 @@ include_once("assessor/OwnerRecords.php");
 include_once("assessor/OD.php");
 include_once("assessor/ODRecords.php");
 
+include_once("assessor/TD.php");
+
 include_once("assessor/User.php");
 
 include_once("assessor/Barangay.php");
@@ -55,6 +57,38 @@ class ODList{
 		foreach ($http_post_vars as $key=>$value) {
 			$this->formArray[$key] = $value;
 		}
+	}
+
+	function getPropertyTypeFromOD($od){
+		$AFSEncode = new SoapObject(NCCBIZ."AFSEncode.php", "urn:Object");
+		$TDDetails = new SoapObject(NCCBIZ."TDDetails.php", "urn:Object");
+
+		if($afsID = $AFSEncode->getAfsID($od->getOdID())){
+			if($xmlStr = $TDDetails->getTDFromAfsID($afsID)){
+				$td = new TD;
+				if($domDoc = domxml_open_mem($xmlStr)){
+					$td->parseDomDocument($domDoc);
+					$propertyType = $td->getPropertyType();
+				}
+			}
+		}
+
+		switch($propertyType){
+			case "Land":
+				$propertyType = "L/P";
+				break;
+			case "ImprovementsBuildings":
+				$propertyType = "I/B";
+				break;
+			case "Machineries":
+				$propertyType = "M";
+				break;
+			default:
+				$propertyType = "-";
+				break;
+		}
+
+		return $propertyType;			
 	}
 
 	function sortBlocks(){
@@ -333,6 +367,11 @@ class ODList{
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
 								$oValue = $value->owner;
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
 									foreach($oValue->personArray as $pKey => $pValue){
@@ -482,6 +521,11 @@ class ODList{
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
 								$oValue = $value->owner;
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
 									foreach($oValue->personArray as $pKey => $pValue){
@@ -635,6 +679,11 @@ class ODList{
 								//echo "<br>";
 								$this->tpl->set_var("odID", $value->getOdID());
 								$oValue = $value->owner;
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
 									foreach($oValue->personArray as $pKey => $pValue){
@@ -660,8 +709,9 @@ class ODList{
 								//if (method_exists($value->locationAddress,$value->locationAddress->getFullAddress()))
 								if ($value->locationAddress <> "")
 								$this->tpl->set_var("locationAddress", $value->locationAddress->getFullAddress());
-								$this->tpl->set_var("landArea", number_format($value->getLandArea(), 2, '.', ','));
-
+				//Begin Edited decimal 2 was change to 4				
+				$this->tpl->set_var("landArea", number_format($value->getLandArea(), 4, '.', ','));
+                                // End 
 								$this->setODListBlockPerms();
 
 								$this->tpl->parse("ODListBlock", "ODList", true);

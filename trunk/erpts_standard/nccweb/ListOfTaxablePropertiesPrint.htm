@@ -75,7 +75,7 @@ function goLast(){
 		<td align="center" valign="top">
 			<table width="100%" border="0" cellpadding="4" cellspacing="1" bgcolor="#333333" class="fields">
 			<tr>
-				<td bgcolor="#aaaaaa" class="subtitle" align=center colspan=10>
+				<td bgcolor="#aaaaaa" class="subtitle" align=center colspan=11>
 					LIST OF TAXABLE PROPERTIES					
 				</td>
 			</tr>
@@ -92,6 +92,9 @@ function goLast(){
 				<td bgcolor="#dddddd" class="fields" nowrap align=center>
 					<b>Owner Address</b>
 				</td>
+				<td bgcolor="#dddddd" class="fields" nowrap align=center>
+					<b>Location of Property</b>
+                                </td>
 				<td bgcolor="#dddddd" class="fields" align=center>
 					<b>Kind</b>
 				</td>
@@ -126,6 +129,11 @@ function goLast(){
 				<td bgcolor="#f6f6f6" class="fileds_comment" valign=top>
 					{firstOwnerAddress}
 				</td>
+				
+		<td width="150" bgcolor="#f6f6f6" class="fileds_comment" valign=top>
+                                        {locationAddress}
+                                </td>
+				
 				<td bgcolor="#f6f6f6" class="fields" valign=top>
 					{kind}
 				</td>

@@ -79,8 +79,9 @@ function splitRPU(){
 			return false;
 		}
 
-		if(propertyType!="Land"){
-			alert("Cannot split non-Land/PlantsTrees properties.");
+		// split only propertyType : `Land` and `ImprovementsBuildings`
+		if((propertyType!="Land") && (propertyType!="ImprovementsBuildings")){
+			alert("Properties not classified as Land/PlantsTrees\n or Improvements/Buildings cannot be split.");
 			return false;
 		}
 

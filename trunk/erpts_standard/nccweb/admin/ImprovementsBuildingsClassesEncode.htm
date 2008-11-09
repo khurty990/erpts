@@ -121,14 +121,14 @@ function checkUnitValueOption(){
 		document.EncodeImprovementsBuildingsClasses.rangeLowerBound.disabled = false;
 		document.EncodeImprovementsBuildingsClasses.rangeUpperBound.disabled = false;
 		document.EncodeImprovementsBuildingsClasses.value.disabled = true;
-		document.EncodeImprovementsBuildingsClasses.value.value = 0;
+//		document.EncodeImprovementsBuildingsClasses.value.value = 0;
 	}
 	else{
 		document.EncodeImprovementsBuildingsClasses.rangeLowerBound.disabled = true;
 		document.EncodeImprovementsBuildingsClasses.rangeUpperBound.disabled = true;
 		document.EncodeImprovementsBuildingsClasses.value.disabled = false;
-		document.EncodeImprovementsBuildingsClasses.rangeLowerBound.value = 0;
-		document.EncodeImprovementsBuildingsClasses.rangeUpperBound.value = 0;
+//		document.EncodeImprovementsBuildingsClasses.rangeLowerBound.value = 0;
+//		document.EncodeImprovementsBuildingsClasses.rangeUpperBound.value = 0;
 	}
 }
 
@@ -278,7 +278,7 @@ function checkUnitValueOption(){
 </body>
 
 <script language="Javascript">
-	if(document.EncodeImprovementsBuildingsClasses.rangeLowerBound.value==0 && document.EncodeImprovementsBuildingsClasses.rangeUpperBound==0){
+	if(document.EncodeImprovementsBuildingsClasses.rangeLowerBound.value==0 && document.EncodeImprovementsBuildingsClasses.rangeUpperBound.value==0 && document.EncodeImprovementsBuildingsClasses.value!=0){
 		document.EncodeImprovementsBuildingsClasses.unitValueOption[1].checked = true;
 	}
 	else{

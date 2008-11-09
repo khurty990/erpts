@@ -621,8 +621,13 @@ class Payment
 		);
 
 		$this->setDB();
+
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
+
 		$this->db->beginTransaction();
 		$this->db->query($sql);
+
 
 		$paymentID = $this->db->insert_id();
 		$this->paymentID = $paymentID;

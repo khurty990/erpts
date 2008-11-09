@@ -14,8 +14,6 @@ include_once("assessor/RPTOPRecords.php");
 
 include_once("assessor/RPTOPBatchRecords.php");
 
-
-
 #####################################
 # Define Interface Class
 #####################################
@@ -24,6 +22,7 @@ class RPTOPBatchEncode{
 	var $tpl;
 	var $formArray;
 	var $rptop;
+	var $alphaFilterListArray;
 
 	function RPTOPBatchEncode($http_post_vars,$formAction="",$sess){
 		global $auth;
@@ -52,11 +51,14 @@ class RPTOPBatchEncode{
 			, "citytreasurer" => ""
 			, "cityAssessorID" => ""
 			, "citytreasurerID" => ""
-			, "stepNumber" => "01"
+			, "stepNumber" => "01" // top right corner image
 			, "limit" => 5
 			, "formAction" => $formAction
 			);
-		
+
+		$this->alphaFilterListArray = array(
+			"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","%");
+
 		foreach ($http_post_vars as $key=>$value) {
 			$this->formArray[$key] = $value;
 		}
@@ -64,35 +66,6 @@ class RPTOPBatchEncode{
 
 	function initMasterAssessorList($TempVar,$tempVar){
 		$this->tpl->set_block("rptsTemplate", $TempVar."List", $TempVar."ListBlock");
-
-		/*
-
-		$eRPTSSettingsDetails = new SoapObject(NCCBIZ."eRPTSSettingsDetails.php", "urn:Object");
-		if(!$xmlStr = $eRPTSSettingsDetails->getERPTSSettingsDetails(1)){
-			echo "blabla";
-		}
-		else{
-			if(!$domDoc = domxml_open_mem($xmlStr)){
-				echo "blabla2";
-			}
-			else{
-				$eRPTSSettings = new eRPTSSettings;
-				$eRPTSSettings->parseDomDocument($domDoc);
-				switch($tempVar){
-					case "cityAssessor":
-						$this->tpl->set_var("id",$eRPTSSettings->getAssessorFullName());
-						$this->tpl->set_var("name",$eRPTSSettings->getAssessorFullName());
-
-						$this->formArray[$tempVar."ID"] = $this->formArray[$tempVar];
-						$this->initSelected($tempVar."ID",$eRPTSSettings->getAssessorFullName());
-						$this->tpl->parse($TempVar."ListBlock",$TempVar."List",true);
-						break;
-				}
-			}
-		}
-
-		*/
-
 		$UserList = new SoapObject(NCCBIZ."UserList.php", "urn:Object");
         if (!$xmlStr = $UserList->getUserList(0, " WHERE ".AUTH_USER_MD5_TABLE.".userType REGEXP '1$' AND ".AUTH_USER_MD5_TABLE.".status='enabled'")){
 			// error xml
@@ -121,34 +94,6 @@ class RPTOPBatchEncode{
 
 	function initMasterTreasurerList($TempVar,$tempVar){
 		$this->tpl->set_block("rptsTemplate", $TempVar."List", $TempVar."ListBlock");
-
-		/*
-
-		$eRPTSSettingsDetails = new SoapObject(NCCBIZ."eRPTSSettingsDetails.php", "urn:Object");
-		if(!$xmlStr = $eRPTSSettingsDetails->getERPTSSettingsDetails(1)){
-			// error xml
-		}
-		else{
-			if(!$domDoc = domxml_open_mem($xmlStr)){
-				// error domDoc
-			}
-			else{
-				$eRPTSSettings = new eRPTSSettings;
-				$eRPTSSettings->parseDomDocument($domDoc);
-				switch($tempVar){
-					case "cityTreasurer":
-						$this->tpl->set_var("id",$eRPTSSettings->getTreasurerFullName());
-						$this->tpl->set_var("name",$eRPTSSettings->getTreasurerFullName());
-
-						$this->formArray[$tempVar."ID"] = $this->formArray[$tempVar];
-						$this->initSelected($tempVar."ID",$eRPTSSettings->getTreasurerFullName());
-						$this->tpl->parse($TempVar."ListBlock",$TempVar."List",true);
-						break;
-				}
-			}
-		}
-
-		*/
 
 		$UserList = new SoapObject(NCCBIZ."UserList.php", "urn:Object");
         if (!$xmlStr = $UserList->getUserList(0, " WHERE ".AUTH_USER_MD5_TABLE.".userType REGEXP '1$' AND ".AUTH_USER_MD5_TABLE.".status='enabled'")){
@@ -289,42 +234,181 @@ class RPTOPBatchEncode{
 		return $newRPTOPNumber;
 	}
 
-	function displayOwnerList(){
-		$batchRecords = new RPTOPBatchRecords;
-		$i=0;
-
-		if($ownerNameArray = $batchRecords->getOwnerNameArray($this->formArray["taxableYear"],$this->formArray["limit"])){
-			if(is_array($ownerNameArray)){
-				$this->removeTplBlock("OwnerListEmpty");
-				$this->tpl->set_block("rptsTemplate", "OwnerList", "OwnerListBlock");
-
-				foreach($ownerNameArray as $ownerName){
-					$this->tpl->set_var("i",$i+1);
-					$this->tpl->set_var("ownerName", $ownerName["ownerName"]);
-					$this->tpl->set_var("id", $ownerName["id"]);
-
-					$newRPTOP["rptopNumber"] = $this->generateNewRPTOPNumber($i);
-					
-					if($newRPTOP["rptopID"] = $batchRecords->setOwnerRPTOP($this->formArray,$ownerName,$newRPTOP["rptopNumber"])){
-						// generate NEW RPTOP NUMBER
-						$this->tpl->set_var("newRPTOP[rptopID]", $newRPTOP["rptopID"]);
-						$this->tpl->set_var("newRPTOP[rptopNumber]", $newRPTOP["rptopNumber"]);
-
-						$this->tpl->parse("OwnerListBlock", "OwnerList", true);
-						$this->tpl->set_var("OwnerTDListBlock", "");
-						$i++;
-					}
-
-				}
-
-			}
+	function displayOwnerCompanyList(){
+		// list all Company Owners within limit and alphaFilter who DO NOT have an RPTOP for
+	    // the selected taxableYear
+		$rptopBatchRecords = new RPTOPBatchRecords;
+		$db = new DB_RPTS;
+		if($this->formArray["alphaFilter"]!="%"){
+			$condition = "WHERE "
+				.COMPANY_TABLE.".companyName LIKE '".$this->formArray["alphaFilter"]."%'";
 		}
 		else{
+			$notRegExp = "";
+			foreach($this->alphaFilterListArray as $alphaFilter){
+				if($alphaFilter!="%"){
+					if($notRegExp!=""){
+						$notRegExp .= "|";
+					}
+					$notRegExp .= strtoupper($alphaFilter)."|".strtolower($alphaFilter);
+				}
+			}
+			$condition = "WHERE " 
+				.COMPANY_TABLE.".companyName NOT REGEXP '^".$notRegExp."'";
+		}
+
+		$condition .= " ORDER BY ".COMPANY_TABLE.".companyName ASC;";
+		$sql = "SELECT ".COMPANY_TABLE.".companyID as companyID, "
+			.COMPANY_TABLE.".companyName "
+			."FROM "
+			.COMPANY_TABLE." "
+			.$condition;
+
+		$db->query($sql);
+
+		if(!$db->next_record()){
+			$this->tpl->set_var("total",0);
 			$this->removeTplBlock("OwnerListColumns");
 			$this->removeTplBlock("OwnerList");
 		}
+		else{
+			$this->removeTplBlock("OwnerListEmpty");
+			$this->tpl->set_block("rptsTemplate","OwnerList","OwnerListBlock");
+			while($db->next_record()){
+				if($ownerCtr < $this->formArray["limit"]){
+					// check if owner has no other RPTOPs generated for the year
+					if(!($rptopBatchRecords->getOwnerRPTOPArray($db->f("companyID"),"Company",$this->formArray["taxableYear"]))){
+						
+						// check if owner has TDs for year 
+						// this is where the bottleneck of the process is but the validation is necessary so
+						// you don't end up with RPTOPS that have no TDs
+						$tdArray = $rptopBatchRecords->getTDListOf($db->f("companyID"),"Company",$this->formArray["taxableYear"]);
+						if(is_array($tdArray)){
+							$ownerCtr++;
 
-		$this->tpl->set_var("total", $i);
+							if($db->f("companyName")==""){
+								$ownerName = "BLANK OWNER";
+							}
+							else{
+								$ownerName = $db->f("companyName");
+							}
+
+							$this->tpl->set_var("ownerName",$ownerName);
+							$this->tpl->set_var("personOrCompanyID",$db->f("companyID"));
+							$this->tpl->set_var("i",$ownerCtr);
+
+							$this->tpl->parse("OwnerListBlock","OwnerList",true);
+						}
+					}
+				}
+				else{
+					break;
+				}
+			}
+			$this->tpl->set_var("total",$ownerCtr);
+		}
+	}
+
+	function displayOwnerPersonList(){
+		// list all Person Owners within limit and alphaFilter who DO NOT have an RPTOP for
+	    // the selected taxableYear
+		$rptopBatchRecords = new RPTOPBatchRecords;
+		$db = new DB_RPTS;
+		if($this->formArray["alphaFilter"]!="%"){
+			$condition = "WHERE "
+				.PERSON_TABLE.".personType NOT LIKE 'propertyAdmin'"
+				."AND "
+				.PERSON_TABLE.".lastName LIKE '".$this->formArray["alphaFilter"]."%'";
+		}
+		else{
+			$notRegExp = "";
+			foreach($this->alphaFilterListArray as $alphaFilter){
+				if($alphaFilter!="%"){
+					if($notRegExp!=""){
+						$notRegExp .= "|";
+					}
+					$notRegExp .= strtoupper($alphaFilter)."|".strtolower($alphaFilter);
+				}
+			}
+			$condition = "WHERE " 
+				.PERSON_TABLE.".personType NOT LIKE 'propertyAdmin'"
+				."AND "
+				.PERSON_TABLE.".lastName NOT REGEXP '^".$notRegExp."'";
+		}
+
+		$condition .= " ORDER BY ".PERSON_TABLE.".lastName, ".PERSON_TABLE.".firstName, ".PERSON_TABLE.".middleName ASC;";
+		$sql = "SELECT ".PERSON_TABLE.".personID as personID, "
+			.PERSON_TABLE.".lastName as lastName, "
+			.PERSON_TABLE.".firstName as firstName, "
+			.PERSON_TABLE.".middleName as middleName "
+			."FROM "
+			.PERSON_TABLE." "
+			.$condition;
+
+		$db->query($sql);
+
+		if(!$db->next_record()){
+			$this->tpl->set_var("total",0);
+			$this->removeTplBlock("OwnerListColumns");
+			$this->removeTplBlock("OwnerList");
+		}
+		else{
+			$this->removeTplBlock("OwnerListEmpty");
+			$this->tpl->set_block("rptsTemplate","OwnerList","OwnerListBlock");
+			while($db->next_record()){
+				if($ownerCtr < $this->formArray["limit"]){
+					// check if owner has no other RPTOPs generated for the year
+					if(!($rptopBatchRecords->getOwnerRPTOPArray($db->f("personID"),"Person",$this->formArray["taxableYear"]))){
+						// check if owner has TDs for year <-- bottleneck
+						$tdArray = $rptopBatchRecords->getTDListOf($db->f("personID"),"Person",$this->formArray["taxableYear"]);
+						if(is_array($tdArray)){
+							$ownerCtr++;
+							if($db->f("lastName")=="" && $db->f("firstName")==""){
+								$ownerName = "BLANK OWNER";
+							}
+							else{
+								$ownerName = $db->f("lastName").", ".$db->f("firstName")." ".$db->f("middleName");
+							}
+	
+							$this->tpl->set_var("ownerName",$ownerName);
+							$this->tpl->set_var("personOrCompanyID",$db->f("personID"));
+							$this->tpl->set_var("i",$ownerCtr);
+	
+							$this->tpl->parse("OwnerListBlock","OwnerList",true);
+						}
+					}
+				}
+				else{
+					break;
+				}
+			}
+			$this->tpl->set_var("total",$ownerCtr);
+		}
+	}
+
+
+	function displayOwnerList(){
+		$ownerCtr = 0;
+		$rptopBatchRecords = new RPTOPBatchRecords;
+		switch($this->formArray["ownerType"]){
+			case "Person":
+				$this->displayOwnerPersonList();
+				break;
+			case "Company":
+				$this->displayOwnerCompanyList();
+				break;
+		}
+
+
+
+	}
+
+	function setAlphaFilterList(){
+		$this->tpl->set_block("rptsTemplate","AlphaFilterList","AlphaFilterListBlock");
+		foreach($this->alphaFilterListArray as $alphaFilterValue){
+			$this->tpl->set_var("alphaFilterValue",$alphaFilterValue);
+			$this->tpl->parse("AlphaFilterListBlock","AlphaFilterList",true);
+		}
 	}
 
 	function removeTplBlock($blockName){
@@ -337,25 +421,81 @@ class RPTOPBatchEncode{
 			$this->tpl->set_var($key, $value);
 		}
 	}
+
+	function displaySignatories(){
+		// treasurer
+		$person = new Person;
+		$person->selectRecord($this->formArray["cityTreasurerID"]);
+		$this->formArray["cityAssessor"] = $person->getFullName();
+
+		// assessor
+		$person = new Person;
+		$person->selectRecord($this->formArray["cityAssessorID"]);
+		$this->formArray["cityTreasurer"] = $person->getFullName();
+	}
 	
 	function Main(){
 		switch ($this->formArray["formAction"]){
 			case "runBatchEncode":
+				$this->removeTplBlock("OwnerListForm");
+				$this->removeTplBlock("RPTOPNumberForm");
+				$this->formArray["stepNumber"] = "03";
+				$this->RPTOPNumberFormResults();
+				$this->displaySignatories();
+
+				// establish 'formArray' parameter to pass to RPTOPBatchRecord method
+				$formArray["taxableYear"] = $this->formArray["taxableYear"];
+				$formArray["cityTreasurer"] = $this->formArray["cityTreasurerID"];
+				$formArray["cityAssessor"] = $this->formArray["cityAssessorID"];
+				$formArray["userID"] = $this->user["uid"];
+
+				$rptopCtr = 0;
+				if(!is_array($this->formArray["personOrCompanyID"])){
+					$this->set_var("total","0");
+					$this->removeTplBlock("RPTOPListColumns");
+					$this->removeTplBlock("RPTOPList");
+				}
+				else{
+					$this->removeTplBlock("RPTOPListEmpty");
+					$this->tpl->set_block("rptsTemplate","RPTOPList","RPTOPListBlock");
+					$batchRecords = new RPTOPBatchRecords;
+					for($i=1 ; $i<=$this->formArray["total"] ; $i++){
+						$ownerArray["id"] = $this->formArray["personOrCompanyID"][$i];
+						$ownerArray["type"] = $this->formArray["ownerType"];
+
+						$newRPTOPNumber = $this->generateNewRPTOPNumber($i-1);
+						$newRPTOPID = $batchRecords->setOwnerRPTOP($formArray,$ownerArray,$newRPTOPNumber);
+
+						$this->tpl->set_var("rptopID",$newRPTOPID);
+						$this->tpl->set_var("rptopNumber",$newRPTOPNumber);
+
+						$this->tpl->set_var("personOrCompanyID", $this->formArray["personOrCompanyID"][$i]);
+						$this->tpl->set_var("ownerName",$this->formArray["ownerName"][$i]);
+
+						$this->tpl->set_var("i",$i);
+						$this->tpl->parse("RPTOPListBlock","RPTOPList",true);
+					}
+				}
+
+				// clean up 
+				unset($this->formArray["rptopNumber"]);
+				break;
+			case "generateOwnerList":
+				$this->removeTplBlock("RPTOPListForm");
 				$this->removeTplBlock("RPTOPNumberForm");
 				$this->formArray["stepNumber"] = "02";
 				$this->RPTOPNumberFormResults();
-
-				$this->formArray["cityAssessor"] = $this->formArray["cityAssessorID"];
-				$this->formArray["cityTreasurer"] = $this->formArray["cityTreasurerID"];
+				$this->displaySignatories();
 				$this->formArray["userID"] = $this->user["uid"];
 
-				// run batch encoding process and display the outcome in owners list
 				$this->displayOwnerList();
 				break;
 			default:
+				$this->removeTplBlock("RPTOPListForm");
 				$this->removeTplBlock("OwnerListForm");
 				$this->getLatestRPTOPNumber();
 				$this->RPTOPNumberFormDetails();
+				$this->setAlphaFilterList();
 		}
 
 		$this->setForm();

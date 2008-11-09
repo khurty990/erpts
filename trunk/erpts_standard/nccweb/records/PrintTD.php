@@ -35,6 +35,7 @@ class TDDetails{
 	
 	var $tpl;
 	var $formArray;
+
 	function TDDetails($http_post_vars,$sess,$odID,$ownerID,$afsID,$print){
 		$this->sess = $sess;
 		$this->tpl = new rpts_Template(getcwd(),"keep");
@@ -109,6 +110,7 @@ class TDDetails{
 			, "lMarketValue5" => ""
 			, "lMarketValue6" => ""
 			, "lTotalMarketValue" => ""
+			, "lTotalValueAdjustment" => ""
 			, "lTotalAdjMarketValue" => ""
 
 			, "oPKind1" => ""
@@ -323,11 +325,15 @@ class TDDetails{
 			, "propertyMarketValue4" => ""
 			, "propertyAssessmentLevel4" => ""
 			, "propertyAssessedValue4" => ""
-
+	// additional new
+			, "swornLandTotal" => ""
+			, "swornImprovementTotal" => ""
+			, "swornOverallTotal" => ""
+			, "findingsTotalArea" => ""
+	// end
 			, "totalMarketValue" => ""
 			, "totalAssessedValue" => ""
 			, "totalAssessedValueInWords" => ""
-
 		);
 
 		$this->formArray["odID"] = $odID;
@@ -337,7 +343,13 @@ class TDDetails{
 
 	}
 	
-	function formatCurrency($key){
+	function formatCurrency1($key){
+                if($this->formArray[$key]=="")
+                        return false;
+                $this->formArray[$key] = number_format($this->formArray[$key], 4, ".", ",");
+        }
+
+		function formatCurrency($key){
 		if($this->formArray[$key]=="")
 			return false;
 		$this->formArray[$key] = number_format($this->formArray[$key], 2, ".", ",");
@@ -352,16 +364,17 @@ class TDDetails{
 		$this->formatCurrency("totalMarketValue");
 		$this->formatCurrency("totalAssessedValue");
 
+		$this->formatCurrency("lTotalValueAdjustment");
 		$this->formatCurrency("lTotalAdjMarketValue");
 		$this->formatCurrency("l2TotalAdjMarketValue");
 		$this->formatCurrency("pTotalAdjMarketValue");
 	
-		$this->formatCurrency("lArea1");
-		$this->formatCurrency("lArea2");
-		$this->formatCurrency("lArea3");
-		$this->formatCurrency("lArea4");
-		$this->formatCurrency("lArea5");
-		$this->formatCurrency("lArea6");
+		$this->formatCurrency1("lArea1");
+		$this->formatCurrency1("lArea2");
+		$this->formatCurrency1("lArea3");
+		$this->formatCurrency1("lArea4");
+		$this->formatCurrency1("lArea5");
+		$this->formatCurrency1("lArea6");
 
 		$this->formatCurrency("lUnitValue1");
 		$this->formatCurrency("lUnitValue2");
@@ -377,11 +390,11 @@ class TDDetails{
 		$this->formatCurrency("lMarketValue5");
 		$this->formatCurrency("lMarketValue6");
 
-		$this->formatCurrency("l2Area1");
-		$this->formatCurrency("l2Area2");
-		$this->formatCurrency("l2Area3");
-		$this->formatCurrency("l2Area4");
-		$this->formatCurrency("l2Area5");
+		$this->formatCurrency1("l2Area1");
+		$this->formatCurrency1("l2Area2");
+		$this->formatCurrency1("l2Area3");
+		$this->formatCurrency1("l2Area4");
+		$this->formatCurrency1("l2Area5");
 
 		$this->formatCurrency("l2UnitValue1");
 		$this->formatCurrency("l2UnitValue2");
@@ -405,6 +418,16 @@ class TDDetails{
 		$this->formatCurrency("pUnitValue8");
 		$this->formatCurrency("pUnitValue9");
 
+		$this->formatCurrency("pMarketValue1");
+		$this->formatCurrency("pMarketValue2");
+		$this->formatCurrency("pMarketValue3");
+		$this->formatCurrency("pMarketValue4");
+		$this->formatCurrency("pMarketValue5");
+		$this->formatCurrency("pMarketValue6");
+		$this->formatCurrency("pMarketValue7");
+		$this->formatCurrency("pMarketValue8");
+		$this->formatCurrency("pMarketValue9");
+
 		$this->formatCurrency("bFloorArea1");
 		$this->formatCurrency("bFloorArea2");
 		$this->formatCurrency("bFloorArea3");
@@ -426,12 +449,16 @@ class TDDetails{
 		$this->formatCurrency("propertyMarketValue2");
 		$this->formatCurrency("propertyMarketValue3");
 		$this->formatCurrency("propertyMarketValue4");
-
+		//add pre
 		$this->formatCurrency("propertyAssessedValue1");
 		$this->formatCurrency("propertyAssessedValue2");
 		$this->formatCurrency("propertyAssessedValue3");
 		$this->formatCurrency("propertyAssessedValue4");
-		
+		$this->formatCurrency("swornLandTotal");
+		$this->formatCurrency("swornImprovementTotal");
+		$this->formatCurrency("swornOverallTotal");
+		$this->formatCurrency1("findingsTotalArea");
+		//end
 
 		foreach ($this->formArray as $key => $value){
 			$this->tpl->set_var($key, html_entity_to_alpha($value));
@@ -475,6 +502,7 @@ class TDDetails{
 		$this->formArray["Owner"] = $ownerName;
 		$this->formArray["Address"] = $address;
 	}
+
 	function displayODAFS($afsID){
 		$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
 		if (!$odID = $AFSDetails->getOdID($afsID)){
@@ -494,12 +522,7 @@ class TDDetails{
 					$od = new OD;
 					$od->parseDomDocument($domDoc);
 					if (is_object($od->locationAddress)){
-						$location = $od->locationAddress->getNumber();
-						$location.= " ".$od->locationAddress->getStreet();
-						$location.= ", ".$od->locationAddress->getBarangay();
-						$location.= ", ".$od->locationAddress->getDistrict();
-						$location.= ", ".$od->locationAddress->getMunicipalityCity();
-						$location.= ", ".$od->locationAddress->getProvince();
+						$location = $od->locationAddress->getFullAddress();
 						$this->formArray["location"] = $location;
 					}
 					$this->formArray["lotNumber"] = $od->getLotNumber();
@@ -598,7 +621,7 @@ class TDDetails{
 							}
 						break;
 						default:
-						$this->formArray[$tdkey] = $tdvalue;
+							$this->formArray[$tdkey] = $tdvalue;
 					}
 				}
 			}
@@ -610,10 +633,12 @@ class TDDetails{
 			$i = 0;
 			$l = 0 ;
 			$l2 = 0 ;
+			$nFindingsTotalArea = 0;
 			$lTotalMarketValue = 0;
 			$l2TotalMarketValue = 0;
 
 			$lTotalAdjMarketValue = 0;
+			$lTotalValueAdjustment = 0;
 
 			foreach ($landList as $key => $land){
 				// classification
@@ -660,6 +685,7 @@ class TDDetails{
 					$this->formArray["south"] = $land->getSouth();
 					$this->formArray["east"] = $land->getEast();
 					$this->formArray["west"] = $land->getWest();
+					$this->formArray["certificateOfTitleNumber"] = $land->getOctTctNumber();
 
 					if (is_a($land->propertyAdministrator,Person)){
 						$this->formArray["administrator"] = $land->propertyAdministrator->getFullName();
@@ -684,8 +710,12 @@ class TDDetails{
 							$this->formArray["lClass".($l+1)] = $landClassesDescription;
 							$this->formArray["lUnitValue".($l+1)] = $land->getUnitValue();
 							$this->formArray["lMarketValue".($l+1)] = $land->getMarketValue();
-							$lTotalMarketValue += toFloat($land->getMarketValue());
+							$lTotalValueAdjustment += toFloat($land->getMarketValue()) - toFloat($land->getAdjustedMarketValue());
 							$lTotalAdjMarketValue += toFloat($land->getAdjustedMarketValue());
+							$lTotalMarketValue += toFloat($land->getMarketValue());
+						// add dri dapita
+							$nFindingsTotalArea +=toFloat($land->getArea());
+						// end
 							$l++;
 							break;
 					}
@@ -723,11 +753,20 @@ class TDDetails{
 
 				$i++;
 			}
+			$adjperc = ($lTotalAdjMarketValue / $lTotalMarketValue) * 100;
+			$lTotalValueAdjustment = $lTotalMarketValue - $lTotalAdjMarketValue;
+			$this->formArray["adjperc"] = number_format($adjperc,2);
+//			$adjsumm = "[".number_format($adjperc,2) . "[" . number_format($lTotalValueAdjustment,2);
+			$this->formArray["lTotalPercAdjustment"] = number_format($adjperc,2);
+			$this->formArray["lTotalValueAdjustment"] = number_format($lTotalValueAdjustment,2);
 			$this->formArray["lTotalMarketValue"] = $lTotalMarketValue;
 			$this->formArray["l2TotalMarketValue"] = $l2TotalMarketValue;
 
 			$this->formArray["lTotalAdjMarketValue"] = $lTotalAdjMarketValue;
 			$this->formArray["l2TotalAdjMarketValue"] = $l2TotalAdjMarketValue;
+			// dri pod nag add
+				$this->formArray["findingsTotalArea"] = $nFindingsTotalArea;
+			// end
 		}
 	}
 
@@ -881,10 +920,23 @@ class TDDetails{
 	function displayAssessedValues($landList,$plantsTreesList,$improvementsBuildingsList,$machineriesList){
 		$totalMarketValue = 0;
 		$totalAssessedValue = 0;
-		$i = 0;
+		$nLandTotalAssessedValue = 0;
+		$nLandTotalAdjustedMarketValue = 0;
+		$nPlantsTotalAssessedValue = 0;
+		$nPlantsTotalAdjustedMarketValue = 0;
+		$nBuildingsTotalAssessedValue = 0;
+		$nBuildingsTotalAdjustedMarketValue = 0;
+		$nMachineriesTotalAssessedValue = 0;
+		$nMachineriesTotalAdjustedMarketValue = 0;
+		$swornLandTotal = 0;
+		$swornImprovementTotal = 0;
+		$swornOverallTotal = 0;
+		$i = 1;
+		$flag = 0;
+		$counter = 0;
 		if(count($landList)){
 			foreach($landList as $key => $land){
-				if($i<4){
+				if($i<5){
 					// classification
 					$landClasses = new LandClasses;
 					if(is_numeric($land->getClassification())){
@@ -918,22 +970,57 @@ class TDDetails{
 						$landActualUsesDescription = $land->getActualUse();
 						$landActualUsesCode = $land->getActualUse();
 					}
-	
-					$this->formArray["propertyKind".($i+1)] = "Land";
-					$this->formArray["propertyActualUse".($i+1)] = $landActualUsesDescription;
-					$this->formArray["propertyMarketValue".($i+1)] = $land->getMarketValue();
-					$this->formArray["propertyAssessmentLevel".($i+1)] = $land->getAssessmentLevel();
-					$this->formArray["propertyAssessedValue".($i+1)] = $land->getAssessedValue();
+			// add pre new hehe
+			
+				if ($landActualUsesCode == "RES" || $landActualUsesCode =="COM" || 
+$landActualUsesCode =="IND" || $landActualUsesCode =="MI" || $landActualUsesCode =="TI" || $landActualUsesCode 
+=="SP")
+					{
+					$tempname = $landActualUsesDescription;
+					$counter += 1;					
+					}
+			// end of add hehe
+			$totalMarketValue +=toFloat($land->getAdjustedMarketValue());
+			$totalAssessedValue +=toFloat($land->getAssessedValue());
+			$nLandTotalAssessedValue +=toFloat($land->getAssessedValue());
+			$nLandTotalAdjustedMarketValue +=toFloat($land->getAdjustedMarketValue()); 
 
-					$totalMarketValue+=toFloat($land->getMarketValue());
-					$totalAssessedValue+=toFloat($land->getAssessedValue());
-					$i++;
+			$swornLandTotal +=toFloat($land->getAdjustedMarketValue());
+			$swornOverallTotal +=toFloat($land->getAdjustedMarketValue());			
+	
+//			$this->formArray["propertyKind".($i)] = "Land";
+//			$this->formArray["propertyActualUse".($i)] = $landActualUsesDescription;
+//			$this->formArray["propertyMarketValue".($i)] = $land->getAdjustedMarketValue();
+//			$this->formArray["propertyAssessmentLevel".($i)] = $land->getAssessmentLevel();
+//			$this->formArray["propertyAssessedValue".($i)] = $land->getAssessedValue();
+//				 $totalMarketValue+=toFloat($land->getAdjustedMarketValue());
+//				 $totalAssessedValue+=toFloat($land->getAssessedValue());
+				//$i++;  
 				}
 			}
+			
+		//}
+		// display the summary of lands value
+			if ($counter > 0) 
+				{
+				$this->formArray["propertyActualUse".($i)] = $tempname;
+				}
+			else
+				{
+				$this->formArray["propertyActualUse".($i)] = "Agricultural";
+				} 	
+			$this->formArray["propertyKind".($i)] = "Land";
+	//		$this->formArray["propertyActualUse".($i)] = "Agricultural";
+			$this->formArray["propertyMarketValue".($i)] = $nLandTotalAdjustedMarketValue;
+			$this->formArray["propertyAssessmentLevel".($i)] = $land->getAssessmentLevel();
+			$this->formArray["propertyAssessedValue".($i)] = $nLandTotalAssessedValue;
+			$i++;
+		// end of summary of lands
 		}
+		
 		if(count($plantsTreesList)){
 			foreach($plantsTreesList as $key => $plantsTrees){
-				if($i<4){
+				if($i<5){
 					// productClass
 					$plantsTreesClasses = new PlantsTreesClasses;
 					if(is_numeric($plantsTrees->getProductClass())){
@@ -957,21 +1044,40 @@ class TDDetails{
 						$plantsTreesActualUsesCode = $plantsTrees->getActualUse();
 					}
 
-					$this->formArray["propertyKind".($i+1)] = "PlantsTrees";
-					$this->formArray["propertyActualUse".($i+1)] = $plantsTreesActualUsesDescription;
-					$this->formArray["propertyMarketValue".($i+1)] = $plantsTrees->getMarketValue();
-					$this->formArray["propertyAssessmentLevel".($i+1)] = $plantsTrees->getAssessmentLevel();
-					$this->formArray["propertyAssessedValue".($i+1)] = $plantsTrees->getAssessedValue();
+			//$this->formArray["propertyKind".($i+1)] = "PlantsTrees";
+			//$this->formArray["propertyActualUse".($i+1)] =$plantsTreesActualUsesDescription;
+			//$this->formArray["propertyMarketValue".($i+1)] =$plantsTrees->getAdjustedMarketValue();
+			//$this->formArray["propertyAssessmentLevel".($i+1)] = $plantsTrees->getAssessmentLevel();
+			//$this->formArray["propertyAssessedValue".($i+1)] = $plantsTrees->getAssessedValue();
 
-					$totalMarketValue+=toFloat($plantsTrees->getMarketValue());
-					$totalAssessedValue+=toFloat($plantsTrees->getAssessedValue());
-					$i++;
+				$totalMarketValue +=toFloat($plantsTrees->getAdjustedMarketValue());
+				$totalAssessedValue +=toFloat($plantsTrees->getAssessedValue());
+				$nPlantsTotalAssessedValue +=toFloat($plantsTrees->getAssessedValue());
+				$nPlantsTotalAdjustedMarketValue +=toFloat($plantsTrees->getAdjustedMarketValue());
+				
+				$swornLandTotal +=toFloat($plantsTrees->getAdjustedMarketValue());
+				$swornOverallTotal +=toFloat($plantsTrees->getAdjustedMarketValue());
+
+				//$i++;
 				}
 			}
+			$this->formArray["propertyKind".($i)] = "PlantTrees";
+			$this->formArray["propertyActualUse".($i)] = $plantsTreesActualUsesDescription;
+			$this->formArray["propertyMarketValue".($i)] = $nPlantsTotalAdjustedMarketValue;
+			$this->formArray["propertyAssessmentLevel".($i)] = $plantsTrees->getAssessmentLevel();
+			$this->formArray["propertyAssessedValue".($i)] = $nPlantsTotalAssessedValue;
+			$i++;
+// additional new line for total of LAND AND PLANT TREES
+			
+//		$nSwornLandTotal =$nPlantsTotalAdjustedMarketValue + $nLandTotalAdjustedMarketValue;
+//		$this->formArray["swornLandTotal"] =$nSwornLandTotal; //number_format($nSwornLandTotal,2);
+// END
+	
+
 		}
 		if(count($improvementsBuildingsList)){
 			foreach($improvementsBuildingsList as $key => $improvementsBuildings){
-				if($i<4){
+				if($i<5){
 					// buildingClassification
 					$improvementsBuildingsClasses = new ImprovementsBuildingsClasses;
 					if(is_numeric($improvementsBuildings->getBuildingClassification())){
@@ -995,21 +1101,34 @@ class TDDetails{
 						$improvementsBuildingsActualUsesCode = $improvementsBuildings->getActualUse();
 					}
 
-					$this->formArray["propertyKind".($i+1)] = "ImprovementsBuildings";
-					$this->formArray["propertyActualUse".($i+1)] = $improvementsBuildingsActualUsesDescription;
-					$this->formArray["propertyMarketValue".($i+1)] = $improvementsBuildings->getMarketValue();
-					$this->formArray["propertyAssessmentLevel".($i+1)] = $improvementsBuildings->getAssessmentLevel();
-					$this->formArray["propertyAssessedValue".($i+1)] = $improvementsBuildings->getAssessedValue();
+		//$this->formArray["propertyKind".($i+1)] = "ImprovementsBuildings";
+		//$this->formArray["propertyActualUse".($i+1)] = $improvementsBuildingsActualUsesDescription;
+		//$this->formArray["propertyMarketValue".($i+1)] = $improvementsBuildings->getAdjustedMarketValue();
+		//$this->formArray["propertyAssessmentLevel".($i+1)] = $improvementsBuildings->getAssessmentLevel();
+		//$this->formArray["propertyAssessedValue".($i+1)] = $improvementsBuildings->getAssessedValue();
 
-					$totalMarketValue+=toFloat($improvementsBuildings->getMarketValue());
-					$totalAssessedValue+=toFloat($improvementsBuildings->getAssessedValue());
-					$i++;
+		$totalMarketValue +=toFloat($improvementsBuildings->getAdjustedMarketValue());
+		$totalAssessedValue +=toFloat($improvementsBuildings->getAssessedValue());
+		$nBuildingsTotalAssessedValue +=toFloat($improvementsBuildings->getAssessedValue());
+		$nBuildingsTotalAdjustedMarketValue +=toFloat($improvementsBuildings->getAdjustedMarketValue());
+
+		$swornImprovementTotal +=toFloat($improvementsBuildings->getAdjustedMarketValue());
+		$swornOverallTotal +=toFloat($improvementsBuildings->getAdjustedMarketValue());
+
+		// $i++;
 				}
 			}
+		$this->formArray["propertyKind".($i)] = "ImprovementsBuildings";
+		$this->formArray["propertyActualUse".($i)] = $improvementsBuildingsActualUsesDescription;
+		$this->formArray["propertyMarketValue".($i)] = $nBuildingsTotalAdjustedMarketValue;
+		$this->formArray["propertyAssessmentLevel".($i)] = $improvementsBuildings->getAssessmentLevel();
+		$this->formArray["propertyAssessedValue".($i)] = $nBuildingsTotalAssessedValue;
+		$i++;
+
 		}
 		if(count($machineriesList)){
 			foreach($machineriesList as $key => $machineries){
-				if($i<4){
+				if($i<5){
 					// kind
 					$machineriesClasses = new MachineriesClasses;
 					if(is_numeric($machineries->getKind())){
@@ -1033,19 +1152,47 @@ class TDDetails{
 						$machineriesActualUsesCode = $machineries->getActualUse();
 					}
 
-					$this->formArray["propertyKind".($i+1)] = "Machineries";
-					$this->formArray["propertyActualUse".($i+1)] = $machineriesActualUsesDescription;
-					$this->formArray["propertyMarketValue".($i+1)] = $machineries->getMarketValue();
-					$this->formArray["propertyAssessmentLevel".($i+1)] = $machineries->getAssessmentLevel();
-					$this->formArray["propertyAssessedValue".($i+1)] = $machineries->getAssessedValue();
+		//$this->formArray["propertyKind".($i+1)] = "Machineries";
+		//$this->formArray["propertyActualUse".($i+1)] = $machineriesActualUsesDescription;
+		//$this->formArray["propertyMarketValue".($i+1)] = $machineries->getAdjustedMarketValue();
+		//$this->formArray["propertyAssessmentLevel".($i+1)] = $machineries->getAssessmentLevel();
+		//$this->formArray["propertyAssessedValue".($i+1)] = $machineries->getAssessedValue();
 
-					$totalMarketValue+=toFloat($machineries->getMarketValue());
-					$totalAssessedValue+=toFloat($machineries->getAssessedValue());
-					$i++;
+			$totalMarketValue +=toFloat($machineries->getAdjustedMarketValue());	
+			$totalAssessedValue +=toFloat($machineries->getAssessedValue());
+			$nMachineriesTotalAssessedValue +=toFloat($machineries->getAssessedValue());
+			$nMachineriesTotalAdjustedMarketValue +=toFloat($machineries->getAdjustedMarketValue());
+
+			$swornImprovementTotal +=toFloat($machineries->getAdjustedMarketValue());
+			$swornOverallTotal +=toFloat($machineries->getAdjustedMarketValue());
+
+		//			$i++;
 				}
 			}
-		}
+		$this->formArray["propertyKind".($i)] ="Machineries";
+		$this->formArray["propertyActualUse".($i)] =$machineriesActualUsesDescription;
+		$this->formArray["propertyMarketValue".($i)] =$nMachineriesTotalAdjustedMarketValue;
+		$this->formArray["propertyAssessmentLevel".($i)] =$machineries->getAssessmentLevel();
+		$this->formArray["propertyAssessedValue".($i)] =$nMachineriesTotalAssessedValue;
+		$i++;
 
+
+
+		}
+// add pre hehe for sworn statement total and machineries
+	
+	$this->formArray["swornLandTotal"] = $swornLandTotal;
+	$this->formArray["swornImprovementTotal"] = $swornImprovementTotal;
+	$this->formArray["swornOverallTotal"] = $swornOverallTotal;	
+
+//	$nSwornImprovementTotal =$nMachineriesTotalAdjustedMarketValue + $nBuildingsTotalAdjustedMarketValue;
+//	$this->formArray["swornImprovementTotal"] =$nSwornImprovementTotal;
+//	$nSwornOverallTotal =$nSwornImprovementTotal + $nSwornLandTotal;
+//	$this->formArray["swornOverallTotal"] =$nSwornOverallTotal;
+		
+// end
+
+		
 		$this->formArray["totalMarketValue"] = $totalMarketValue;
 		$this->formArray["totalAssessedValue"] = $totalAssessedValue;
 
@@ -1065,8 +1212,22 @@ class TDDetails{
 				$eRPTSSettings = new eRPTSSettings;
 				$eRPTSSettings->parseDomDocument($domDoc);
 
-				$this->formArray["provincialAssessorName"] = $eRPTSSettings->getAssessorFullName();
-			}
+				// provincialAssessor
+						
+				if($eRPTSSettings->getProvincialAssessorLastName()!=""){
+					$this->formArray["provincialAssessorName"] = $eRPTSSettings->getProvincialAssessorFullName();
+				}
+				else{
+					$this->formArray["provincialAssessorName"] = "";
+				}
+
+				if($eRPTSSettings->getAssessorLastName()!=""){
+					$this->formArray["cityMunicipalAssessorName"] = $eRPTSSettings->getAssessorFullName();
+				}
+				else{
+					$this->formArray["cityMunicipalAssessorName"] = "";
+				}
+}
 		}
 
 	}

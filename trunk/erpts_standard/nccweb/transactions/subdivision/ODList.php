@@ -72,11 +72,27 @@ class ODList{
 				$td = new TD;
 				if($domDoc = domxml_open_mem($xmlStr)){
 					$td->parseDomDocument($domDoc);
-					return $td->getPropertyType();
+					$propertyType = $td->getPropertyType();
 				}
 			}
 		}
-		return false;
+
+		switch($propertyType){
+			case "Land":
+				$propertyType = "L/P";
+				break;
+			case "ImprovementsBuildings":
+				$propertyType = "I/B";
+				break;
+			case "Machineries":
+				$propertyType = "M";
+				break;
+			default:
+				$propertyType = "-";
+				break;
+		}
+
+		return $propertyType;			
 	}
 
 	function sortBlocks(){
@@ -342,27 +358,9 @@ class ODList{
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
 
+								// added propertyType column : October 20, 2005:
 								$propertyType = $this->getPropertyTypeFromOD($value);
-								if($propertyType!="Land"){
-									$this->tpl->set_var("checkbox_status", "disabled");
-								}
-								else{
-									$this->tpl->set_var("checkbox_status", "");
-								}
-								switch($propertyType){
-									case "Land":
-										$this->tpl->set_var("propertyType", "L/P");
-										break;
-									case "ImprovementsBuildings":
-										$this->tpl->set_var("propertyType", "I/B");
-										break;
-									case "Machineries":
-										$this->tpl->set_var("propertyType", "M");
-										break;
-									default:
-										$this->tpl->set_var("propertyType", "-");
-										break;
-								}
+								$this->tpl->set_var("propertyType", $propertyType);
 
 								$oValue = $value->owner;
 								$pOwnerStr = "";
@@ -514,27 +512,9 @@ class ODList{
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
 
+								// added propertyType column : October 20, 2005:
 								$propertyType = $this->getPropertyTypeFromOD($value);
-								if($propertyType!="Land"){
-									$this->tpl->set_var("checkbox_status", "disabled");
-								}
-								else{
-									$this->tpl->set_var("checkbox_status", "");
-								}
-								switch($propertyType){
-									case "Land":
-										$this->tpl->set_var("propertyType", "L/P");
-										break;
-									case "ImprovementsBuildings":
-										$this->tpl->set_var("propertyType", "I/B");
-										break;
-									case "Machineries":
-										$this->tpl->set_var("propertyType", "M");
-										break;
-									default:
-										$this->tpl->set_var("propertyType", "-");
-										break;
-								}
+								$this->tpl->set_var("propertyType", $propertyType);
 
 								$oValue = $value->owner;
 								$pOwnerStr = "";
@@ -690,27 +670,9 @@ class ODList{
 								//echo "<br>";
 								$this->tpl->set_var("odID", $value->getOdID());
 
+								// added propertyType column : October 20, 2005:
 								$propertyType = $this->getPropertyTypeFromOD($value);
-								if($propertyType!="Land"){
-									$this->tpl->set_var("checkbox_status", "disabled");
-								}
-								else{
-									$this->tpl->set_var("checkbox_status", "");
-								}
-								switch($propertyType){
-									case "Land":
-										$this->tpl->set_var("propertyType", "L/P");
-										break;
-									case "ImprovementsBuildings":
-										$this->tpl->set_var("propertyType", "I/B");
-										break;
-									case "Machineries":
-										$this->tpl->set_var("propertyType", "M");
-										break;
-									default:
-										$this->tpl->set_var("propertyType", "-");
-										break;
-								}
+								$this->tpl->set_var("propertyType", $propertyType);
 
 								$oValue = $value->owner;
 								$pOwnerStr = "";
@@ -738,8 +700,9 @@ class ODList{
 								//if (method_exists($value->locationAddress,$value->locationAddress->getFullAddress()))
 								if ($value->locationAddress <> "")
 								$this->tpl->set_var("locationAddress", $value->locationAddress->getFullAddress());
-								$this->tpl->set_var("landArea", number_format($value->getLandArea(), 2, '.', ','));
-
+				//Begin Edited, decimal 2 was change to 4				
+				$this->tpl->set_var("landArea", number_format($value->getLandArea(), 4, '.', ','));
+                                // End
 								$this->setODListBlockPerms();
 
 								$this->tpl->parse("ODListBlock", "ODList", true);

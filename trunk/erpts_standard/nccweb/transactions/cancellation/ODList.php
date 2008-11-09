@@ -11,6 +11,8 @@ include_once("assessor/OwnerRecords.php");
 include_once("assessor/OD.php");
 include_once("assessor/ODRecords.php");
 
+include_once("assessor/TD.php");
+
 include_once("assessor/User.php");
 
 include_once("assessor/Barangay.php");
@@ -42,7 +44,7 @@ class ODList{
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "ODList.htm") ;
-		$this->tpl->set_var("TITLE", "Change of Owner > RPU List");
+		$this->tpl->set_var("TITLE", "Permanent Cancellation > RPU List");
 		
 		$this->formArray["odID"] = $odID;
 		$this->formArray["page"] = $page;
@@ -55,6 +57,38 @@ class ODList{
 		foreach ($http_post_vars as $key=>$value) {
 			$this->formArray[$key] = $value;
 		}
+	}
+
+	function getPropertyTypeFromOD($od){
+		$AFSEncode = new SoapObject(NCCBIZ."AFSEncode.php", "urn:Object");
+		$TDDetails = new SoapObject(NCCBIZ."TDDetails.php", "urn:Object");
+
+		if($afsID = $AFSEncode->getAfsID($od->getOdID())){
+			if($xmlStr = $TDDetails->getTDFromAfsID($afsID)){
+				$td = new TD;
+				if($domDoc = domxml_open_mem($xmlStr)){
+					$td->parseDomDocument($domDoc);
+					$propertyType = $td->getPropertyType();
+				}
+			}
+		}
+
+		switch($propertyType){
+			case "Land":
+				$propertyType = "L/P";
+				break;
+			case "ImprovementsBuildings":
+				$propertyType = "I/B";
+				break;
+			case "Machineries":
+				$propertyType = "M";
+				break;
+			default:
+				$propertyType = "-";
+				break;
+		}
+
+		return $propertyType;			
 	}
 
 	function sortBlocks(){
@@ -332,6 +366,11 @@ class ODList{
 							$this->tpl->set_block("ODList", "CompanyList", "CompanyListBlock");
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$oValue = $value->owner;
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
@@ -481,6 +520,11 @@ class ODList{
 							$this->tpl->set_block("ODList", "CompanyList", "CompanyListBlock");
 							foreach ($list as $key => $value){
 								$this->tpl->set_var("odID", $value->getOdID());
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$oValue = $value->owner;
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
@@ -634,6 +678,11 @@ class ODList{
 								//print_r($value);
 								//echo "<br>";
 								$this->tpl->set_var("odID", $value->getOdID());
+
+								// added propertyType column : October 20, 2005:
+								$propertyType = $this->getPropertyTypeFromOD($value);
+								$this->tpl->set_var("propertyType", $propertyType);
+
 								$oValue = $value->owner;
 								$pOwnerStr = "";
 								if (count($oValue->personArray)){
@@ -660,8 +709,9 @@ class ODList{
 								//if (method_exists($value->locationAddress,$value->locationAddress->getFullAddress()))
 								if ($value->locationAddress <> "")
 								$this->tpl->set_var("locationAddress", $value->locationAddress->getFullAddress());
-								$this->tpl->set_var("landArea", number_format($value->getLandArea(), 2, '.', ','));
-
+				//Begin Edited **********************************************************************
+				$this->tpl->set_var("landArea", number_format($value->getLandArea(), 4, '.', ','));
+                                // End *****************************************************************************
 								$this->setODListBlockPerms();
 
 								$this->tpl->parse("ODListBlock", "ODList", true);

@@ -11,7 +11,7 @@ class AFSRecords
 	var $db;
 	
 	var $searchArray;
-
+	
 	function AFSRecords(){
 	
 	}
@@ -105,8 +105,8 @@ class AFSRecords
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 

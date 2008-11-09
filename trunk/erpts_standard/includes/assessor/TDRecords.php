@@ -70,9 +70,9 @@ class TDRecords
         //$this->setDomDocumentRecords();
 		return true;
 	}//*/
-	
-	function selectRecordsForList($condition=""){
 
+	///* START OF ORIGINAL GENERIC SCRIPT
+	function selectRecordsForList($condition=""){
 //		$sql = sprintf("select * from %s order by tdID desc %s;",TD_TABLE, $condition);
 
 		$sql = "SELECT "
@@ -125,17 +125,60 @@ class TDRecords
 		else {
 			return false;
 		}
+	}
+	//*/
+	// END OF ORIGINAL GENERIC SCRIPT
 
-
-		/*
-
+	// START OF NEW SCRIPT (SEPT 2005)
+	/*
+	function selectRecordsForList($condition=""){
 		$this->setDB();
+
+		$tempTable = "tempTD";
+		$sql = "DROP TABLE IF EXISTS ".$tempTable."; ";
 		$this->db->query($sql);
+
+		$sql = "CREATE TEMPORARY TABLE ".$tempTable." ";
+		$sql .= "SELECT "
+		    .TD_TABLE.".tdID as tdID, "
+			.TD_TABLE.".afsID, "
+			.AFS_TABLE.".odID, "
+			.TD_TABLE.".taxDeclarationNumber as taxDeclarationNumber, "
+			."(".TD_TABLE.".ceasesWithTheYear - ".TD_TABLE.".taxBeginsWithTheYear) as year, "
+			."CONCAT(".PERSON_TABLE.".lastName,".PERSON_TABLE.".firstName,".PERSON_TABLE.".middleName) as PersonFullName, "
+			.COMPANY_TABLE.".companyName "
+			."FROM ".TD_TABLE." "
+			."LEFT JOIN ".AFS_TABLE." "
+			."ON ".TD_TABLE.".afsID = ".AFS_TABLE.".afsID "
+            ."LEFT JOIN ".OWNER_TABLE." "
+            ."ON ".AFS_TABLE.".odID = ".OWNER_TABLE.".odID "
+            ."LEFT JOIN ".OWNER_PERSON_TABLE." "
+            ."ON ".OWNER_TABLE.".ownerID = ".OWNER_PERSON_TABLE.".ownerID "
+            ."LEFT JOIN ".PERSON_TABLE." "
+            ."ON ".OWNER_PERSON_TABLE.".personID = ".PERSON_TABLE.".personID "
+            ."LEFT JOIN ".OWNER_COMPANY_TABLE." "
+            ."ON ".OWNER_TABLE.".ownerID = ".OWNER_COMPANY_TABLE.".ownerID "
+            ."LEFT JOIN ".COMPANY_TABLE." "
+            ."ON ".OWNER_COMPANY_TABLE.".companyID = ".COMPANY_TABLE.".companyID ";
+		$sql = $sql . " " . $condition.";";
+		$this->db->query($sql);
+
+		$sql = " SELECT DISTINCT(tdID) FROM ".$tempTable;
+		$this->db->query($sql);
+
+		$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		$this->db->query($dummySQL);
+
 		while ($this->db->next_record()) {
-            $td = new TD;
-			$td->selectRecord($this->db->f("tdID"));
+			$idArray[] = $this->db->f("tdID");
+		}
+
+		foreach($idArray as $key => $tdID){
+			$td = new TD;
+			$td->selectRecord($tdID);
 			$this->arrayList[] = $td;
 		}
+
 		if(count($this->arrayList) > 0){
 			$this->setDomDocument();
 			return true;
@@ -143,9 +186,9 @@ class TDRecords
 		else {
 			return false;
 		}
-
-		*/
 	}
+	*/
+	// END OF NEW EXPERIMENTAL SCRIPT (SEPT 2005)
 
     function searchRecords($searchKey,$fields,$limit=""){
 		if($limit!=""){
@@ -172,8 +215,8 @@ class TDRecords
         
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		while ($this->db->next_record()) {
