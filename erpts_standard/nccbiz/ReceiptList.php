@@ -150,6 +150,8 @@ class ReceiptList
 				$payment->updateRecord();
 			}
 
+			// cancel associated mergedReceipts
+
 			$receiptRecords = new ReceiptRecords;
 			if ($receiptRecords->selectRecords($condition)){
 				if(!$domDoc = $receiptRecords->getDomDocument()){

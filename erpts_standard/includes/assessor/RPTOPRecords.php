@@ -67,6 +67,14 @@ class RPTOPRecords
 	}//*/
 	
 	function selectRecords($condition="",$sortKey="rptopID desc"){
+		// filter archives
+		if(!strstr(strtolower($condition), "where")){
+			$condition = "where ".RPTOP_TABLE.".archive!='true' ".$condition;
+		}
+		else{
+			$condition = "and ".RPTOP_TABLE.".archive!='true' ".$condition;
+		}
+
 		if($condition!=""){
 		// use $condition
 
@@ -98,14 +106,14 @@ class RPTOPRecords
 			
 		}
 		else{
-		// use $sortKey
+			// use $sortKey
 			$sql = sprintf("select * from %s order by $sortKey %s;",
 					RPTOP_TABLE, $condition);
 		}
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
@@ -130,7 +138,9 @@ class RPTOPRecords
 	}
 	
 	function searchRecords($searchKey,$fields,$limit){
-		$condition = "where (";
+		// filter archives
+		$condition = "where ".RPTOP_TABLE.".archive!='true' AND (";
+
 		foreach($fields as $key => $value){
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition." or ".$value." like '%".$searchKey."%' ";
@@ -157,8 +167,8 @@ class RPTOPRecords
 		
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
@@ -183,12 +193,20 @@ class RPTOPRecords
 	}
 	
 	function countRecords($condition=""){
+		// filter archives
+		if(!strstr(strtolower($condition), "where")){
+			$condition = "where ".RPTOP_TABLE.".archive!='true' ".$condition;
+		}
+		else{
+			$condition = "and ".RPTOP_TABLE.".archive!='true' ".$condition;
+		}
+
 		$sql = sprintf("select count(*) as count from %s %s;",
 				RPTOP_TABLE, $condition);
 		$this->setDB();
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
+		//		$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//		$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		if($this->db->next_record()) $ret = $this->db->f("count");
@@ -197,7 +215,9 @@ class RPTOPRecords
 	}
 	
 	function countSearchRecords($searchKey,$fields){
-		$condition = "where (";
+		// filter archives
+		$condition = "where ".RPTOP_TABLE.".archive!='true' AND (";
+
 		foreach($fields as $key => $value){
 			if($key == 0) $condition = $condition.$value." like '%".$searchKey."%'";
 			else $condition = $condition." or ".$value." like '%".$searchKey."%' ";
@@ -224,8 +244,8 @@ class RPTOPRecords
 		
 		$this->setDB();
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 		if($this->db->next_record()) $ret = $this->db->f("count");
@@ -238,6 +258,87 @@ class RPTOPRecords
 		$rows = 0;
 		foreach ($rptopIDArray as $key => $value){
 			if ($rptop->deleteRecord($value)) $rows++;
+		}
+		return $rows;
+	}
+
+	function deleteRPTOPRecords($rptopIDArray=""){
+		$rows = 0;
+		foreach($rptopIDArray as $rptopID){
+			$this->setDB();
+			// delete RPTOP record
+			$sqlRPTOP = "DELETE FROM ".RPTOP_TABLE." WHERE rptopID='".$rptopID."';";
+			$this->db->beginTransaction();
+			$this->db->query($sqlRPTOP);
+
+			if ($this->db->Errno != 0){
+				$this->db->rollbackTransaction();
+				$this->db->resetErrors();
+			}
+			else{
+				$this->db->endTransaction();
+			}
+
+			//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sqlRPTOP));
+			//$this->db->query($dummySQL);
+
+			$sqlRPTOP = "";
+
+			// delete associated RPTOPTD record
+			$sqlRPTOPTD = "DELETE FROM ".RPTOPTD_TABLE." WHERE rptopID='".$rptopID."';";
+			$this->db->beginTransaction();
+			$this->db->query($sqlRPTOPTD);
+
+			//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sqlRPTOPTD));
+			//$this->db->query($dummySQL);
+
+			if ($this->db->Errno != 0){
+				$this->db->rollbackTransaction();
+				$this->db->resetErrors();
+			}
+			else{
+				$this->db->endTransaction();
+			}
+			$sqlRPTOPTD = "";
+
+			unset($this->db);
+			$rows++;
+		}
+		return $rows;
+	}
+
+	function archiveRecords($rptopIDArray="",$modifiedBy=""){
+		$rows = 0;
+		foreach($rptopIDArray as $rptopID){
+			$this->setDB();
+			// archive RPTOP record
+			$sqlRPTOP = "UPDATE ".RPTOP_TABLE." set archive='true', dateModified='".strtotime("now")."', modifiedBy='".$modifiedBy."' WHERE rptopID='".$rptopID."';";
+			$this->db->query($sqlRPTOP);
+
+			//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sqlRPTOP));
+			//$this->db->query($dummySQL);
+
+			$sqlRPTOP = "";
+
+			// delete associated RPTOPTD record
+			$sqlRPTOPTD = "DELETE FROM ".RPTOPTD_TABLE." WHERE rptopID='".$rptopID."';";
+			$this->db->beginTransaction();
+			$this->db->query($sqlRPTOPTD);
+
+			//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sqlRPTOPTD));
+			//$this->db->query($dummySQL);
+
+			if ($this->db->Errno != 0){
+				$this->db->rollbackTransaction();
+				$this->db->resetErrors();
+			}
+			else{
+				$this->db->endTransaction();
+			}
+			$sqlRPTOPTD = "";
+
+			unset($this->db);
+			$rows++;
 		}
 		return $rows;
 	}

@@ -41,6 +41,12 @@ class RPTOPList
 		$rows = $rptopRecords->deleteRPTOPRecords($rptopIDArray);
 		return $rows;
 	}
+
+	function archiveRPTOP($rptopIDArray,$modifiedBy){
+		$rptopRecords = new RPTOPRecords;
+		$rows = $rptopRecords->archiveRecords($rptopIDArray,$modifiedBy);
+		return $rows;
+	}
 	
 	function searchRPTOP($page=0,$condition="",$searchKey) {
 	    if($page > 0){

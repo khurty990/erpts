@@ -176,6 +176,11 @@ class ImprovementsBuildingsClassesList{
         }
     }	
 	
+	function grey($str){
+		$str = "<font color='#999999'>".$str."</font>";
+		return $str;
+	}
+	
 	function Main(){
 		switch ($this->formArray["formAction"]){
 			case "delete":
@@ -229,9 +234,23 @@ class ImprovementsBuildingsClassesList{
 				    $this->tpl->set_var("improvementsBuildingsClassesID", $listValue->getImprovementsBuildingsClassesID());
 				    $this->tpl->set_var("code", $listValue->getCode());
 			        $this->tpl->set_var("description", $listValue->getDescription());
-					$this->tpl->set_var("rangeLowerBound", $listValue->getRangeLowerBound());
-					$this->tpl->set_var("rangeUpperBound", $listValue->getRangeUpperBound());
-			        $this->tpl->set_var("value", $listValue->getValue());
+
+					if($listValue->getRangeLowerBound()==0 && $listValue->getRangeUpperBound()==0 && $listValue->getValue()!=0){
+						$this->tpl->set_var("rangeLowerBound", $this->grey($listValue->getRangeLowerBound()));
+						$this->tpl->set_var("rangeUpperBound", $this->grey($listValue->getRangeUpperBound()));
+				        $this->tpl->set_var("value", $listValue->getValue());
+					}
+					else if(($listValue->getRangeLowerBound()!=0 || $listValue->getRangeUpperBound()!=0) && $listValue->getValue()==0){
+						$this->tpl->set_var("rangeLowerBound", $listValue->getRangeLowerBound());
+						$this->tpl->set_var("rangeUpperBound", $listValue->getRangeUpperBound());
+				        $this->tpl->set_var("value", $this->grey($listValue->getValue()));
+					}
+					else{
+						$this->tpl->set_var("rangeLowerBound", $this->grey($listValue->getRangeLowerBound()));
+						$this->tpl->set_var("rangeUpperBound", $this->grey($listValue->getRangeUpperBound()));
+				        $this->tpl->set_var("value", $listValue->getValue());
+					}
+
 					$this->tpl->set_var("type", $listValue->getType());
 			        $this->tpl->set_var("status", $listValue->getStatus());
 			        $this->tpl->set_var("statusCheck", $this->getStatusCheck($listValue->getStatus()));

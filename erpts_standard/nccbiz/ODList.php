@@ -37,7 +37,12 @@ class ODList
 		}
 		else return false;
 	}
-//alex:
+
+	// NCC Modification checked and implemented by K2 : November 16, 2005
+	// details:
+	//      added function getLatestActiveODListGenRevBrgy() in line 46
+
+	//alex:
 	function getLatestActiveODListGenRevBrgy($brgy = 0){
 		$odRecords = new ODRecords;
 		if($odIDList = $odRecords->selectLatestActiveRecordsGenRevBrgy($brgy)){

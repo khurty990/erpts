@@ -67,6 +67,61 @@ function confirmSubmit(){
 		return true;
 }
 
+function removeRPTOPs(){
+	goRemove = false;
+	for(i=0 ; i<document.RPTOPList.elements.length ; i++){
+		if(document.RPTOPList.elements[i].type == "checkbox"){
+			if(document.RPTOPList.elements[i].checked==true && document.RPTOPList.elements[i].name=='rptopID[]'){
+				goRemove = true;
+				break;
+			}
+		}
+	}
+	if(goRemove==true){
+		if(confirm("Remove RPTOPs?")){
+			document.RPTOPList.formAction.value='remove';
+			document.RPTOPList.submit();
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+}
+
+function toggleAll(){
+	for(i=0 ; i<document.RPTOPList.elements.length ; i++){
+		if(document.RPTOPList.elements[i].type == "checkbox"){
+			if(document.RPTOPList.elements[i].disabled==false){
+				if(document.RPTOPList.elements[i].name=='rptopID[]'){
+					document.RPTOPList.elements[i].checked = document.RPTOPList.checkAll.checked; 
+				}
+			}
+		}
+	}
+}
+
+function toggle(){
+	allAreChecked = true;
+	for(i=0 ; i<document.RPTOPList.elements.length ; i++){
+		if(document.RPTOPList.elements[i].type == "checkbox"){
+			if(document.RPTOPList.elements[i].disabled==false){
+				if(document.RPTOPList.elements[i].checked==false && document.RPTOPList.elements[i].name=='rptopID[]'){
+					allAreChecked = false;
+				}
+			}
+		}
+	}
+	if(allAreChecked==true){
+		document.RPTOPList.checkAll.checked = true;
+	}
+	else{
+		document.RPTOPList.checkAll.checked = false;		
+	}
+}
+
 function setDefaults(){
 	document.RPTOPList.searchKey.focus();
 }
@@ -161,34 +216,78 @@ function setDefaults(){
                     <tr> 
                       <td align="center" valign="top"> 
                         <form name="RPTOPList" method="post" action="RPTOPList.php{Session}">
-                          <table width="90%" border="0" cellspacing="1" cellpadding="2">
+                          <!--
+						  <table width="90%" border="0" cellspacing="1" cellpadding="2">
                             <tr>
-                              <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">
+                              <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
                                 search:
                                 <input type="text" name="searchKey" value="{searchKey}">
                                 <input type="button" name="SubmitSearch" value="Search" onClick="document.RPTOPList.formAction.value='search'; document.RPTOPList.submit();">
                                 <font color="#777777">&nbsp;&nbsp;(searches by: Owner, RPTOPNumber, TDNumber)</font>
                               </td>
                             </tr>
-
+						  </table>
+						  -->
+                          <table width="90%" border="0" cellspacing="1" cellpadding="2">
                             <tr> 
-                              
-			   <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">
-					<!-- BEGIN RPTOPEncodeLink -->
-					- <a href="javascript: openWin('RPTOPEncode.php{Session}','popupWindow',0,0,550,610);" class="common">add new RPTOP</a>
-					|
-					- <a href="RPTOPBatchEncode.php{Session}" class="common">add new RPTOPs by batch</a>
-					
-					<br>
-					<!-- END RPTOPEncodeLink -->
+							 <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6" align="left">
+								<ul>
+									<li>
+										<b>
+										<a href="personrptopsearch.php{Session}&module=assm">Search for RPTOP by Person Name</a><br>&nbsp;
+										</b>
+									</li>
 
-					- <a href="RPTOPList.php{Session}"  class="common">view all</a><br>
-					<br>
-                    {pageOf} </td>
+									<li>
+										<b>
+										<a href="companyrptopsearch.php{Session}&module=assm">Search for RPTOP by Company Name</a><br>&nbsp;
+										</b>
+									</li>
+
+									<li>
+										<b>
+										<a href="tdrptopsearch.php{Session}&module=assm">Search for RPTOP by TD Number</a>
+										</b>
+									</li>
+								</ul>
+							 </td>
+                            </tr>
+							<!-- BEGIN RecordsRemovedMessage -->
+                            <tr> 
+							 <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6" align="center">
+								<font color="#990000">
+								{numberOfRecordsRemoved} RPTOP record{plural} removed from list.
+								</font>
+							 </td>
+                            </tr>
+							<!-- END RecordsRemovedMessage -->
+                            <tr> 
+							 <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
+								<table border=0 cellpadding=0 cellspacing=0 width="100%">
+								<tr>
+									<td align="left" class="fileds_comment">
+										<!-- BEGIN RPTOPEncodeLink -->
+										- <a href="javascript: openWin('RPTOPEncode.php{Session}','popupWindow',0,0,550,610);" class="common">add new RPTOP</a>
+										|
+										- <a href="RPTOPBatchEncode.php{Session}" class="common">add new RPTOPs by batch</a>
+										<br>
+										<!-- END RPTOPEncodeLink -->
+										- <a href="RPTOPList.php{Session}"  class="common">view all</a><br>
+										<br>
+					                    {pageOf}
+									</td>
+									<td align="right" valign="bottom" class="common">
+										<br><br>
+										<input type="button" value="Remove" style="width:75px;" onClick="removeRPTOPs();">
+										<img src="images/spacer.gif" border="0" width="40" height="1">
+									</td>
+								</tr>
+								</table>
+							 </td>
                             </tr>
                             <!-- BEGIN NotFound -->
                             <tr>
-                                <td class="fileds_comment" colspan="5" bgcolor="#F6F6F6">
+                                <td class="fileds_comment" colspan="6" bgcolor="#F6F6F6">
                                   &lt;&lt; back to <a href="RPTOPList.php{Session}">RPTOPList</a>
 
                                   <br><br>
@@ -238,12 +337,11 @@ function setDefaults(){
                               </td>
                               
 			   <td class="fields"><b>Total Assessed Value</b></td>
+                              <td class="common" width="50" align="center"> <font color="#FFFFFF"> 
+							       <input type="checkbox" name="checkAll" onClick="toggleAll();" style="background-color:#dddddd;">
+					          </font></td>
                               <td class="fields" width="50"><b></b> 
                               </td>
-                              <!--<td class="common" width="50" align="center"> <font color="#FFFFFF"> 
-        <input type="button" name="Submit" value="Delete" onClick="javascript: checkAction('delete');">
-        <input type="button" name="Button" value="Remove" onClick="javascript: checkAction('remove');">
-        </font></td>-->
                             </tr>
                             <!-- BEGIN RPTOPList -->
                             <tr valign="top" align="left"> 
@@ -263,19 +361,19 @@ function setDefaults(){
 			   <td align="right" bgcolor="#F6F6F6" class="fileds_comment"><b>{totalMarketValue}</b></td>
                               
 			   <td align="right" bgcolor="#F6F6F6" class="fileds_comment"><b>{totalAssessedValue}</b></td>
+                              <td class="common" align="center" bgcolor="#F6F6F6"> 
+							        <input type="checkbox" name="rptopID[]" value="{rptopID}" {checkboxDisabled} onClick="toggle();">
+						      </td>
                               <td class="fileds_comment" align="center" bgcolor="#F6F6F6"> 
                                 <a href="RPTOPDetails.php{Session}&rptopID={rptopID}&formAction=view">{rptopDetailsLinkLabel}>></a> 
                               </td>
-                              <!--<td class="common" align="center"> 
-        <input type="checkbox" name="odID[]" value="{odID}">
-      </td>-->
                             </tr>
                             <!-- END RPTOPList -->
                             <!-- END RPTOPTable -->
 							<!-- BEGIN PageNavigator -->
                             <tr> 
                               <td class="fileds_comment" align="center" bgcolor="#F6F6F6"><a href="RPTOPList.php{Session}&page={previous}&sortBy=rptopID&sortOrder={sortOrder}">{previousTxt}</a></td>
-                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="3" align="center"> 
+                              <td class="fileds_comment" bgcolor="#F6F6F6" colspan="4" align="center"> 
 									<table border=0 cellpadding=0 cellspacing=0 width="100%">
 									<tr>
 										<td nowrap class="fileds_comment" align="left">
@@ -310,6 +408,8 @@ function setDefaults(){
                           </table>
                           <font color="#FFFFFF"> 
                           <input type="hidden" name="formAction" value="search">
+						  <input type="hidden" name="previousFormAction" value="{formAction}">
+						  <hr>
                           </font> 
                         </form>
                       </td>

@@ -1,3 +1,4 @@
+<!-- BEGIN Page -->
 <html>
 <head>
 <title>eLGU - {TITLE}</title>
@@ -114,27 +115,424 @@ MM_reloadPage(true);
 
 					   <br>
 
-					   <!-- BEGIN FormButton -->
+					   <!-- BEGIN Done -->
+					   <br>
+					   <B>Barangay :</B> <font class="subtitle"><B>{barangay}</B></font>
+					   <br><br>
 
+					   <B>RPUs Archived :</B> {totalArchived}
+					   <br>
+					   <B>RPUs Created :</B> {totalCreated}
+					   <br><br>
+
+					   <form name="GeneralRevision" action="" method="post">
 					   <script language="Javascript">
-						function runGeneralRevision(){
-							confirmRun = confirm("Run General Revision?");
-							if(confirmRun){
-								document.GeneralRevision.formButton.value = "Please wait...";
-								document.GeneralRevision.formButton.disabled = true;
-								document.GeneralRevision.submit();
-							}
+						function barangayForm(){
+							window.location.href = "GeneralRevision.php{Session}";
 						}
 					   </script>
 
-					    <form name="GeneralRevision" action="GeneralRevision.php{Session}" method=post>
-						 <input type="hidden" name="formAction" value="run">
-						 <input type="button" name="formButton" value="Run" onClick="runGeneralRevision();">
-						</form>
+						   <font size="1" face="verdana">Progress Log (feel free to copy and paste to a txt file for your reference)</font><br>
+						   <textarea name="progressLog" rows="4" cols="70" readonly>General Revision Log for barangay : {barangay}
+Date: {today}
+Started: {timerStart} | Ended: {timerEnd} | Duration: {duration}
+-----------------------------------------------------------------------------
+{progressLog}</textarea>
 
-					   <!-- END FormButton -->
-					   
-			
+						   <br><br>
+
+					   <input type="button" value="RUN ANOTHER BARANGAY" onClick="barangayForm();">
+					   </form>
+					   <br><br>
+					   <!-- END Done -->
+
+					   <!-- BEGIN Confirm -->
+					   <br><br>
+					   <script language="Javascript">
+						// prevent users from coming "back" to this instance of the page
+						window.history.forward(1);
+					   </script>
+					   <B>Barangay :</B> <font class="subtitle"><B>{barangay}</B></font>
+					   <br><br>
+					   <B>Latest Active RPUs for Barangay:</B> <B>{latestActiveRPUs}</B>
+					   <br>
+					   <font size="1" face="verdana">(RPUs that have not undergone General Revision in the past {countBackDays} days)</font>
+					   <br><br>
+
+					    <form name="GeneralRevision" action="GeneralRevision.php{Session}" method=post>
+						   <!-- BEGIN AjaxConfirm -->
+
+						   <script language="Javascript">
+						    var ttlArchived;
+							var ttlCreated;
+							var progressCounter;
+							var startTime;
+							var endTime;
+
+							function redirectToDonePage(msg){
+								doc = document.GeneralRevision;
+
+								timenow = new Date();
+								endTime = timenow.toGMTString();
+								document.GeneralRevision.timerEnd.value = endTime;
+
+								doc.formAction.value = "done";
+								doc.message.value = msg;
+								doc.totalArchived.value = ttlArchived;
+								doc.totalCreated.value = ttlCreated;
+
+								doc.submit();
+								//window.location.href = url;
+							}
+
+							function incrementProgressCounter(){
+								progressCounter++;
+								return progressCounter;
+							}
+	
+							function incrementTotalCreated(increment,totalRPUs){
+								if(increment==true){
+									ttlArchived++;
+									ttlCreated++;
+								}
+
+								if(totalRPUs==progressCounter){
+									timerStart = false;
+									if(ttlCreated==0){
+										message = "There were no RPUs generated through General Revision for this barangay.";
+									}
+									else if(ttlCreated < totalRPUs){
+										message = "General Revision partially generated for this barangay!";
+									}
+									else{
+										message = "General Revision successfully generated for this barangay!";
+									}
+									redirectToDonePage(message);
+								}
+							}
+	
+							function runGeneralRevision(){
+								confirmRun = confirm("Run General Revision?");
+								if(confirmRun){
+									timenow = new Date();
+									startTime = timenow.toGMTString();
+									document.GeneralRevision.timerStart.value = startTime;
+	
+									document.GeneralRevision.formButton.value = "Please wait...";
+									document.GeneralRevision.formButton.disabled = true;
+									document.GeneralRevision.previousButton.disabled = true;
+									doXHRGeneralRevision();
+								}
+							}
+							function barangayForm(){
+								window.location.href = "GeneralRevision.php{Session}";
+							}
+	
+							function doXHRGeneralRevisionForRPU(odID,totalRPUs,odIDArray){
+								var xhr;
+								var doc;
+								var percentage;
+								var percentageStr;
+								var counter;
+	
+								doc = document.GeneralRevision;
+	
+							    // Mozilla version
+							    if (window.XMLHttpRequest) {
+							        xhr = new XMLHttpRequest();
+							    }
+							    // IE version
+							    else if (window.ActiveXObject) {
+							        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+							    }
+	
+								xhr.open("GET","GeneralRevision_AjaxMethods.php?xhrmd5=522eccdf204510a481ca4977d023cf89&formAction=run&odID="+odID+"&userID={userID}");
+								xhr.onreadystatechange=function() {
+							     if (xhr.readyState==4) {
+	
+									counter = incrementProgressCounter();
+									// compute progress percentage
+									percentage = (100 * counter)/totalRPUs;
+									percentage = Math.round(percentage);
+	
+									// add prefix 'zero'
+									if(percentage < 10){
+										percentageStr = "00" + percentage;								
+									}
+									else if(percentage < 100){
+										percentageStr = "0" + percentage;
+									}
+									else{
+										percentageStr = percentage;
+									}
+	
+									newODID = xhr.responseText;
+									if(isNaN(newODID) || newODID==""){
+										// if error message is returned from the php
+										doc.progressStatus.value = "["+counter+"/"+totalRPUs+" ("+percentageStr+"%)]..."+"[(skipped odID:"+odID+") "+newODID+"]";
+										doc.progressLog.value = doc.progressStatus.value + "\n" + doc.progressLog.value;
+	
+										incrementTotalCreated(false,totalRPUs);
+									}
+									else{
+										doc.progressStatus.value = "["+counter+"/"+totalRPUs+" ("+percentageStr+"%)]..."+"[archived odID:"+odID+" | created odID:"+newODID+"]";
+										doc.progressLog.value = doc.progressStatus.value + "\n" + doc.progressLog.value;
+										incrementTotalCreated(true,totalRPUs);
+									}
+	
+									doXHRGeneralRevisionAgain(odIDArray);
+								 }
+								}	
+								xhr.send(null);
+								return true;
+							}
+
+							function doXHRGeneralRevision(){
+								var xhr;
+								var doc;
+								var progresstable;
+								var message;
+	
+								// show progress 'meter'
+								progresstable = document.getElementById("progressmeter");
+								progresstable.style.display='';
+	
+								doc = document.GeneralRevision;
+	
+							    // Mozilla version
+							    if (window.XMLHttpRequest) {
+							        xhr = new XMLHttpRequest();
+							    }
+							    // IE version
+							    else if (window.ActiveXObject) {
+							        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+							    }
+	
+								xhr.open("GET","GeneralRevision_AjaxMethods.php?xhrmd5=522eccdf204510a481ca4977d023cf89&formAction=list&barangayID={barangayID}&countBackDaysTimeStr={countBackDaysTimeStr}");
+								xhr.onreadystatechange=function() {
+							     if (xhr.readyState==4) {
+									// get odID's
+									odIDCSV = xhr.responseText;
+									odIDArray = odIDCSV.split(",");
+									doc.progressStatus.value = "RPUs gathered...";
+									doc.progressLog.value += "\n" + doc.progressStatus.value;
+	
+									ttlArchived = 0;
+									ttlCreated = 0;
+									progressCounter = 0;
+	
+									if(odIDCSV==""){
+										message = "There were no RPUs generated through General Revision for this barangay.";
+										doc.progressStatus.value = "Zero RPUs generated.";
+										doc.progressLog.value += "\n" + doc.progressStatus.value;
+										redirectToDonePage(message);
+									}
+									else{
+										doXHRGeneralRevisionAgain(odIDArray);
+										/* newer method that calls GeneralRevision_AjaxMethods.php sloowly per every half second */
+										//timerStart = true;
+										//timerID = setTimeout("updateTimer(odIDArray);",500);
+	
+										/* old method that calls GeneralRevision_AjaxMethods.php in a really really fast loop
+										for(i = 0 ; i < odIDArray.length ; i++){
+											odID = odIDArray[i];
+											doXHRGeneralRevisionForRPU(odID,odIDArray.length);
+										}
+										*/
+									}
+								 }
+								}	
+								xhr.send(null);
+							}
+	
+							function doXHRGeneralRevisionAgain(odIDArray){
+								if(progressCounter==odIDArray.length){
+									return false;
+								}
+								else{
+									odID = odIDArray[progressCounter];
+									doXHRGeneralRevisionForRPU(odID,odIDArray.length,odIDArray);
+								}
+							}
+						   </script>
+	
+						   <input type="hidden" name="timerStart" value="">
+						   <input type="hidden" name="timerEnd" value="">
+						   <input type="hidden" name="message" value="">
+						   <input type="hidden" name="totalArchived" value="">
+						   <input type="hidden" name="totalCreated" value="">
+						   <input type="hidden" name="barangayID" value="{barangayID}">
+		   				   <input type="hidden" name="formAction" value="run">
+						   <input type="button" name="previousButton" value="&lt; Previous" onClick="barangayForm();">
+					   	   <input type="button" name="formButton" value="Run" onClick="runGeneralRevision();">
+	
+						   <table border="0" style="display:none;" id="progressmeter" align="center">
+						   <tr>
+							<td align="center">
+								<font face="verdana" size="1">
+								Progress Status:<br>
+								<input type="text" name="progressStatus" value="gathering RPUs..." size="70" disabled style="text-align:center;">
+								<br>
+								Progress Log:<br>
+								<textarea name="progressLog" rows="4" cols="70" readonly></textarea>
+								</font>
+							</td>
+						   </tr>
+						   </table>
+
+						   <!-- END AjaxConfirm -->
+
+						   <!-- BEGIN ConventionalConfirm -->
+
+						   <script language="Javascript">
+
+							function runGeneralRevision(){
+								confirmRun = confirm("Run General Revision?");
+								if(confirmRun){
+									timenow = new Date();
+									startTime = timenow.toGMTString();
+									document.GeneralRevision.timerStart.value = startTime;
+
+									document.GeneralRevision.formButton.value = "Please wait...";
+									document.GeneralRevision.formButton.disabled = true;
+									document.GeneralRevision.previousButton.disabled = true;
+
+									document.GeneralRevision.submit();
+								}
+							}
+							function barangayForm(){
+								window.location.href = "GeneralRevision.php{Session}";
+							}
+
+						   </script>
+
+						   <input type="hidden" name="countBackDaysTimeStr" value="{countBackDaysTimeStr}">
+						   <input type="hidden" name="barangayID" value="{barangayID}">
+						   <input type="hidden" name="timerStart" value="">
+		   				   <input type="hidden" name="formAction" value="run">
+						   <input type="button" name="previousButton" value="&lt; Previous" onClick="barangayForm();">
+  					   	   <input type="button" name="formButton" value="Run" onClick="runGeneralRevision();">
+						   <!-- END ConventionalConfirm -->
+						</form>
+					   <!-- END Confirm -->
+
+					   <!-- BEGIN BarangayForm -->
+					   <br>
+
+					   <form name="GeneralRevision" action="GeneralRevision.php{Session}" method="post">
+							<input type="hidden" name="formAction" value="confirmAjax">
+
+							<input type="hidden" name="countBackDays" value="{countBackDays}">
+							<input type="hidden" name="countBackDaysTimeStr" value="{countBackDaysTimeStr}">
+
+					   List of Barangays
+					   <br><br>
+
+					   <script language="Javascript">
+						   function confirmBarangay(){
+								doc = document.GeneralRevision;
+								if(doc.barangayID.selectedIndex > 0){
+									if(doc.ajaxCheck.checked==true){
+										// performs general revision asynchronously using ajax
+										doc.formAction.value = "confirmAjax";
+									}
+									else{
+										// performs general revision in one big server process
+										doc.formAction.value = "confirm";
+									}
+
+									doc.submit();
+								}
+						   }
+					   </script>
+
+							<select name="barangayID" style="font-size:10px; width=175;" size="10" onChange="getXHRBarangayCountForOption();">
+							    <option value=""></option>
+								<!-- BEGIN BarangayList -->
+								<option value="{barangayID}" {barangayID_sel}>{barangay}</option>
+								<!-- END BarangayList -->
+							</select>
+
+							<br><br>
+
+							<input type="button" name="nextButton" value="Next >" onClick="confirmBarangay();" checked>
+
+							<br><br>
+
+						   <table border="0" cellpadding="1" cellspacing="0"><tr><td bgcolor="#333333">
+						   <table border="0" cellpadding="2" cellspacing="0" width="100%">
+						   <tr>
+							<td bgcolor="#f6f6f6" valign="top">
+								<font face="verdana" size="1">
+							   <input type="checkbox" name="countCheck" checked> Count RPUs for Barangay when selected?
+							   </font>
+							</td>
+						   </tr>
+						   <tr>
+							<td bgcolor="#f6f6f6" valign="top">
+								<font face="verdana" size="1">
+							   <input type="checkbox" name="ajaxCheck" checked> Asynchronous General Revision processing?
+							   </font>
+							</td>
+						   </tr>
+						   </table>
+						   </td></tr></table>
+
+					   </form>
+
+					   <!-- BEGIN AjaxBarangayForm -->
+					   <script language="Javascript">
+						// ajax experiment
+
+						function getXHRBarangayCount(b){
+							var xhr;
+							var doc;
+
+							doc = document.GeneralRevision;
+							doc.nextButton.disabled = true;
+							doc.barangayID.disabled = true;
+
+						    // Mozilla version
+						    if (window.XMLHttpRequest) {
+						        xhr = new XMLHttpRequest();
+						    }
+						    // IE version
+						    else if (window.ActiveXObject) {
+						        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+						    }
+
+							// bID stores the barangayID value
+							bID = doc.barangayID.options[b].value;
+							xhr.open("GET","GeneralRevision_AjaxMethods.php?xhrmd5=522eccdf204510a481ca4977d023cf89&formAction=count&barangayID="+bID+"&countBackDaysTimeStr={countBackDaysTimeStr}");
+							xhr.onreadystatechange=function() {
+						     if (xhr.readyState==4) {
+								txt = xhr.responseText;
+								doc.barangayID.options[b].text = txt;
+								doc.nextButton.disabled = false;
+								doc.barangayID.disabled = false;
+							 }
+							}	
+							xhr.send(null);
+						}
+
+						function getXHRBarangayCountForOption(){
+							doc = document.GeneralRevision;
+							if(doc.countCheck.checked==false){
+								return false;
+							}
+
+							if(doc.barangayID.selectedIndex > 0){
+								optionText = doc.barangayID.options[doc.barangayID.selectedIndex].text;
+								if(optionText.indexOf("(")==-1 && optionText.indexOf(")")==-1){
+									getXHRBarangayCount(doc.barangayID.selectedIndex);
+								}
+							}
+						}
+					   </script>
+					   <!-- END AjaxBarangayForm -->
+
+					   <!-- END BarangayForm -->
+
 						</td>
                     </tr>
                     <tr> 
@@ -170,5 +568,29 @@ MM_reloadPage(true);
     </td>
   </tr>
 </table>
+
 </body>
 </html>
+<!-- END Page -->
+
+<!-- BEGIN Run -->
+<html><body>
+
+					    <form name="GeneralRevision" action="GeneralRevision.php{Session}" method=post>
+						   <input type="hidden" name="timerStart" value="{timerStart}">
+						   <input type="hidden" name="timerEnd" value="{timerEnd}">
+						   <input type="hidden" name="message" value="{message}">
+						   <input type="hidden" name="totalArchived" value="{totalArchived}">
+						   <input type="hidden" name="totalCreated" value="{totalCreated}">
+						   <input type="hidden" name="barangayID" value="{barangayID}">
+						   <input type="hidden" name="progressLog" value="{progressLog}">
+		   				   <input type="hidden" name="formAction" value="done">
+
+						   <script language="Javascript">
+								// prevent users from coming "back" to this instance of the page
+								window.history.forward(1);
+								document.GeneralRevision.submit();
+						   </script>
+						</form>
+</body></html>
+<!-- END Run -->

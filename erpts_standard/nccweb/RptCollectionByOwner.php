@@ -40,8 +40,8 @@ class RptCollectionByOwner{
 		$this->formArray["uid"] = $auth->auth["uid"];
 		$this->user = $auth->auth;
 
-		// must have atleast AM-VIEW access
-		$pageType = "%%1%%%%%%%";
+		// must have atleast TM-VIEW access
+		$pageType = "%%%%1%%%%%";
 		if (!checkPerms($this->user["userType"],$pageType)){
 			header("Location: Unauthorized.php".$this->sess->url(""));
 			exit;

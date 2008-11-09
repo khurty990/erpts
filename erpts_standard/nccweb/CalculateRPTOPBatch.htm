@@ -241,11 +241,35 @@ function toggle(){
                           <table width="90%" border="0" cellspacing="1" cellpadding="2">
                             <tr>
                               <td class="fileds_comment" colspan="7" bgcolor="#F6F6F6">
-                                search:
+
+								<ul>
+									<li>
+										<b>
+										<a href="personrptopsearch.php{Session}&module=treas">Search for RPTOP by Person Name</a><br>&nbsp;
+										</b>
+									</li>
+
+									<li>
+										<b>
+										<a href="companyrptopsearch.php{Session}&module=treas">Search for RPTOP by Company Name</a><br>&nbsp;
+										</b>
+									</li>
+
+									<li>
+										<b>
+										<a href="tdrptopsearch.php{Session}&module=treas">Search for RPTOP by TD Number</a>
+										</b>
+									</li>
+								</ul>
+								
+								<!--search:
                                 <input type="text" name="searchKey" value="{searchKey}">
                                 <input type="button" name="SubmitSearch" value="Search" onClick="document.RPTOPList.formAction.value='search'; document.RPTOPList.submit();">
                                 <font color="#777777">&nbsp;&nbsp;(searches by: Owner, RPTOPNumber, TDNumber)</font>
+								-->
                               </td>
+
+
                             </tr>
 
                             <tr> 

@@ -64,6 +64,9 @@ class RPUEncode
 		$afs->archive = "true";
 		$afs->modifiedBy = $userID;
 
+		// NCC Modification checked and implemented by K2 : November 16, 2005
+		// details:
+		//    added lines 70-76, 79 ($td related)
 		$td = new TD;
 		$td->selectRecord("",$afsID);
 		$tdID = $td->tdID;
@@ -78,6 +81,10 @@ class RPUEncode
 		return true;
 	}
 
+	// NCC Modification checked and implemented by K2 : November 16, 2005
+	// details:
+	//    added function RunGeneralRevisionBrgy() in line 88
+
 	function RunGeneralRevisionBrgy($odID,$userID="",$transactionCode="GR"){
 		$newOdID = $this->CreateNewRPU_AFS_TDGenRevBrgy($odID,$userID,$transactionCode);
 
@@ -86,7 +93,7 @@ class RPUEncode
 		$oldOD = new OD;
 		$oldOD->selectRecord($odID);
 		$oldOD->archive = "true";
-		$oldOD->modifedBy = $userID;
+		$oldOD->modifiedBy = $userID;
 
 		$oldOD->updateRecord();
 
@@ -113,7 +120,7 @@ class RPUEncode
 		$oldOD = new OD;
 		$oldOD->selectRecord($odID);
 		$oldOD->archive = "true";
-		$oldOD->modifedBy = $userID;
+		$oldOD->modifiedBy = $userID;
 
 		$oldOD->updateRecord();
 
@@ -202,11 +209,11 @@ class RPUEncode
 		$afs->setDomDocument();
 
 		if($copyAFS){
-			$newAFSID = $afs->insertRecord();
+			$newAfsID = $afs->insertRecord();
 			if (count($afs->landArray)){
 				foreach ($afs->landArray as $landKey => $landValue){
 					$landValue->setPropertyID("");
-					$landValue->setAfsID($newAFSID);
+					$landValue->setAfsID($newAfsID);
 					$landValue->propertyAdministrator->setPersonID("");
 
 					// set unitValue from SubClass
@@ -230,7 +237,7 @@ class RPUEncode
 			if (count($afs->plantsTreesArray)){
 				foreach ($afs->plantsTreesArray as $plantsTreesKey => $plantsTreesValue){
 					$plantsTreesValue->setPropertyID("");
-					$plantsTreesValue->setAfsID($newAFSID);
+					$plantsTreesValue->setAfsID($newAfsID);
 					$plantsTreesValue->propertyAdministrator->setPersonID("");
 
 					// set unitPrice from ProductClass
@@ -254,13 +261,19 @@ class RPUEncode
 			if (count($afs->improvementsBuildingsArray)){
 				foreach ($afs->improvementsBuildingsArray as $improvementsBuildingsKey => $improvementsBuildingsValue){
 					$improvementsBuildingsValue->setPropertyID("");
-					$improvementsBuildingsValue->setAfsID($newAFSID);
+					$improvementsBuildingsValue->setAfsID($newAfsID);
 					$improvementsBuildingsValue->propertyAdministrator->setPersonID("");				
-
 					// set unitValue from BuildingClassification
 					$improvementsBuildingsClasses = new ImprovementsBuildingsClasses;
 					$improvementsBuildingsClasses->selectRecord(intVal($improvementsBuildingsValue->buildingClassification));
 					$improvementsBuildingsValue->setUnitValue($improvementsBuildingsClasses->getValue());
+
+					// this if() line added : November 05 2004:
+					// if master table unit value is not 0, update this unit value with the master table unit value
+					// otherwise, retain this unit value as it is the old one.
+					if($improvementsBuildingsClasses->getValue()!=0){
+						$improvementsBuildingsValue->setUnitValue($improvementsBuildingsClasses->getValue());
+					}
 
 					// set assessmentLevel from ActualUse
 					$improvementsBuildingsActualUses = new ImprovementsBuildingsActualUses;
@@ -279,7 +292,7 @@ class RPUEncode
 			if (count($afs->machineriesArray)){
 				foreach ($afs->machineriesArray as $machineriesKey => $machineriesValue){
 					$machineriesValue->setPropertyID("");
-					$machineriesValue->setAfsID($newAFSID);
+					$machineriesValue->setAfsID($newAfsID);
 					$machineriesValue->propertyAdministrator->setPersonID("");
 
 					// set assessmentLevel from ActualUse
@@ -300,10 +313,15 @@ class RPUEncode
 		return $newOdID;
 		echo "OD - ".$odID."->".$newOdID."<br>";
 		echo "Owner - ".$ownerID."->".$newOwnerID."<br>";
-		echo "AFS - ".$afsID."->".$newAFSID."<br>".$newP;
+		echo "AFS - ".$afsID."->".$newAfsID."<br>".$newP;
 	}
 
-//alex:
+	// NCC Modification checked and implemented by K2 : November 16, 2005
+	// details:
+	//	    added function CreateNewRPU_AFS_TDGenRevBrgy() in line 324
+	//		slight modification made to default memoranda with addition of GENERALREVISION_DEFAULT_MEMORANDA (defined in constants.php)
+
+	//alex:
     function CreateNewRPU_AFS_TDGenRevBrgy($odID,$userID="",$transactionCode="",$copyOwner=true,$copyAFS=true,$copyTD=true){
 
 		$link = mysql_connect(MYSQLDBHOST, MYSQLDBUSER, MYSQLDBPWD);
@@ -393,6 +411,7 @@ class RPUEncode
 				$td->afsID = $newAFSID;
 				$td->previousOwner = $prevowners;
 				$td->previousAssessedValue = $prevassdval;
+
 				$td->setDomDocument();
 				$newTDID = $td->insertRecord();
 			}
@@ -418,7 +437,7 @@ class RPUEncode
 					$landValue->calculateAdjustedMarketValue();
 					$landValue->calculateAssessedValue();
 
-					$landValue->memoranda = "REVISED UNDER SEC. 219 OF R.A.# 7160, AND PER CITY ORDINANCE NO. 05-164";
+					$landValue->memoranda = GENERALREVISION_DEFAULT_MEMORANDA;
 					$landValue->appraisedByDate = "";
 					$landValue->recommendingApprovalDate = "";
 					$landValue->approvedByDate = "";
@@ -446,7 +465,7 @@ class RPUEncode
 					$plantsTreesValue->calculateAdjustedMarketValue();
 					$plantsTreesValue->calculateAssessedValue();
 
-					$plantsTreesValue->memoranda = "REVISED UNDER SEC. 219 OF R.A.# 7160, AND PER CITY ORDINANCE NO. 05-164";
+					$plantsTreesValue->memoranda = GENERALREVISION_DEFAULT_MEMORANDA;
 					$plantsTreesValue->appraisedByDate = "";
 					$plantsTreesValue->recommendingApprovalDate = "";
 					$plantsTreesValue->approvedByDate = "";
@@ -475,7 +494,7 @@ class RPUEncode
 					$improvementsBuildingsValue->calculateAdjustedMarketValue();
 					$improvementsBuildingsValue->calculateAssessedValue();
 
-					$improvementsBuildingsValue->memoranda = "REVISED UNDER SEC. 219 OF R.A.# 7160, AND PER CITY ORDINANCE NO. 05-164";
+					$improvementsBuildingsValue->memoranda = GENERALREVISION_DEFAULT_MEMORANDA;
 					$improvementsBuildingsValue->appraisedByDate = "";
 					$improvementsBuildingsValue->recommendingApprovalDate = "";
 					$improvementsBuildingsValue->approvedByDate = "";
@@ -498,7 +517,7 @@ class RPUEncode
 					$machineriesValue->calculateAdjustedMarketValue();
 					$machineriesValue->calculateAssessedValue();
 
-					$machineriesValue->memoranda = "REVISED UNDER SEC. 219 OF R.A.# 7160, AND PER CITY ORDINANCE NO. 05-164";
+					$machineriesValue->memoranda = GENERALREVISION_DEFAULT_MEMORANDA;
 					$machineriesValue->appraisedByDate = "";
 					$machineriesValue->recommendingApprovalDate = "";
 					$machineriesValue->approvedByDate = "";
@@ -523,7 +542,6 @@ class RPUEncode
 		echo "Owner - ".$ownerID."->".$newOwnerID."<br>";
 		echo "AFS - ".$afsID."->".$newAFSID."<br>".$newP;
 	}
-
 }
 /*
 $odID = 68;

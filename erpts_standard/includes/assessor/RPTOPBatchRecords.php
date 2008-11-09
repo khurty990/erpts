@@ -151,6 +151,7 @@ class RPTOPBatchRecords
 			$db = new DB_RPTS;
 			$sql = sprintf("INSERT INTO %s(".
 				"rptopNumber".
+				", rptopDate".
 				", taxableYear".
 				", cityTreasurer".
 				", cityAssessor".
@@ -169,10 +170,11 @@ class RPTOPBatchRecords
 				", dateModified".
 				", modifiedBy".
 				") VALUES(".
-				"'%s','%s','%s','%s','%s','%s','%s','%s','%s'".
+				"'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'".
 				",'%s','%s','%s','%s','%s','%s','%s','%s','%s');"
 				,RPTOP_TABLE
 				,fixQuotes($rptop["rptopNumber"])
+				,fixQuotes(date("Y-m-d"),strtotime("now"))
 				,fixQuotes($rptop["taxableYear"])
 				,fixQuotes($rptop["cityTreasurer"])
 				,fixQuotes($rptop["cityAssessor"])
@@ -188,8 +190,8 @@ class RPTOPBatchRecords
 				,fixQuotes($rptop["totalAssessedValue"])
 				,fixQuotes(time())
 				,fixQuotes($rptop["createdBy"])
-				,fixQuotes($rptop["dateModified"])
-				,fixQuotes(time()));
+				,fixQuotes(time())
+				,fixQuotes($rptop["modifiedBy"]));
 
 			$db->beginTransaction();
 			$db->query($sql);
@@ -307,6 +309,10 @@ class RPTOPBatchRecords
 
 		$db = new DB_RPTS;
 
+		// NCC Modification checked and implemented by K2 : November 10, 2005
+		// details:
+		//         replaced `taxableYear >=` to `taxableYear <=` in line 327
+		//		   replaced `taxableYear >=` to `taxableYear <=` in line 341
 		switch($type){
 			case "Person":
 				$sql = sprintf("SELECT "
@@ -362,6 +368,10 @@ class RPTOPBatchRecords
 
 		$db = new DB_RPTS;
 
+		// NCC Modification checked and implemented by K2 : November 10, 2005
+		// details:
+		//         replaced `effectivity =` to `effectivity <=` in line 387
+		//		   replaced `effectivity =` to `effectivity <=` in line 402
 		switch($type){
 			case "Person":
 				$sql = sprintf("SELECT 
@@ -407,8 +417,7 @@ class RPTOPBatchRecords
 	}
 
 	// "imported" function from nccbiz/OwnerList.php
-	// updated March 25, 2004
-
+	// updated September 10, 2005
 	function getTDListOf($id,$type,$year){
 		$owner = new Owner;
 		eval("\$ownerIDArray = \$owner->selectOwner".$type."(".$id.");");
@@ -444,7 +453,12 @@ class RPTOPBatchRecords
 					foreach ($afsIDArray as $tkey => $tvalue){
 						$td = new TD;
 						if ($td->selectRecord("",$tvalue)){
-							$tdIDArray[] = $td->getTdID();
+							// added the following if($td->getArchive()!="true") line on September 10, 2005 to.. 
+							// ..omit 'cancelled' TDs and other TDs that went through a transaction in..
+							// ..creating new RPTOPs.
+							if($td->getArchive()!="true"){
+								$tdIDArray[] = $td->getTdID();
+							}
 						}
 						unset($td);
 					}
@@ -469,6 +483,10 @@ class RPTOPBatchRecords
 
 		$db = new DB_RPTS;
 
+		// NCC Modification checked and implemented by K2 : November 10, 2005
+		// details:
+		//         replaced `effectivity =` to `effectivity <=` in line 516
+		//		   replaced `effectivity =` to `effectivity <=` in line 545
 		switch($type){
 			case "Person":
 				$sql = sprintf("SELECT 
@@ -495,7 +513,7 @@ class RPTOPBatchRecords
 					".OD_TABLE.".odID = ".OWNER_TABLE.".odID AND 
 					".OWNER_TABLE.".ownerID = ".OWNER_PERSON_TABLE.".ownerID AND 
 					".OWNER_PERSON_TABLE.".personID = '%s' AND 
-					".AFS_TABLE.".effectivity<='%s'", 
+					".AFS_TABLE.".effectivity <= '%s'", 
 					fixQuotes($id), 
 					fixQuotes($year));
 				break;
@@ -524,7 +542,7 @@ class RPTOPBatchRecords
 					".OD_TABLE.".odID = ".OWNER_TABLE.".odID AND 
 					".OWNER_TABLE.".ownerID = ".OWNER_COMPANY_TABLE.".ownerID AND 
 					".OWNER_COMPANY_TABLE.".companyID = '%s' AND 
-					".AFS_TABLE.".effectivity<='%s'", 
+					".AFS_TABLE.".effectivity <= '%s'", 
 					fixQuotes($id),
 					fixQuotes($year));
 				break;
@@ -711,4 +729,4 @@ class RPTOPBatchRecords
 	}
 
 }
-a?>
+?>

@@ -11,6 +11,17 @@ include_once("assessor/OwnerRecords.php");
 include_once("assessor/RPTOP.php");
 include_once("assessor/RPTOPRecords.php");
 
+include_once("assessor/AFS.php");
+
+include_once("assessor/ODHistoryRecords.php");
+include_once("assessor/ODHistory.php");
+
+include_once("collection/Due.php");
+include_once("collection/DueRecords.php");
+include_once("collection/BacktaxTD.php");
+
+include_once("collection/TreasurySettings.php");
+
 #####################################
 # Define Interface Class
 #####################################
@@ -20,7 +31,7 @@ class RPTOPList{
 	var $formArray;
 	var $sess;
 	
-	function RPTOPList($http_post_vars,$sess,$rptopID,$page,$searchKey,$formAction,$sortBy,$sortOrder){
+	function RPTOPList($http_post_vars,$sess,$rptopID,$page,$searchKey,$formAction,$sortBy,$sortOrder,$numberOfRecordsRemoved){
 		global $auth;
 
 		$this->sess = $sess;
@@ -46,6 +57,7 @@ class RPTOPList{
 		$this->formArray["formAction"] = $formAction;
 		$this->formArray["sortBy"] = $sortBy;
 		$this->formArray["sortOrder"] = $sortOrder;
+		$this->formArray["numberOfRecordsRemoved"] = $numberOfRecordsRemoved;
 
         		
 		foreach ($http_post_vars as $key=>$value) {
@@ -195,20 +207,37 @@ class RPTOPList{
 	
 	function Main(){
 		switch ($this->formArray["formAction"]){
-			case "delete":
-				//print_r($this->formArray);
-				if (count($this->formArray["rptopID"]) > 0) {
+			case "remove":
+				$numberOfRecordsRemoved = 0;
+				if(count($this->formArray["rptopID"]) > 0){
 					$RPTOPList = new SoapObject(NCCBIZ."RPTOPList.php", "urn:Object");
-					if (!$deletedRows = $RPTOPList->deleteRPTOP($this->formArray["rptopID"])){
-						$this->tpl->set_var("msg", "SOAP failed");
-					}
-					else{
-						$this->tpl->set_var("msg", $deletedRows." records deleted");
-					}
+					$numberOfRecordsRemoved = $RPTOPList->deleteRPTOP($this->formArray["rptopID"]);
 				}
-				else $this->tpl->set_var("msg", "0 records deleted");
-				break;				
+
+				$url = "&formAction=".urlencode($this->formArray["previousFormAction"]);
+				if($this->formArray["previousFormAction"]=="search"){
+					$url .= "&searchKey=".urlencode($this->formArray["searchKey"]);
+				}
+				$url .= "&page=".$this->formArray["page"];
+				$url .= "&searchKey=".$this->formArray["searchKey"];
+				$url .= "&sortBy=".$this->formArray["sortBy"];
+				$url .= "&sortOrder=".$this->formArray["sortOrder"];
+				$url .= "&numberOfRecordsRemoved=".$numberOfRecordsRemoved;
+
+				header("location: RPTOPList.php".$this->sess->url("").$url);
+				break;
 			case "search":
+				if($this->formArray["numberOfRecordsRemoved"]=="" || $this->formArray["numberOfRecordsRemoved"]==0){
+					$this->tpl->set_block("rptsTemplate", "RecordsRemovedMessage", "RecordsRemovedMessageBlock");
+					$this->tpl->set_var("RecordsRemovedMessageBlock","");
+				}
+				else if($this->formArray["numberOfRecordsRemoved"]==1){
+					$this->tpl->set_var("plural","");
+				}
+				else{
+					$this->tpl->set_var("plural","s");
+				}
+
 				$RPTOPList = new SoapObject(NCCBIZ."RPTOPList.php", "urn:Object");
 				$this->tpl->set_block("rptsTemplate", "Pages", "PagesBlock");
 				$this->tpl->set_block("rptsTemplate", "PagesList", "PagesListBlock");
@@ -337,6 +366,51 @@ class RPTOPList{
 								$this->tpl->set_var("totalMarketValue", number_format($value->getTotalMarketValue(), 2, '.', ','));
 								$this->tpl->set_var("totalAssessedValue", number_format($value->getTotalAssessedValue(), 2, '.', ','));
 
+								// grab Dues of rptop to get totalTaxDue
+								$totalTaxDue = 0.00;
+								if(is_array($value->tdArray)){
+									foreach($value->tdArray as $td){
+										$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");	
+										
+										$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
+										$afsXml = $AFSDetails->getAfs($td->getAfsID());
+										$afsDomDoc = domxml_open_mem($afsXml);
+										$afs = new AFS;
+										$afs->parseDomDocument($afsDomDoc);
+
+										if (!$xmlStr = $DueDetails->getDueFromTdID($td->getTdID(),$value->getTaxableYear())){
+											//$totalTaxDue = "uncalculated";
+											$checkboxDisabled = "";
+											break;
+										}
+										else{
+											if(!$domDoc = domxml_open_mem($xmlStr)) {
+												//$totalTaxDue = "uncalculated";
+												$checkboxDisabled = "";
+											}
+											else {
+												$checkboxDisabled = "disabled";
+												/* sum up total tax due
+												$due = new Due;
+												$due->parseDomDocument($domDoc);
+	
+												$totalTaxDue += $due->getTaxDue();								
+												*/
+											}
+										}									
+									}
+								}
+								else{
+									$checkboxDisabled = "";
+									//$totalTaxDue = "no TD's";
+								}
+
+								//if(is_numeric($totalTaxDue)) $totalTaxDue = formatCurrency($totalTaxDue);
+								//$this->tpl->set_var("totalTaxDue", $totalTaxDue);
+
+								$this->tpl->set_var("checkboxDisabled",$checkboxDisabled);
+								$checkboxDisabled = "";
+
 								$this->setRPTOPListBlockPerms();
 
 								$this->tpl->parse("RPTOPListBlock", "RPTOPList", true);
@@ -352,11 +426,18 @@ class RPTOPList{
 				}						
 			
 			    break;
-   			case "cancel":
-				header("location: RPTOPList.php");
-				exit;
-				break;
 			default:
+				if($this->formArray["numberOfRecordsRemoved"]=="" || $this->formArray["numberOfRecordsRemoved"]==0){
+					$this->tpl->set_block("rptsTemplate", "RecordsRemovedMessage", "RecordsRemovedMessageBlock");
+					$this->tpl->set_var("RecordsRemovedMessageBlock","");
+				}
+				else if($this->formArray["numberOfRecordsRemoved"]==1){
+					$this->tpl->set_var("plural","");
+				}
+				else{
+					$this->tpl->set_var("plural","s");
+				}
+
 				$this->tpl->set_var("msg", "");
 				
 				$RPTOPList = new SoapObject(NCCBIZ."RPTOPList.php", "urn:Object");
@@ -483,6 +564,51 @@ class RPTOPList{
 								$this->tpl->set_var("totalMarketValue", number_format($value->getTotalMarketValue(), 2, '.', ','));
 								$this->tpl->set_var("totalAssessedValue", number_format($value->getTotalAssessedValue(), 2, '.', ','));
 
+								// grab Dues of rptop to get totalTaxDue
+								$totalTaxDue = 0.00;
+								if(is_array($value->tdArray)){
+									foreach($value->tdArray as $td){
+										$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");	
+										
+										$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
+										$afsXml = $AFSDetails->getAfs($td->getAfsID());
+										$afsDomDoc = domxml_open_mem($afsXml);
+										$afs = new AFS;
+										$afs->parseDomDocument($afsDomDoc);
+
+										if (!$xmlStr = $DueDetails->getDueFromTdID($td->getTdID(),$value->getTaxableYear())){
+											//$totalTaxDue = "uncalculated";
+											$checkboxDisabled = "";
+											break;
+										}
+										else{
+											if(!$domDoc = domxml_open_mem($xmlStr)) {
+												//$totalTaxDue = "uncalculated";
+												$checkboxDisabled = "";
+											}
+											else {
+												$checkboxDisabled = "disabled";
+												/* sum up total tax due
+												$due = new Due;
+												$due->parseDomDocument($domDoc);
+	
+												$totalTaxDue += $due->getTaxDue();								
+												*/
+											}
+										}									
+									}
+								}
+								else{
+									$checkboxDisabled = "";
+									//$totalTaxDue = "no TD's";
+								}
+
+								//if(is_numeric($totalTaxDue)) $totalTaxDue = formatCurrency($totalTaxDue);
+								//$this->tpl->set_var("totalTaxDue", $totalTaxDue);
+
+								$this->tpl->set_var("checkboxDisabled",$checkboxDisabled);
+								$checkboxDisabled = "";
+
 								$this->setRPTOPListBlockPerms();
 
 								$this->tpl->parse("RPTOPListBlock", "RPTOPList", true);
@@ -523,7 +649,7 @@ page_open(array("sess" => "rpts_Session"
 	//"perm" => "rpts_Perm"
 	));
 if(!$page) $page = 1;
-$rptopList = new RPTOPList($HTTP_POST_VARS,$sess,$rptopID,$page,$searchKey,$formAction,$sortBy,$sortOrder);
+$rptopList = new RPTOPList($HTTP_POST_VARS,$sess,$rptopID,$page,$searchKey,$formAction,$sortBy,$sortOrder,$numberOfRecordsRemoved);
 $rptopList->main();
 ?>
 <?php page_close(); ?>

@@ -874,7 +874,9 @@ class ODList{
 								//if (method_exists($value->locationAddress,$value->locationAddress->getFullAddress()))
 								if ($value->locationAddress <> "")
 								$this->tpl->set_var("locationAddress", $value->locationAddress->getFullAddress());
-								$this->tpl->set_var("landArea", number_format($value->getLandArea(), 2, '.', ','));
+					//Begin Edited, Decimal 2 was change to 4 ****************			
+					$this->tpl->set_var("landArea", number_format($value->getLandArea(), 4, '.',','));
+                                        //End
 								$this->tpl->parse("ODListBlock", "ODList", true);
 								$this->tpl->set_var("PersonListBlock", "");
 								$this->tpl->set_var("CompanyListBlock", "");

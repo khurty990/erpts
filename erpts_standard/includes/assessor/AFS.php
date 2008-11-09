@@ -9,7 +9,7 @@ include_once("assessor/Land.php");
 include_once("assessor/LandRecords.php");
 include_once("assessor/PlantsTrees.php");
 include_once("assessor/PlantsTreesRecords.php");
-include_once("assessor/ImprovementsBuildings01.php");
+include_once("assessor/ImprovementsBuildings.php");
 include_once("assessor/ImprovementsBuildingsRecords.php");
 include_once("assessor/Machineries.php");
 include_once("assessor/MachineriesRecords.php");
@@ -651,8 +651,8 @@ class AFS
 		//*
 		$this->setDB();
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);
@@ -684,8 +684,8 @@ class AFS
 
 		$this->setDB();
 
-		//$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		//$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 		
 		$this->db->beginTransaction();
 

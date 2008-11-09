@@ -196,27 +196,30 @@ class ListOfTaxablePropertiesPrint{
 
 								if(is_object($afs)){
 									
-									$this->tpl->set_var("taxability", $afs->getTaxability());
+			$this->tpl->set_var("taxability", $afs->getTaxability());
 
-									if($afs->getTaxability()=="Taxable"){
+			if($afs->getTaxability()=="Taxable"){
 
-										$this->formArray["odID"] = $value->getOdID();
-										$this->formArray["afsID"] = $afs->getAfsID();
+			//$this->formArray["odID"] = $value->getOdID();
+			//$this->formArray["afsID"] = $afs->getAfsID();
 
-										$td = new TD;
-										if($td->selectRecord("", $this->formArray["afsID"])){
-											$this->tpl->set_var("taxDeclarationNumber", $td->getTaxDeclarationNumber());
-										}
-										else{
-											$this->tpl->set_var("taxDeclarationNumber",""); 
-										}
+			$td = new TD;
+			if($td->selectRecord("", $this->formArray["afsID"])){
+			$this->tpl->set_var("taxDeclarationNumber", $td->getTaxDeclarationNumber());
+			}
+			else{
+			$this->tpl->set_var("taxDeclarationNumber",""); 
+			}
 
-										$this->tpl->set_var("area", $value->getLandArea());
+			$locationAddress = $value->locationAddress->getFullAddress();
+                        $this->tpl->set_var("locationAddress", $locationAddress);
+			
+			$this->tpl->set_var("area", $value->getLandArea());
 
-										$this->tpl->set_var("propertyIndexNumber", $afs->getPropertyIndexNumber());
+			$this->tpl->set_var("propertyIndexNumber", $afs->getPropertyIndexNumber());
 
-										$this->tpl->set_var("marketValue", number_format($afs->getTotalMarketValue()));
-										$this->tpl->set_var("assessedValue", number_format($afs->getTotalAssessedValue(), 	2, '.', ','));
+			$this->tpl->set_var("marketValue", number_format($afs->getTotalMarketValue()));
+		$this->tpl->set_var("assessedValue", number_format($afs->getTotalAssessedValue(), 	2, '.', ','));
 
 										$landList = $afs->getLandArray();
 										$plantsTreesList = $afs->getPlantsTreesArray();

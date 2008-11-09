@@ -117,16 +117,9 @@ class OwnerList
 				//unset($rptop);
 			}
 			$ownerCompanyIDArray = array_diff($ownerCompanyIDArray,$companyIDArray);
-		}//*/
-		//echo "personArray<br>";
-		//print_r($ownerPersonIDArray);
-		//echo "<br>companyArray<br>";
-		//print_r($ownerCompanyIDArray);
-		//echo "<br><br>";
+		}
 		$rptopRecords = new RPTOPRecords;
 		$ret = $rptopRecords->deleteRPTOPTD($rptopID);
-		//if ($personIDArray) $ownerPersonIDArray = array_diff($ownerPersonIDArray,$personIDArray);
-		//if ($companyIDArray) $ownerCompanyIDArray = array_diff($ownerCompanyIDArray,$companyIDArray);
 		if (is_array($ownerPersonIDArray)) $this->addOwnerPersonRPTOP($rptopID,$ownerID,$ownerPersonIDArray);
 		if (is_array($ownerCompanyIDArray)) $this->addOwnerCompanyRPTOP($rptopID,$ownerID,$ownerCompanyIDArray);
 		unset($owner);
@@ -138,9 +131,7 @@ class OwnerList
 		$owner = new Owner;
 		$owner->selectRecord($ownerID);
 		$ctr = 0;
-		//if ()
 		foreach($personIDArray as $key => $value){
-			//echo $value."<br>";
 			$owner->deleteOwnerPerson($value);
 			$owner->insertOwnerPerson($ownerID,$value);
 			$rptop = new RPTOP;
@@ -148,7 +139,6 @@ class OwnerList
 			$year = $rptop->getTaxableYear();
 			$tdIDArray = $this->getTDListOf($value,"Person",$year);
 			foreach ($tdIDArray as $tdKey => $tdValue){
-				//echo $tdValue."<br>";
 				$rptop->insertRptopTd($rptopID,$tdValue);
 				$ctr++;
 			}
@@ -170,7 +160,6 @@ class OwnerList
 			$year = $rptop->getTaxableYear();
 			$tdIDArray = $this->getTDListOf($value,"Company",$year);
 			foreach ($tdIDArray as $tdKey => $tdValue){
-				//echo $tdValue."<br>";
 				$rptop->insertRptopTd($rptopID,$tdValue);
 				$ctr++;
 			}
@@ -182,18 +171,13 @@ class OwnerList
 	}
 	function getTDListOf($id,$type,$year){
 		$owner = new Owner;
-		//echo("\$ownerIDArray = \$owner->selectOwner".$type."(".$id.");");
 		eval("\$ownerIDArray = \$owner->selectOwner".$type."(".$id.");");
-		//echo "<br>ownerIDArray - ";
-		//print_r($ownerIDArray);
 		if ($ownerIDArray){
 			$odArray = "";
 			foreach ($ownerIDArray as $key => $value){
 				eval("\$odID = \$owner->selectOD".$type."($value);");
 				if ($odID) $odArray[] = $odID;
 			}
-			//echo "<br>odArray - ";
-			//print_r($odArray);
 			unset($owner);
 			if ($odArray){
 				$afsArray = "";
@@ -213,8 +197,6 @@ class OwnerList
 						if ($afsID <> "") $afsIDArray[] = $afsID;
 					}
 				}
-				//echo "<br>afsIDArray - ";
-				//print_r($afsIDArray);
 				unset($afs);
 				if ($afsIDArray){
 					$tdRecords = new TDRecords;
@@ -222,77 +204,16 @@ class OwnerList
 					foreach ($afsIDArray as $tkey => $tvalue){
 						$td = new TD;
 						if ($td->selectRecord("",$tvalue)){
-							$tdIDArray[] = $td->getTdID();
+							// added the following if($td->getArchive()!="true") line on September 10, 2005 to.. 
+							// ..omit 'cancelled' TDs and other TDs that went through a transaction in..
+							// ..creating new RPTOPs.
+							if($td->getArchive()!="true"){
+								$tdIDArray[] = $td->getTdID();
+							}
 						}
 						unset($td);
-						/*
-						$afs = new AFS;
-						$afs->selectRecord($tvalue);
-						//print_r($afs);
-						//echo "<br>";
-						$landArray = $afs->getLandArray();
-						$plantsTreesArray = $afs->getPlantsTreesArray();
-						$improvementsBuildingsArray = $afs->getImprovementsBuildingsArray();
-						$machineriesArray = $afs->getMachineriesArray();
-						unset($afs);
-						if ($landArray){
-							foreach($landArray as $lkey => $lvalue){
-								//echo($lvalue->getPropertyID()."<br>");
-								$td = new TD;
-								if ($td->selectRecord("",$lvalue->getPropertyID(),"Land",$year)){
-									$tdRecords->setArrayList($td);
-									$tdIDArray[] = $td->getTdID();
-								}
-								unset($td);
-							}
-						}
-						if ($plantsTreesArray){
-							foreach($plantsTreesArray as $lkey => $lvalue){
-								//echo($lvalue->getPropertyID()."<br>");
-								$td = new TD;
-								if ($td->selectRecord("",$lvalue->getPropertyID(),"PlantsTrees",$year)){
-									$tdRecords->setArrayList($td);
-									$tdIDArray[] = $td->getTdID();
-								}
-								unset($td);
-							}
-						}
-						if ($improvementsBuildingsArray){
-							foreach($improvementsBuildingsArray as $lkey => $lvalue){
-								//echo($lvalue->getPropertyID()."<br>");
-								$td = new TD;
-								if ($td->selectRecord("",$lvalue->getPropertyID(),"ImprovementsBuildings",$year)){
-									$tdRecords->setArrayList($td);
-									$tdIDArray[] = $td->getTdID();
-								}
-								unset($td);
-							}
-						}
-						if ($machineriesArray){
-							foreach($machineriesArray as $lkey => $lvalue){
-								//echo($lvalue->getPropertyID()."<br>");
-								$td = new TD;
-								if ($td->selectRecord("",$lvalue->getPropertyID(),"Machineries",$year)){
-									$tdRecords->setArrayList($td);
-									$tdIDArray[] = $td->getTdID();
-								}
-								unset($td);
-							}
-						}*/
 					}
 					$ret = $tdIDArray;
-					//print_r($tdRecords->getArrayList());
-					/*if ($tdRecords->getArrayList()){
-						$tdRecords->setDomDocument();
-						if(!$domDoc = $tdRecords->getDomDocument()){
-							return $ret = false;
-						}
-						else {
-							$xmlStr = $domDoc->dump_mem(true);
-							return $ret = $xmlStr;
-						}
-					}
-					else $ret = false;*/
 				}
 				else $ret = false;
 			}

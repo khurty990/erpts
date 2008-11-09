@@ -41,7 +41,10 @@ class ImprovementsBuildings extends Property
 	var $totalBuildingArea;
 	var $unitValue;
 	var $buildingCoreAndAdditionalItems;
-    var $addItems;
+	// NCC Modification checked and implemented by K2 : November 18, 2005
+	// details:
+	//		added new attribute $addItems in line 47 
+    var $addItems;	
 	var $depreciationRate;
 	var $accumulatedDepreciation;
 	var $depreciatedMarketValue;
@@ -153,9 +156,12 @@ class ImprovementsBuildings extends Property
 	function setBuildingCoreAndAdditionalItems($tempVar){
 		$this->buildingCoreAndAdditionalItems = $tempVar;
 	}
+	// NCC Modification checked and implemented by K2 : November 18, 2005
+	// details:
+	//		added function setAddItems() in lines 162 to 164
 	function setAddItems($tempVar){
 		$this->addItems = $tempVar;
-	}
+	}	
 	function setDepreciationRate($tempVar){
 		$this->depreciationRate = $tempVar;
 	}
@@ -271,7 +277,10 @@ class ImprovementsBuildings extends Property
 		$this->setDocNode("totalBuildingArea",$this->totalBuildingArea,$this->domDocument,$rec);
 		$this->setDocNode("unitValue",$this->unitValue,$this->domDocument,$rec);
 		$this->setDocNode("buildingCoreAndAdditionalItems",$this->buildingCoreAndAdditionalItems,$this->domDocument,$rec);
-		$this->setDocNode("addItems",$this->addItems,$this->domDocument,$rec);
+		// NCC Modification checked and implemented by K2 : November 18, 2005
+		// details:
+		//		added setDocNode call for "addItems" in line 283
+		$this->setDocNode("addItems",$this->addItems,$this->domDocument,$rec);		
 		$this->setDocNode("depreciationRate",$this->depreciationRate,$this->domDocument,$rec);
 		$this->setDocNode("accumulatedDepreciation",$this->accumulatedDepreciation,$this->domDocument,$rec);
 		$this->setDocNode("depreciatedMarketValue",$this->depreciatedMarketValue,$this->domDocument,$rec);
@@ -427,9 +436,12 @@ class ImprovementsBuildings extends Property
 	function getBuildingCoreAndAdditionalItems(){
 		return $this->buildingCoreAndAdditionalItems;
 	}
+	// NCC Modification checked and implemented by K2 : November 18, 2005
+	// details:
+	//		added method getAddItems() in lines 442 to 444	
 	function getAddItems(){
 		return $this->addItems;
-	}
+	}	
 	function getDepreciationRate(){
 		return $this->depreciationRate;
 	}
@@ -606,6 +618,12 @@ class ImprovementsBuildings extends Property
 		else {
 			$this->propertyAdministrator->personID = $this->propertyAdministrator->updateRecord();
 		}
+		
+		// NCC Modification checked and implemented by K2 : November 18, 2005
+		// details:
+		//		added `", addItems"` string for $sql in line 683
+		//		added one more `"'%s'"` in line 701	
+		//      added `, fixQuotes($this->addItems)` parameter for sprintf() in line 760	
 
 		$sql = sprintf("insert into %s (".
 				"afsID".
@@ -664,7 +682,7 @@ class ImprovementsBuildings extends Property
 				", totalBuildingArea".
 				", unitValue".
 				", buildingCoreAndAdditionalItems".
-				", addItems".
+				", addItems".				
 				", depreciationRate".
 				", accumulatedDepreciation".
 				", depreciatedMarketValue".
@@ -680,7 +698,7 @@ class ImprovementsBuildings extends Property
 				", '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'".
 				", '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'".
 				", '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'".
-				", '%s', '%s', '%s'".
+				", '%s', '%s', '%s', '%s'".
 				");",
 			IMPROVEMENTSBUILDINGS_TABLE
 			, fixQuotes($this->afsID)
@@ -752,8 +770,8 @@ class ImprovementsBuildings extends Property
 		//echo $sql;
 		$this->setDB();
 
-//		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-//		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);
@@ -777,6 +795,11 @@ class ImprovementsBuildings extends Property
 		else {
 			$this->propertyAdministrator->personID = $this->propertyAdministrator->updateRecord();
 		}
+		
+		// NCC Modification checked and implemented by K2 : November 18, 2005
+		// details:		
+		//		added ", addItems = '%s'". string for $sql in line 860
+		//		added `, fixQuotes($this->addItems)` parameter for sprintf() in line 925
 
 		$sql = sprintf("update %s set".
 				" afsID = '%s'".
@@ -835,7 +858,7 @@ class ImprovementsBuildings extends Property
 				", totalBuildingArea = '%s'".
 				", unitValue = '%s'".
 				", buildingCoreAndAdditionalItems = '%s'".
-				", addItems = '%s'".
+				", addItems = '%s'".				
 				", depreciationRate = '%s'".
 				", accumulatedDepreciation = '%s'".
 				", depreciatedMarketValue = '%s'".
@@ -899,7 +922,7 @@ class ImprovementsBuildings extends Property
 			, fixQuotes($this->totalBuildingArea)
 			, fixQuotes($this->unitValue)
 			, fixQuotes($this->buildingCoreAndAdditionalItems)
-			, fixQuotes($this->addItems)
+			, fixQuotes($this->addItems)			
 			, fixQuotes($this->depreciationRate)
 			, fixQuotes($this->accumulatedDepreciation)
 			, fixQuotes($this->depreciatedMarketValue)
@@ -909,10 +932,10 @@ class ImprovementsBuildings extends Property
 			);
 
 		//echo $sql;
-    		$this->setDB();
+		$this->setDB();
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->beginTransaction();
 		$this->db->query($sql);
