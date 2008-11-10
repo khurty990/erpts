@@ -12,11 +12,8 @@
  
        <!---Begin of Inserted code -->
            <image xpos="110" ypos="718" width="65" height="60" src="images/logoprovince.jpg"></image>
-            <image xpos="425" ypos="718" width="65" height="60" src="images/logo-ginatilan.jpg"></image>
-	<!-- End of Inserted Code-->
+        <!-- End of Inserted Code-->
 	
-	
-
 	
     <textitem xpos="20" ypos="679" font="Helvetica-Bold" size="10" align="left">Tax Declaration Number:</textitem>
     <textitem xpos="141" ypos="679" font="Helvetica" size="10" align="left">{taxDeclarationNumber}</textitem>

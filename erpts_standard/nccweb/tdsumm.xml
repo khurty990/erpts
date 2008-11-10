@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 <contents>
 	<page width="592" height="796" number="1" orientation="0">
      <textitem xpos="300" ypos="722" font="Helvetica-Bold" size="14" align="center">DECLARATION OF REAL PROPERTY</textitem>
-     <textitem xpos="300" ypos="741" font="Helvetica-Bold" size="14" align="center">Province of Cebu</textitem>
+     <textitem xpos="300" ypos="741" font="Helvetica-Bold" size="14" align="center">Province of Nueva Ecija</textitem>
      <textitem xpos="300" ypos="760" font="Helvetica-Bold" size="14" align="center">Republic of the Philippines</textitem>
 
 	<!---Begin of Inserted code -->
-           <image xpos="110" ypos="718" width="65" height="60" src="images/logoprovince.jpg"></image>
-           <image xpos="425" ypos="718" width="65" height="60" src="images/logo-ginatilan.jpg"></image>
-	<!-- End of Inserted Code-->
+           <image xpos="110" ypos="718" width="65" height="60" src="images/nueva_ecija_logo.jpg"></image>
+        <!-- End of Inserted Code-->
 
 
 
@@ -30,7 +29,7 @@
 		<textitem xpos="59" ypos="648" font="Helvetica" size="9" align="left">{Owner}</textitem>
 		<textitem xpos="410" ypos="648" font="Helvetica-Bold" size="9" align="left">TIN:</textitem>
                 <textitem xpos="436" ypos="648"  font="Helvetica" size="9" align="left">{tin}</textitem>
-		
+
 		<textitem xpos="20" ypos="637" font="Helvetica-Bold" size="9" align="left">Address:</textitem>
 		<textitem xpos="62" ypos="637"  font="Helvetica" size="9" align="left">{Address}</textitem>
 		<textitem xpos="400" ypos="637" font="Helvetica-Bold" size="9" align="left">Tel No.:</textitem>
@@ -42,8 +41,8 @@
 		<textitem xpos="20" ypos="615" font="Helvetica-Bold" size="9" align="left">Address:</textitem>
 		<textitem xpos="90" ypos="615" font="Helvetica" size="9" align="left">{adminAddress}</textitem>
 		<textitem xpos="410" ypos="626" font="Helvetica-Bold" size="9" align="left">TIN:</textitem>
-		<textitem xpos="436" ypos="626"  font="Helvetica" size="9" align="left"></textitem> 
-		<textitem xpos="400" ypos="615" font="Helvetica-Bold" size="9" align="left">Tel No.:</textitem>		
+		<textitem xpos="436" ypos="626"  font="Helvetica" size="9" align="left"></textitem>
+		<textitem xpos="400" ypos="615" font="Helvetica-Bold" size="9" align="left">Tel No.:</textitem>
 		<textitem xpos="436" ypos="615"  font="Helvetica" size="9" align="left">{adminTelephone}</textitem>
 
 		<textitem xpos="20" ypos="595" font="Helvetica-Bold" size="9" align="left">Location of</textitem>
@@ -60,13 +59,13 @@
 
 		<textitem xpos="20" ypos="552" font="Helvetica-Bold" size="9" align="left">OCT/TCT/CLOA No:</textitem>
 		<textbox x1="110" y1="552" x2="572" y2="552" font="Helvetica" size="9" align="left">{octTctNumber}</textbox>
-		
+
 		<textitem xpos="20" ypos="541" font="Helvetica-Bold" size="9" align="left">CCT</textitem>
-                <textbox x1="110" y1="541" x2="572" y2="541" font="Helvetica" size="9" align="left"></textbox>		
+                <textbox x1="110" y1="541" x2="572" y2="541" font="Helvetica" size="9" align="left"></textbox>
 
 		<textitem xpos="20" ypos="530" font="Helvetica-Bold" size="9" align="left">Dated:</textitem>
                 <textbox x1="110" y1="530" x2="572" y2="530" font="Helvetica" size="9" align="left"></textbox>
-	
+
 
 		<textitem xpos="340" ypos="552" font="Helvetica-Bold" size="9" align="left">Survey No:</textitem>
 		<textbox x1="390" y1="552" x2="579" y2="552" font="Helvetica" size="9" align="left">{surveyNumber}</textbox>
@@ -100,9 +99,7 @@
 -->
 
 		<textitem xpos="20" ypos="465" font="Helvetica-Bold" size="10" align="left">KIND OF PROPERTY ASSESSED</textitem>
-		
 		<textitem xpos="50" ypos="450" font="Helvetica-Bold" size="10" align="left">LAND</textitem>
-		{propertyKind1}
 		<textitem xpos="50" ypos="427" font="Helvetica-Bold" size="10" align="left">BUILDING</textitem>
 		<textitem xpos="320" ypos="450" font="Helvetica-Bold" size="10" align="left">MACHINERY</textitem>
 		<textitem xpos="320" ypos="427" font="Helvetica-Bold" size="10" align="left">OTHERS:</textitem>
@@ -123,19 +120,22 @@
 		<textitem xpos="486" ypos="358" font="Helvetica-Bold" size="9" align="left">P</textitem>
 
                 <textitem xpos="25" ypos="358" font="Helvetica" size="9" align="left">{classification1}</textitem>^M
-                <textitem xpos="120" ypos="358" font="Helvetica" size="9" align="left">{propertyActualUse1} </textitem>^M              	     <textitem xpos="210" ypos="358" font="Helvetica" size="9" align="left">{findingsTotalArea} {unit}</textitem>
+                <textitem xpos="120" ypos="358" font="Helvetica" size="9" align="left">{propertyActualUse1} </textitem>^M
+                <textitem xpos="210" ypos="358" font="Helvetica" size="9" align="left">{findingsTotalArea} {unit}</textitem>
                 <!--textitem xpos="212" ypos="358" font="Helvetica" size="9" align="left">{areaOfGroundFloor}</textitem>-->
 		<textitem xpos="370" ypos="358" font="Helvetica" size="9" align="right">{propertyMarketValue1}</textitem>^M
-                <textitem xpos="472" ypos="358" font="Helvetica" size="9" align="right">{propertyAssessmentLevel1}%</textitem>               <textitem xpos="566" ypos="358" font="Helvetica" size="9" align="right">{propertyAssessedValue1}</textitem>^M    
-				
+                <textitem xpos="472" ypos="358" font="Helvetica" size="9" align="right">{propertyAssessmentLevel1}%</textitem>
+                <textitem xpos="566" ypos="358" font="Helvetica" size="9" align="right">{propertyAssessedValue1}</textitem>^M
+
                 <textitem xpos="25" ypos="347" font="Helvetica" size="9" align="left">{classification2}</textitem>^M
-                <textitem xpos="120" ypos="347" font="Helvetica" size="9" align="left">{propertyActualUse2}</textitem>^M                     <textitem xpos="210" ypos="358" font="Helvetica" size="9" align="left">{findingsTotalArea}</textitem>
+                <textitem xpos="120" ypos="347" font="Helvetica" size="9" align="left">{propertyActualUse2}</textitem>^M
+                <textitem xpos="210" ypos="358" font="Helvetica" size="9" align="left">{findingsTotalArea}</textitem>
 		<!--<textitem xpos="212" ypos="358" font="Helvetica" size="9" align="left">{totalBuildingArea}</textitem>-->
 		<!--<textitem xpos="212" ypos="441" font="Helvetica" size="10" align="left">{area}</textitem>-->
                 <textitem xpos="370" ypos="347" font="Helvetica" size="9" align="right">{propertyMarketValue2}</textitem>^M
-                <textitem xpos="472" ypos="347" font="Helvetica" size="9" align="right">{propertyAssessmentLevel2}%</textitem>       
+                <textitem xpos="472" ypos="347" font="Helvetica" size="9" align="right">{propertyAssessmentLevel2}%</textitem>
                 <textitem xpos="566" ypos="347" font="Helvetica" size="9" align="right">{propertyAssessedValue2}</textitem>^M
-                
+
                 <textitem xpos="25" ypos="336" font="Helvetica" size="9" align="left">{classification3}</textitem>^M
                 <textitem xpos="120" ypos="336" font="Helvetica" size="9" align="left">{propertyActualUse3}</textitem>^M
                 <!--<textitem xpos="212" ypos="430" font="Helvetica" size="10" align="left">{area}</textitem>-->
@@ -149,30 +149,28 @@
                 <textitem xpos="472" ypos="325" font="Helvetica" size="9" align="right">{propertyAssessmentLevel4}%</textitem>
                 <textitem xpos="566" ypos="325" font="Helvetica" size="9" align="right">{propertyAssessedValue4}</textitem>^M                ^M
                                 <!-- inserted code from argao 2page td.xml ends here -->^M
-{propertyKind1}
-{propertyKind2}
-{propertyKind3}
-{propertyKind4}
-        <!--<textitem xpos="26" ypos="449" font="Helvetica" size="11" align="left">{propertyKind1}</textitem>-->
-	<!--<textitem xpos="146" ypos="452" font="Helvetica" size="9" align="left">{classification1}</textitem>
+
+  <!--
+	<textitem xpos="40" ypos="452" font="Helvetica" size="10" align="left">{kind1}</textitem>
+	<textitem xpos="146" ypos="452" font="Helvetica" size="9" align="left">{classification1}</textitem>
 	<textitem xpos="337" ypos="452" font="Helvetica" size="10" align="right">{marketValue1}</textitem>
 	<textitem xpos="358" ypos="452" font="Helvetica" size="10" align="left">{assessmentLevel1}</textitem>
-	<textitem xpos="558" ypos="452" font="Helvetica" size="10" align="right">{assessedValue1}</textitem>-->
+	<textitem xpos="558" ypos="452" font="Helvetica" size="10" align="right">{assessedValue1}</textitem>
 
-       <!--<textitem xpos="26" ypos="427" font="Helvetica" size="10" align="left">{propertyKind2}</textitem>-->
-	<!--<textitem xpos="146" ypos="441" font="Helvetica" size="9" align="left">{classification2}</textitem>
+	<textitem xpos="40" ypos="441" font="Helvetica" size="10" align="left">{kind2}</textitem>
+	<textitem xpos="146" ypos="441" font="Helvetica" size="9" align="left">{classification2}</textitem>
 	<textitem xpos="337" ypos="441" font="Helvetica" size="10" align="right">{marketValue2}</textitem>
 	<textitem xpos="358" ypos="441" font="Helvetica" size="10" align="left">{assessmentLevel2}</textitem>
 	<textitem xpos="558" ypos="441" font="Helvetica" size="10" align="right">{assessedValue2}</textitem>
 
-	<textitem xpos="40" ypos="430" font="Helvetica" size="10" align="left">{propertyKind3}</textitem>
+	<textitem xpos="40" ypos="430" font="Helvetica" size="10" align="left">{kind3}</textitem>
 	<textitem xpos="146" ypos="430" font="Helvetica" size="9" align="left">{classification3}</textitem>
 	<textitem xpos="337" ypos="430" font="Helvetica" size="10" align="right">{marketValue3}</textitem>
 	<textitem xpos="358" ypos="430" font="Helvetica" size="10" align="left">{assessmentLevel3}</textitem>
 	<textitem xpos="558" ypos="430" font="Helvetica" size="10" align="right">{assessedValue3}</textitem>
 
 
-	<textitem xpos="40" ypos="419" font="Helvetica" size="10" align="left">{propertyKind4}</textitem>
+	<textitem xpos="40" ypos="419" font="Helvetica" size="10" align="left">{kind4}</textitem>
 	<textitem xpos="146" ypos="419" font="Helvetica" size="9" align="left">{classification4}</textitem>
 	<textitem xpos="337" ypos="419" font="Helvetica" size="10" align="right">{marketValue4}</textitem>
 	<textitem xpos="358" ypos="419" font="Helvetica" size="10" align="left">{assessmentLevel4}</textitem>
@@ -208,7 +206,7 @@
 		<textitem xpos="168" ypos="189" font="Helvetica" size="9" align="left">{cancelsTDNumber}</textitem>
 		 <textitem xpos="272" ypos="189" font="Helvetica" size="9" align="left">{previousOwner}</textitem>
 		 <textitem xpos="545" ypos="189" font="Helvetica" size="9" align="right">{previousAssessedValue}</textitem>
-		
+
 
 		<textitem xpos="20" ypos="189" font="Helvetica-Bold" size="9" align="left">This declaration cancels TD No.</textitem>
 		<textitem xpos="235" ypos="189" font="Helvetica-Bold" size="9" align="left">Owner</textitem>
@@ -232,26 +230,26 @@
 		<textitem xpos="85" ypos="72" font="Helvetica-Bold" size="9" align="left"> Panlalawigan under Ordinance No. 2007-16 dated December 04, 2007. It does not and cannot by itself alone</textitem>
 		<textitem xpos="85" ypos="61" font="Helvetica-Bold" size="9" align="left">confer any ownership or legal title to the property.</textitem>
 
-		
-		<!-- Horizontal Lines -->   
+
+		<!-- Horizontal Lines -->
 
 		<lineitem x1="140" y1="677" x2="296" y2="677">taxDeclarationNumber</lineitem>
 		<lineitem x1="430" y1="688" x2="572" y2="688">propertyIndexNumber</lineitem>
 		<lineitem x1="430" y1="677" x2="572" y2="677">propertyARPNumber</lineitem>
-		
+
 		<lineitem x1="57" y1="646" x2="395" y2="646">Owner</lineitem>
 		<lineitem x1="60" y1="635" x2="395" y2="635">Address</lineitem>
 		<lineitem x1="433" y1="646" x2="572" y2="646">tin</lineitem>
-		
+
 		<lineitem x1="433" y1="635" x2="572" y2="635">telnoowner</lineitem>
 		<lineitem x1="88" y1="624" x2="395" y2="624">administrator</lineitem>
 		<lineitem x1="60" y1="613" x2="395" y2="613">adminAddress</lineitem>
 		<lineitem x1="433" y1="613" x2="572" y2="613">telnoadmin</lineitem>
-		<lineitem x1="433" y1="624" x2="572" y2="624">tinadmin</lineitem>	
-	
+		<lineitem x1="433" y1="624" x2="572" y2="624">tinadmin</lineitem>
+
 		<lineitem x1="66" y1="582" x2="226" y2="582">location</lineitem>
 		<lineitem x1="254" y1="582" x2="384" y2="582">barangay</lineitem>
-		<lineitem x1="412" y1="582" x2="572" y2="582">municipalityCity</lineitem> 
+		<lineitem x1="412" y1="582" x2="572" y2="582">municipalityCity</lineitem>
 
 		<lineitem x1="106" y1="550" x2="331" y2="550">octTctNumber</lineitem>
 		<lineitem x1="106" y1="539" x2="331" y2="539">CCT</lineitem>
@@ -268,36 +266,36 @@
 
 		<!--<lineitem x1="15" y1="493" x2="577" y2="493">horizontal-line</lineitem>-->
 		<!--<lineitem x1="15" y1="490" x2="577" y2="490">horizontal-line</lineitem>-->
-        
-				
+
+
 		<lineitem x1="25" y1="357" x2="115" y2="357">kind1</lineitem>
 		<lineitem x1="120" y1="357" x2="200" y2="357">classification1</lineitem>
-	        <lineitem x1="210" y1="357" x2="290" y2="357">area1</lineitem> 
+	        <lineitem x1="210" y1="357" x2="290" y2="357">area1</lineitem>
 		<lineitem x1="303" y1="357" x2="369" y2="357">marketValue1</lineitem>
 		<lineitem x1="382" y1="357" x2="472" y2="357">assessmentLevel1</lineitem>
 		<lineitem x1="486" y1="357" x2="568" y2="357">assessedValue1</lineitem>
 
 		<lineitem x1="25" y1="346" x2="115" y2="346">kind2</lineitem>
 		<lineitem x1="120" y1="346" x2="200" y2="346">classification2</lineitem>
-		<lineitem x1="210" y1="346" x2="290" y2="346">area2</lineitem> 
+		<lineitem x1="210" y1="346" x2="290" y2="346">area2</lineitem>
 		<lineitem x1="303" y1="346" x2="369" y2="346">marketValue2</lineitem>
 		<lineitem x1="382" y1="346" x2="472" y2="346">assessmentLevel2</lineitem>
 		<lineitem x1="486" y1="346" x2="568" y2="346">assessedValue2</lineitem>
 
 		<lineitem x1="25" y1="335" x2="115" y2="335">kind3</lineitem>
 		<lineitem x1="120" y1="335" x2="200" y2="335">classification3</lineitem>
-		<lineitem x1="210" y1="335" x2="290" y2="335">area3</lineitem> 
+		<lineitem x1="210" y1="335" x2="290" y2="335">area3</lineitem>
 		<lineitem x1="303" y1="335" x2="369" y2="335">marketValue3</lineitem>
 		<lineitem x1="382" y1="335" x2="472" y2="335">assessmentLevel3</lineitem>
 		<lineitem x1="486" y1="335" x2="568" y2="335">assessedValue3</lineitem>
-        
+
 		<lineitem x1="25" y1="324" x2="115" y2="324">kind4</lineitem>
 		<lineitem x1="120" y1="324" x2="200" y2="324">classification4</lineitem>
-		<lineitem x1="210" y1="324" x2="290" y2="324">area4</lineitem> 
+		<lineitem x1="210" y1="324" x2="290" y2="324">area4</lineitem>
 		<lineitem x1="303" y1="324" x2="369" y2="324">marketValue4</lineitem>
-		<lineitem x1="382" y1="324" x2="472" y2="324">assessmentLevel4</lineitem>	  
-		<lineitem x1="486" y1="324" x2="568" y2="324">assessedValue4</lineitem> 
-		
+		<lineitem x1="382" y1="324" x2="472" y2="324">assessmentLevel4</lineitem>
+		<lineitem x1="486" y1="324" x2="568" y2="324">assessedValue4</lineitem>
+
 		<lineitem x1="303" y1="313" x2="369" y2="313">totalMarketValue</lineitem>
 		<lineitem x1="486" y1="313" x2="568" y2="313">totalAssessedValue</lineitem>
 
@@ -312,7 +310,7 @@
 		<lineitem x1="166" y1="188" x2="230" y2="188">cancelsTDNumber</lineitem>
 		<lineitem x1="272" y1="188" x2="400" y2="188">owner</lineitem>
 		<lineitem x1="510" y1="188" x2="572" y2="188">previous a.v.</lineitem>
-		
+
 		<lineitem x1="80" y1="176" x2="572" y2="176">memoranda-line-1</lineitem>
 		<lineitem x1="20" y1="165" x2="572" y2="165">memoranda-line-2</lineitem>
 		<lineitem x1="20" y1="154" x2="572" y2="154">memoranda-line-3</lineitem>
@@ -341,11 +339,11 @@
                 <lineitem x1="284" y1="440" x2="284" y2="425">othersbox left-border</lineitem>
                 <lineitem x1="304" y1="440" x2="304" y2="425">othersBox-right-border</lineitem>
                 <lineitem x1="284" y1="440" x2="304" y2="440">othersBox-top-border</lineitem>
-                <lineitem x1="284" y1="425" x2="304" y2="425">othersBox-bottom-border</lineitem>	
-	
+                <lineitem x1="284" y1="425" x2="304" y2="425">othersBox-bottom-border</lineitem>
+
 		<!--<lineitem x1="504" y1="188" x2="567" y2="188">certificationFee</lineitem>-->
 		<!--<lineitem x1="455" y1="178" x2="567" y2="178">orNo</lineitem>-->
-		
+
 		<!--<lineitem x1="65" y1="166" x2="245" y2="166">ownerAdministrator</lineitem>-->
 		<!--<lineitem x1="285" y1="166" x2="385" y2="166">date</lineitem>-->
 		<!--<lineitem x1="464" y1="166" x2="567" y2="166">datePaid</lineitem>-->
