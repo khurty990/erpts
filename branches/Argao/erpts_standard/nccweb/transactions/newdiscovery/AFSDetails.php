@@ -1,4 +1,4 @@
-<?php 
+<?php
 # Setup PHPLIB in this Area
 include_once("web/prepend.php");
 include_once("assessor/Address.php");
@@ -42,8 +42,8 @@ class AFSDetails{
 		$this->formArray["uid"] = $auth->auth["uid"];
 		$this->user = $auth->auth;
 
-		// must have atleast AM-EDIT access
-		$pageType = "%1%%%%%%%%";
+		// must have atleast AM-VIEW access
+		$pageType = "%%1%%%%%%%";
 		if (!checkPerms($this->user["userType"],$pageType)){
 			header("Location: Unauthorized.php".$this->sess->url(""));
 			exit;
@@ -52,7 +52,7 @@ class AFSDetails{
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "AFSDetails.htm") ;
-		$this->tpl->set_var("TITLE", "New Discovery > FAAS / TD Details");
+		$this->tpl->set_var("TITLE", "FAAS / TD Details");
 		
 		$this->formArray["afsID"] = $afsID;
 		$this->formArray["landFormAction"] = "";
@@ -127,17 +127,12 @@ class AFSDetails{
 			$this->tpl->set_block("LandList", "EditLandLink", "EditLandLinkBlock");
 			$this->tpl->set_var("EditLandLinkBlock", "<s>Edit</s>");
 		}
-		else{
-			//
-		}
 	}
 
 	function setPlantsTreesListBlockPerms(){
 		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
 			$this->tpl->set_block("PlantsTreesList", "EditPlantsTreesLink", "EditPlantsTreesLinkBlock");
 			$this->tpl->set_var("EditPlantsTreesLinkBlock", "<s>Edit</s>");
-		}
-		else{
 		}
 	}
 
@@ -146,16 +141,12 @@ class AFSDetails{
 			$this->tpl->set_block("ImprovementsBuildingsList", "EditImprovementsBuildingsLink", "EditImprovementsBuildingsLinkBlock");
 			$this->tpl->set_var("EditImprovementsBuildingsLinkBlock", "<s>Edit</s>");
 		}
-		else{
-		}
 	}
 
 	function setMachineriesListBlockPerms(){
 		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
 			$this->tpl->set_block("MachineriesList", "EditMachineriesLink", "EditMachineriesLinkBlock");
 			$this->tpl->set_var("EditMachineriesLinkBlock", "<s>Edit</s>");
-		}
-		else{
 		}
 	}
 	
@@ -395,6 +386,7 @@ class AFSDetails{
 				}
 
 				$td->setDomDocument();
+
 				$domDoc = $td->getDomDocument();
 				$xmlStr = $domDoc->dump_mem(true);
 
@@ -436,7 +428,7 @@ class AFSDetails{
 				if($td->getCanceledByTDNumber()==""){
 					$td = $this->updateTDCanceledByTDNumber($td);
 				}
-				
+
 				$this->formArray["tdID"] = $td->tdID;
 				$this->formArray["taxDeclarationNumber"] = $td->taxDeclarationNumber;
 
@@ -509,10 +501,13 @@ class AFSDetails{
 
 				$this->formArray["enteredInRPARForYear"] = $td->enteredInRPARForYear;
 				$this->formArray["previousOwner"] = $td->previousOwner;
+				$this->tpl->set_var("previousOwner", $td->previousOwner);
+
 				$this->formArray["previousAssessedValue"] = $td->previousAssessedValue;
 				if($td->previousAssessedValue!=""){
 					$this->tpl->set_var("previousAssessedValue", number_format(toFloat($td->previousAssessedValue), 2, ".", ","));
 				}
+
 				$this->tpl->set_var("memoranda", $td->memoranda);
 
 				$this->tpl->set_var("TDDBEmptyBlock", "");
@@ -567,6 +562,38 @@ class AFSDetails{
 			$this->tpl->set_var("togglePlantsTreesListBlock", "");
 			$this->tpl->set_block("rptsTemplate", "PlantsTreesList", "PlantsTreesListBlock");
 			$this->tpl->set_var("PlantsTreesListBlock", "");
+		}
+	}
+
+	function displayImprovementsBuildings($improvementsBuildingsList){
+		//improvementsBuildings
+		if(count($improvementsBuildingsList)){
+			$this->displayImprovementsBuildingsList($improvementsBuildingsList);
+		}
+		else{
+			$this->tpl->set_var("improvementsBuildingsCtr", 0);
+			$this->tpl->set_block("rptsTemplate", "defaultImprovementsBuildingsList", "defaultImprovementsBuildingsListBlock");
+			$this->tpl->set_var("defaultImprovementsBuildingsListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "toggleImprovementsBuildingsList", "toggleImprovementsBuildingsListBlock");
+			$this->tpl->set_var("toggleImprovementsBuildingsListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "ImprovementsBuildingsList", "ImprovementsBuildingsListBlock");
+			$this->tpl->set_var("ImprovementsBuildingsListBlock", "");
+		}
+	}
+
+	function displayMachineries($machineriesList){
+		//machineries
+		if(count($machineriesList)){
+			$this->displayMachineriesList($machineriesList);
+		}
+		else{
+			$this->tpl->set_var("machineriesCtr", 0);
+			$this->tpl->set_block("rptsTemplate", "defaultMachineriesList", "defaultMachineriesListBlock");
+			$this->tpl->set_var("defaultMachineriesListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "toggleMachineriesList", "toggleMachineriesListBlock");
+			$this->tpl->set_var("toggleMachineriesListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "MachineriesList", "MachineriesListBlock");
+			$this->tpl->set_var("MachineriesListBlock", "");
 		}
 	}
 
@@ -868,10 +895,10 @@ class AFSDetails{
 				default:
 					if ($lkey <> "") {
 						eval('$tmpval = $value->get'.ucfirst($lkey).'();');
-						//echo '$tmpval = $value->get'.ucfirst($lkey).'();<br>';
+						// echo '$tmpval = $value->get'.ucfirst($lkey).'();<br>';
 						$this->tpl->set_var($lkey,$tmpval);
 					}
-			}				
+			}
 		}
 	}
 	function displayLandList($landList){
@@ -986,7 +1013,7 @@ class AFSDetails{
 			$this->tpl->set_var("togglePlantsTreesListBlock", "");
 		}
 	}
-	
+
 	function displayImprovementsBuildingsList($improvementsBuildingsList){
 		$this->tpl->set_block("rptsTemplate", "ImprovementsBuildingsDBEmpty", "ImprovementsBuildingsDBEmptyBlock");
 		$this->tpl->set_var("ImprovementsBuildingsDBEmptyBlock", "");
@@ -1040,7 +1067,7 @@ class AFSDetails{
 			$this->tpl->set_var("toggleImprovementsBuildingsListBlock", "");
 		}
 	}
-	
+
 	function displayMachineriesList($machineriesList){
 		$this->tpl->set_block("rptsTemplate", "MachineriesDBEmpty", "MachineriesDBEmptyBlock");
 		$this->tpl->set_var("MachineriesDBEmptyBlock", "");
@@ -1193,34 +1220,45 @@ class AFSDetails{
 				if(count($landList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Land";
+
 					$this->displayLandPlantsTrees($landList,$plantsTreesList);
 					$this->displayGISTechnicalDescription($afs);
+
 					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 					$this->hideProperty('Machineries', 'machineries');
 				}
 				else if(count($plantsTreesList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Land";
-					$this->displayLandPlantsTrees($landList,$plantsTreesList);
+
 					$this->displayGISTechnicalDescription($afs);
+					$this->displayLandPlantsTrees($landList,$plantsTreesList);
+
 					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 					$this->hideProperty('Machineries', 'machineries');
 			    }
 				else if(count($improvementsBuildingsList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "ImprovementsBuildings";
-					$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+					//$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+
+					$this->displayImprovementsBuildings($improvementsBuildingsList);
+
 					$this->hideBlock('GISTechnicalDescriptionHide');
 					$this->hideProperty('Land', 'land');
 					$this->hideProperty('PlantsTrees', 'plantsTrees');
+					$this->hideProperty('Machineries', 'machineries');
 				}
 				else if(count($machineriesList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Machineries";
-					$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+
+					$this->displayMachineries($machineriesList);
+
 					$this->hideBlock('GISTechnicalDescriptionHide');
 					$this->hideProperty('Land', 'land');
 					$this->hideProperty('PlantsTrees', 'plantsTrees');
+					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 				}
 				else{
 					$hideTD = true;

@@ -446,7 +446,16 @@ function setDefaults(){
 				 <!-- END TDEncodeLink -->
 			    </td>
 			    <td align="right" class="fields">
-			     <input type="button" name="Button" value="Print" onClick="javascript:location.href='PrintTD.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+				<input type="button" name="Button" value="Print(Itemized)"
+onClick="javascript:location.href='PrintTD.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+                                 &nbsp;&nbsp;
+				<input type="button" name="Button" value="Print(Summarized)"
+onClick="javascript:location.href='PrintTDsumm.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+                                 &nbsp;&nbsp;
+
+
+			     <input type="button" name="Button" value="Print(2page)" 
+onClick="javascript:location.href='PrintTD2page.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
 				 &nbsp;&nbsp;
 			    </td>
 			   </tr>

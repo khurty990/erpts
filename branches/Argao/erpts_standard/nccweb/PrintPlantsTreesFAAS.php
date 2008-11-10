@@ -25,6 +25,9 @@ include_once("assessor/PlantsTrees.php");
 include_once("assessor/PlantsTreesClasses.php");
 include_once("assessor/PlantsTreesActualUses.php");
 
+include_once("assessor/ODHistory.php");
+include_once("assessor/ODHistoryRecords.php");
+
 #####################################
 # Define Interface Class
 #####################################
@@ -310,20 +313,20 @@ class PrintLandFAAS{
 
 			,"memoranda" => ""
 
-			,"previous1" => ""
-			,"present1" => ""
-			,"init1" => ""
-			,"date1" => ""
+			,"previous1" => "" // previousPIN
+			,"present1" => "" // presentPIN
+			,"init1" => "" // leave blank
+			,"date1" => "" // leave blank
 
-			,"previous2" => ""
-			,"present2" => ""
-			,"init2" => ""
-			,"date2" => ""
+			,"previous2" => "" // previousARPNumber
+			,"present2" => "" // presentARPNumber
+			,"init2" => "" // leave blank
+			,"date2" => "" // leave blank
 
-			,"previous3" => ""
-			,"present3" => ""
-			,"init3" => ""
-			,"date3" => ""
+			,"previous3" => "" // previous Ass. Roll Page Number (leave blank)
+			,"present3" => "" // present Ass. Roll Page Number (leave blank)
+			,"init3" => "" // leave blank
+			,"date3" => "" // leave blank
 
 		);
 
@@ -908,6 +911,28 @@ class PrintLandFAAS{
 		}
 		return $ret;
 	}
+
+	function displayPostingSummary($afs){
+		// previous
+		$presentODID = $afs->odID;
+		$condition = sprintf("WHERE presentODID='%s'",fixQuotes($presentODID));
+
+		$odHistoryRecords = new ODHistoryRecords;
+		if($odHistoryRecords->selectRecords($condition)){
+			$odHistory = $odHistoryRecords->arrayList[0];
+			$previousODID = $odHistory->previousODID;
+
+			$previousAFS = new AFS;
+			if($previousAFS->selectRecord("","",$previousODID,"")){
+				$this->formArray["previous1"] = $previousAFS->propertyIndexNumber;
+				$this->formArray["previous2"] = $previousAFS->arpNumber;
+			}
+		}
+
+		// present
+		$this->formArray["present1"] = $afs->propertyIndexNumber;
+		$this->formArray["present2"] = $afs->arpNumber;
+	}
 	
 	function Main(){
 		$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
@@ -928,8 +953,8 @@ class PrintLandFAAS{
 				$this->formArray["effectivity"] = $afs->effectivity;
 
 				$this->displayODAFS($this->formArray["afsID"]);
-
 				$this->displayTD($this->formArray["afsID"]);
+				$this->displayPostingSummary($afs);
 
 				$landList = $afs->getLandArray();
 
