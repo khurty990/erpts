@@ -182,7 +182,7 @@ class PrintRPTOPDetailsPDF{
 			,"totalBasic" => ""
 			,"totalSef" => ""
 			,"totalTaxes" => ""
-
+			,"grandtotalBasic" => ""
 			,"municipalAssessor" => ""
 			,"municipalTreasurer" => ""
 
@@ -284,7 +284,7 @@ class PrintRPTOPDetailsPDF{
 
 	function displayOwnerList($domDoc){
 		$owner = new Owner;
-		$owner->parseDomDocument($domDoc);
+			$owner->parseDomDocument($domDoc);
 
 		$oValue = $owner;
 	
@@ -550,76 +550,82 @@ class PrintRPTOPDetailsPDF{
 												}
 											}
 
-											$this->formArray["classification".$tdCtr] = $reportCodeDescription;
+						$this->formArray["classification".$tdCtr] = $reportCodeDescription;
 
-											$this->formArray["landTotalMarketValue"] += $afs->getLandTotalMarketValue();
-											$this->formArray["landTotalAssessedValue"] += $afs->getLandTotalAssessedValue();
-											$this->formArray["plantTotalMarketValue"] += $afs->getPlantTotalMarketValue();
-											$this->formArray["plantTotalAssessedValue"] += $afs->getPlantTotalAssessedValue();
-											$this->formArray["bldgTotalMarketValue"] += $afs->getBldgTotalMarketValue();
-											$this->formArray["bldgTotalAssessedValue"] += $afs->getBldgTotalAssessedValue();
-											$this->formArray["machTotalMarketValue"] += $afs->getMachTotalMarketValue();
-											$this->formArray["machTotalAssessedValue"] += $afs->getMachTotalAssessedValue();
-											$this->formArray["marketValue".$tdCtr] += $afs->getTotalMarketValue();
-											$this->formArray["assessedValue".$tdCtr] += $afs->getTotalAssessedValue();
+				$this->formArray["landTotalMarketValue"] += $afs->getLandTotalMarketValue();
+				$this->formArray["landTotalAssessedValue"] += $afs->getLandTotalAssessedValue();
+				$this->formArray["plantTotalMarketValue"] += $afs->getPlantTotalMarketValue();
+				$this->formArray["plantTotalAssessedValue"] += $afs->getPlantTotalAssessedValue();
+				$this->formArray["bldgTotalMarketValue"] += $afs->getBldgTotalMarketValue();
+				$this->formArray["bldgTotalAssessedValue"] += $afs->getBldgTotalAssessedValue();
+				$this->formArray["machTotalMarketValue"] += $afs->getMachTotalMarketValue();
+				$this->formArray["machTotalAssessedValue"] += $afs->getMachTotalAssessedValue();
+				$this->formArray["marketValue".$tdCtr] += $afs->getTotalMarketValue();
+				$this->formArray["assessedValue".$tdCtr] += $afs->getTotalAssessedValue();
 
-											$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
-											$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
+				$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
+				$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
 
 
-											// grab Due from tdID
+				// grab Due from tdID
 									
-											$this->formArray["totalTaxDue"] = 0.00;
+				$this->formArray["totalTaxDue"] = 0.00;
 
-											$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");
+				$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");
 									
-											if (!$xmlStr = $DueDetails->getDueFromTdID($tvalue->getTdID())){
-													$this->formArray["basic".$tdCtr] = "";
-													$this->formArray["sef".$tdCtr] ="";
-													$this->formArray["totalTax".$tdCtr] = "";
+				if (!$xmlStr = $DueDetails->getDueFromTdID($tvalue->getTdID())){
+					$this->formArray["basic".$tdCtr] = "";
+					$this->formArray["sef".$tdCtr] ="";
+					$this->formArray["totalTax".$tdCtr] = "";
 		
-													$this->formArray["totalBasic"] += 0;
-													$this->formArray["totalSef"] += 0;
-													$this->formArray["totalTaxes"] += 0;
-											}
-											else{
-												if(!$domDoc = domxml_open_mem($xmlStr)) {
-													$this->formArray["basic".$tdCtr] = "";
-													$this->formArray["sef".$tdCtr] ="";
-													$this->formArray["totalTax".$tdCtr] = "";
+					$this->formArray["totalBasic"] += 0;
+					$this->formArray["totalSef"] += 0;
+					$this->formArray["totalTaxes"] += 0;
+					}
+					else{
+					if(!$domDoc = domxml_open_mem($xmlStr)) {
+					$this->formArray["basic".$tdCtr] = "";
+					$this->formArray["sef".$tdCtr] ="";
+					$this->formArray["totalTax".$tdCtr] = "";
 		
-													$this->formArray["totalBasic"] += 0;
-													$this->formArray["totalSef"] += 0;
-													$this->formArray["totalTaxes"] += 0;
-												}
-												else {
-													$due = new Due;
-													$due->parseDomDocument($domDoc);
+					$this->formArray["totalBasic"] += 0;
+					$this->formArray["totalSef"] += 0;
+					$this->formArray["totalTaxes"] += 0;
+					}
+					else {
+					$due = new Due;
+					$due->parseDomDocument($domDoc);
 		
-													$this->formArray["basic".$tdCtr] = $due->getBasicTax();
-													$this->formArray["sef".$tdCtr] = $due->getSEFTax();
-													$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
+					$this->formArray["basic".$tdCtr] = $due->getBasicTax();
+					$this->formArray["sef".$tdCtr] = $due->getSEFTax();
+					$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
 		
-													$this->formArray["totalBasic"] += $due->getBasicTax();
-													$this->formArray["totalSef"] += $due->getSEFTax();
-													$this->formArray["totalTaxes"] += $due->getTaxDue();
-												}
-											}
+					$this->formArray["totalBasic"] += $due->getBasicTax();
+					$this->formArray["totalSef"] += $due->getSEFTax();
+					$this->formArray["totalTaxes"] += $due->getTaxDue();
+							}
+					}
 
 
 										}
 									}
 
-									$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
-											+ $this->formArray["plantTotalMarketValue"]
-											+ $this->formArray["bldgTotalMarketValue"]
-											+ $this->formArray["machTotalMarketValue"];
-									$this->formArray["totalAssessedValue"] = $this->formArray["landTotalAssessedValue"]
-											+ $this->formArray["plantTotalAssessedValue"]
-											+ $this->formArray["bldgTotalAssessedValue"]
-											+ $this->formArray["machTotalAssessedValue"];
-
-									if($this->tdPagingArray["tdPageRecordsCounter"]==$this->tdPagingArray["tdPageBy"]){
+				$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
+								+ $this->formArray["plantTotalMarketValue"]
+								+ $this->formArray["bldgTotalMarketValue"]
+								+ $this->formArray["machTotalMarketValue"];
+				$this->formArray["totalAssessedValue"] = $this->formArray["landTotalAssessedValue"]
+								+ $this->formArray["plantTotalAssessedValue"]
+								+ $this->formArray["bldgTotalAssessedValue"]
+								+ $this->formArray["machTotalAssessedValue"];
+				// new modified by charl 02202008------------------------------------
+		$this->formArray["totalBasic"] = $this->formArray["totalAssessedValue"]/100;
+		$this->formArray["totalSef"] = $this->formArray["totalAssessedValue"]/100;
+		$this->formArray["totalTaxes"] = $this->formArray["totalBasic"] + $this->formArray["totalSef"];
+				// -----------------------------------------------------------				
+									
+							
+				if($this->tdPagingArray["tdPageRecordsCounter"]==$this->tdPagingArray["tdPageBy"]){
 										// if 6
 										$this->setForm();
 										$this->resetTDPageRecords();

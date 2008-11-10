@@ -44,6 +44,24 @@ class PrintLandFAAS{
 			,"propertyIndexNumber" => ""
 			,"octTctNumber" => ""
 			,"surveyNumber" => ""
+			//added 03042008
+			,"taxDeclarationNumber" => ""
+			,"cancelsTDNumber" => ""
+			
+			,"landstart" => 490
+			,"landitems" => ""
+			,"totalarea" => ""
+
+			,"plantstart" => 332
+			,"plantitems" => ""
+
+			,"adjstart" => 840
+			,"adjitems" => ""
+			,"adjcount" => 0
+
+			,"summstart" => 655
+			,"summitems" => ""
+			,"summcount" => 0
 
 			,"owner" => ""
 			,"ownerAddress" => ""
@@ -131,10 +149,50 @@ class PrintLandFAAS{
 			,"unitValue9" => ""
 			,"landMrktVal9" => ""
 
+			,"classification10" => ""
+			,"subClass10" => ""
+			,"area10" => ""
+			,"landActualUse10" => ""
+			,"unitValue10" => ""
+			,"landMrktVal10" => ""
+
+			,"classification11" => ""
+			,"subClass11" => ""
+			,"area11" => ""
+			,"landActualUse11" => ""
+			,"unitValue11" => ""
+			,"landMrktVal11" => ""
+
+			,"classification12" => ""
+			,"subClass12" => ""
+			,"area12" => ""
+			,"landActualUse12" => ""
+			,"unitValue12" => ""
+			,"landMrktVal12" => ""
+
+			,"classification13" => ""
+			,"subClass13" => ""
+			,"area13" => ""
+			,"landActualUse13" => ""
+			,"unitValue13" => ""
+			,"landMrktVal13" => ""
+
+			,"classification14" => ""
+			,"subClass14" => ""
+			,"area14" => ""
+			,"landActualUse14" => ""
+			,"unitValue14" => ""
+			,"landMrktVal14" => ""
+
+			,"classification15" => ""
+			,"subClass15" => ""
+			,"area15" => ""
+			,"landActualUse15" => ""
+			,"unitValue15" => ""
+			,"landMrktVal15" => ""
+
 			,"landTotal" => ""
-			,"totalArea" => ""
-			
-			,"area"=> ""
+
 			,"productClass1" => ""
 			,"areaPlanted1" => ""
 			,"totalNumber1" => ""
@@ -216,6 +274,62 @@ class PrintLandFAAS{
 			,"unitPrice9" => ""
 			,"plantMrktVal9" => ""
 
+			,"productClass10" => ""
+			,"areaPlanted10" => ""
+			,"totalNumber10" => ""
+			,"nonFruit10" => ""
+			,"fruit10" => ""
+			,"age10" => ""
+			,"unitPrice10" => ""
+			,"plantMrktVal10" => ""
+
+			,"productClass11" => ""
+			,"areaPlanted11" => ""
+			,"totalNumber11" => ""
+			,"nonFruit11" => ""
+			,"fruit11" => ""
+			,"age11" => ""
+			,"unitPrice11" => ""
+			,"plantMrktVal11" => ""
+
+			,"productClass12" => ""
+			,"areaPlanted12" => ""
+			,"totalNumber12" => ""
+			,"nonFruit12" => ""
+			,"fruit12" => ""
+			,"age12" => ""
+			,"unitPrice12" => ""
+			,"plantMrktVal12" => ""
+
+			,"productClass13" => ""
+			,"areaPlanted13" => ""
+			,"totalNumber13" => ""
+			,"nonFruit13" => ""
+			,"fruit13" => ""
+			,"age13" => ""
+			,"unitPrice13" => ""
+			,"plantMrktVal13" => ""
+
+			,"productClass14" => ""
+			,"areaPlanted14" => ""
+			,"totalNumber14" => ""
+			,"nonFruit14" => ""
+			,"fruit14" => ""
+			,"age14" => ""
+			,"unitPrice14" => ""
+			,"plantMrktVal14" => ""
+
+			,"productClass15" => ""
+			,"areaPlanted15" => ""
+			,"totalNumber15" => ""
+			,"nonFruit15" => ""
+			,"fruit15" => ""
+			,"age15" => ""
+			,"unitPrice15" => ""
+			,"plantMrktVal15" => ""
+
+
+			,"plantCount" => ""
 			,"plantTotal" => ""
 
 			,"valAdjFacMrktVal1" => ""
@@ -357,6 +471,7 @@ class PrintLandFAAS{
 	function setForm(){
 
 		$this->formatCurrency("landTotal");
+		$this->formatCurrency("plantCount");
 		$this->formatCurrency("plantTotal");
 
 		$this->formatCurrency("unitValue1");
@@ -419,7 +534,7 @@ class PrintLandFAAS{
 		$this->formatCurrency("valAdjFacAdjMrktVal4");
 		$this->formatCurrency("valAdjFacAdjMrktVal5");
 		$this->formatCurrency("valAdjFacAdjMrktVal6");
-		
+
 		$this->formatCurrency("propertyAdjMrktVal1");
 		$this->formatCurrency("propertyAdjMrktVal2");
 		$this->formatCurrency("propertyAdjMrktVal3");
@@ -439,7 +554,12 @@ class PrintLandFAAS{
 		$this->formatCurrency("previousAssessedValue");
 
 		foreach ($this->formArray as $key => $value){
-			$this->tpl->set_var($key, html_entity_to_alpha($value));
+			if ($key == "landitems" || $key == "plantitems" || $key == "adjitems" || $key == "summitems") {
+				$this->tpl->set_var($key, $value);
+			}
+			else {
+				$this->tpl->set_var($key, html_entity_to_alpha($value));
+			}
 		}
 	}
 
@@ -455,13 +575,15 @@ class PrintLandFAAS{
 			else {
 				$td = new TD;
 				$td->parseDomDocument($domDoc);
-				
+				$this->formArray["memoranda"] = $td->getMemoranda();
+				$this->formArray["taxDeclarationNumber"] = $td->getTaxDeclarationNumber();
+				$this->formArray["cancelsTDNumber"] = $td->getCancelsTDNumber();
 				$this->formArray["previousOwner"] = $td->getPreviousOwner();
 				$this->formArray["previousAssessedValue"] = $td->getPreviousAssessedValue();
 			}
 		}
 	}
-
+/** ako disable code to display person name
 	function displayOwnerList($domDoc){
 		$owner = new Owner;
 		$owner->parseDomDocument($domDoc);
@@ -492,10 +614,10 @@ class PrintLandFAAS{
 						$address2.= $personValue->addressArray[0]->getProvince();
 					}
 
-					$ownerPersonName = $personValue->getName();
+					$ownerPersonName = $personValue->getProperName();
 				}
 				else{
-					$ownerPersonName = $ownerPersonName." , ".$personValue->getName();
+					$ownerPersonName = $ownerPersonName." , ".$personValue->getProperName();
 
 					//$ownerPersonName = $ownerName." , ".$personValue->getName();
 				}
@@ -551,7 +673,48 @@ class PrintLandFAAS{
 		$this->formArray["ownerAddress1"] = $address1;
 		$this->formArray["ownerAddress2"] = $address2;
 
+	}  **/
+// replacement code to display person name
+	function displayOwnerList($domDoc){
+		$owner = new Owner;
+		$owner->parseDomDocument($domDoc);
+			$ownerName = "";
+			if (count($owner->personArray)){
+				foreach($owner->personArray as $personKey =>$personValue){
+					if ($ownerName == ""){
+						if(is_object($personValue->addressArray[0])){
+							$address = $personValue->addressArray[0]->getFullAddress();
+							$ownerName = $personValue->getName();
+						}
+					}
+					else{
+						$ownerName = $ownerName." , ".$personValue->getName();
+					}
+				}
+			}
+			else{
+			}
+			if (count($owner->companyArray)){
+				foreach ($owner->companyArray as $companyKey => $companyValue){
+					if ($ownerName == ""){
+						$address = $companyValue->addressArray[0]->getFullAddress();
+						$ownerName = $companyValue->getCompanyName();
+					}
+					else{
+						$ownerName = $ownerName." , ".$companyValue->getCompanyName();
+					}
+					
+				}
+			}
+			else{
+			}
+
+		$this->formArray["owner"] = $ownerName;
+		$this->formArray["ownerAddress1"] = $address1;
 	}
+
+
+// end
 	function displayODAFS($afsID){
 		$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
 		if (!$odID = $AFSDetails->getOdID($afsID)){
@@ -599,13 +762,32 @@ class PrintLandFAAS{
 	}
 
 	function displayLandList($landList){
-		$totalArea = 0;
 		$landTotal = 0;
+		$finalUnit = '';
         if (count($landList)){
 			$l = 0;
+			$landitems = '';
+			$adjitems = '';
+			$totalarea = 0;
+
+			$adjcount = $this->formArray["adjcount"];
+			$adjfact = '';
+			$percadj = 0;
+			$markval = 0;
+			$valuadj = 0;
+			$adjmark = 0;
+
+			$summcount = $this->formArray["summcount"];
+			$summuse = '';
+			$summadj = 0;
+			$summlvl = 0;
+			$summasv = 0;
+			$mixedUnits = 0;
+
+
 			foreach ($landList as $key => $land){
 				if($this->pl==0){
-					//$this->formArray["arpNumber"] = $land->getArpNumber();
+				//$this->formArray["taxDeclarationNumber"] = $land->getTaxDeclarationNumber();
 					//$this->formArray["propertyIndexNumber"] = $land->getPropertyIndexNumber();
 					$this->formArray["octTctNumber"] = $land->getOctTctNumber();
 					$this->formArray["surveyNumber"] = $land->getSurveyNumber();
@@ -614,11 +796,11 @@ class PrintLandFAAS{
 					$this->formArray["east"] = $land->getEast();
 					$this->formArray["south"] = $land->getSouth();
 					$this->formArray["west"] = $land->getWest();
-
+					
 					//$this->formArray["taxability"] = $land->getTaxability();
 					//$this->formArray["effectivity"] = $land->getEffectivity();
 
-					$this->formArray["memoranda"] = $land->getMemoranda();
+					//$this->formArray["memoranda"] = $td->getMemoranda();
 
 					if (is_a($land->propertyAdministrator,Person)){
 						if($land->propertyAdministrator->getLastName()!=""){
@@ -703,7 +885,10 @@ class PrintLandFAAS{
 				}
 
 
-				if($l < 9){
+				$this->formArray["landstart"] -= 19;
+				$offset = $this->formArray["landstart"];
+
+				if($l < 5){
 
 					// classification
 					$landClasses = new LandClasses;
@@ -714,6 +899,11 @@ class PrintLandFAAS{
 					else{
 						$this->formArray["classification".($l+1)] = $land->getClassification();
 					}
+					$landitems.= '<textitem xpos="55" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="left">'
+									.$this->formArray["classification".($l+1)]
+									.'</textitem>'."\r\n";
 
 					// subClass
 					$landSubclasses = new LandSubclasses;
@@ -724,10 +914,46 @@ class PrintLandFAAS{
 					else{
 						$this->formArray["subClass".($l+1)] = $land->getSubClass();
 					}
+					$landitems.= '<textitem xpos="125" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="left">'
+									.$this->formArray["subClass".($l+1)]
+									.'</textitem>'."\r\n";
 
-					$this->formArray["area".($l+1)] = $land->getArea()." ".$this->getUnit($land->getUnit);
-					//inserted this code
-					$totalArea = $totalArea + toFloat($land->getArea());
+					if (strlen($finalUnit) == 0) {
+						if ($land->getUnit() != "square meters") {
+							$finalUnit = "has.";
+						} 
+						else {
+							$finalUnit = "sqm.";
+						}
+					}
+					else {
+						if ($finalUnit != $land->getUnit()) {
+							$mixedUnits = 1;
+							$finalUnit = "has.";
+						} else {
+							$finalUnit = "sqm.";
+						}
+					}
+
+					if ($land->getUnit() != "square meters") {
+						$runArea = number_format((double)$land->getArea(),4)." has.";
+						$totalarea+=(double)$land->getArea() * 10000;
+					}
+					else {
+						$runArea = number_format((double)$land->getArea(),2)." sqm.";
+						$totalarea+=(double)$land->getArea();
+					}
+
+					
+//					$this->formArray["area".($l+1)] = number_format($land->getArea(),4)." ".($land->getUnit()=="square meters")?"sqm.":"has.";
+					$landitems.= '<textitem xpos="297" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$runArea
+									.'</textitem>'."\r\n";
+
 					// actualUse
 					$landActualUses = new LandActualUses;
 					if(is_numeric($land->getActualUse())){
@@ -738,11 +964,79 @@ class PrintLandFAAS{
 						$this->formArray["landActualUse".($l+1)] = $land->getActualUse();
 					}
 
+					$landitems.= '<textitem xpos="305" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="left">'
+									.$this->formArray["landActualUse".($l+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["unitValue".($l+1)] = $land->getUnitValue();
-					$this->formArray["landMrktVal".($l+1)] = $land->getMarketValue();
+
+					
+					$uvx = str_replace(',', '', $this->formArray["unitValue".($l+1)]);
+					$landitems.= '<textitem xpos="437" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.number_format($uvx,2)
+									.'</textitem>'."\r\n";
+
+					$this->formArray["landMrktVal".($l+1)] = number_format($land->getMarketValue(),2);
+
+					$landitems.= '<textitem xpos="540" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["landMrktVal".($l+1)]
+									.'</textitem>'."\r\n";
+
 					$landTotal = $landTotal + toFloat($land->getMarketValue());
+					$landitems.= '<lineitem x1="50" y1="'.($offset-8).'" x2="550" y2="'.($offset-8).'">blurb</lineitem>';
 				}
-				if($this->pl < 6){
+
+				if($this->pl < 5){
+					if ($percadj <> (float)$land->getPercentAdjustment()) {
+						if ($markval > 0) {
+							$adjcount++;
+							$this->formArray["adjstart"] -= 14;
+							$offset = $this->formArray["adjstart"];
+
+							$adjitems.= '<textitem xpos="147" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($markval,2).'   (L)'
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="155" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.$adjfact
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="405" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($percadj)
+											.'%</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="475" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($valuadj,2)
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="545" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($adjmark,2)
+											.'</textitem>'."\r\n";
+							$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+						}
+						$percadj = (float)$land->getPercentAdjustment();
+						$adjfact = $land->getAdjustmentFactor();
+						$markval = 0;
+						$valuadj = 0;
+						$adjmark = 0;
+					}
+
+					$markval += (double)$land->getMarketValue();
+					$valuadj += (double)$land->getValueAdjustment();
+					$adjmark += (double)$land->getAdjustedMarketValue();
+
 					$this->formArray["valAdjFacMrktVal".($this->pl+1)] = $land->getMarketValue();
 					$this->formArray["adjFacTxt".($this->pl+1)] = $land->getAdjustmentFactor();
 					$this->formArray["adjFacInt".($this->pl+1)] = "L";
@@ -750,41 +1044,195 @@ class PrintLandFAAS{
 					$this->formArray["valueAdjustment".($this->pl+1)] = $land->getValueAdjustment();
 					$this->formArray["valAdjFacAdjMrktVal".($this->pl+1)] = $land->getAdjustedMarketValue();
 					$this->formArray["valAdjFacTotal"] = $this->formArray["valAdjFacTotal"] + toFloat($land->getAdjustedMarketValue());
+
 				}
-				if($this->pl < 5){
+				if($this->pl < 8){
 					$this->formArray["kind".($this->pl+1)] = "Land";
 
-					if(is_numeric($land->getActualUse())){
+					//if(is_numeric($land->getActualUse())){
 						$landActualUses->selectRecord($land->getActualUse());
-						//$this->formArray["propertyActualUse".($this->pl+1)] = $landActualUses->getActualUse();
-						 $this->formArray["propertyActualUse".($this->pl+1)] = $landActualUses->getDescription();
-
-					}
-					else{
-						$this->formArray["propertyActualUse".($this->pl+1)] = $land->getActualUse();
-					}
+						$this->formArray["propertyActualUse".($this->pl+1)] = $landActualUses->getDescription();
+					//}
+					//else{
+					//	$this->formArray["propertyActualUse".($this->pl+1)] = $land->getActualUse();
+					//}
 
 					$this->formArray["propertyAdjMrktVal".($this->pl+1)] = $land->getAdjustedMarketValue();
 					$this->formArray["level".($this->pl+1)] = $land->getAssessmentLevel();
 					$this->formArray["assessedValue".($this->pl+1)] = $land->getAssessedValue();
 					$this->formArray["propertyAdjMrktValTotal"] = $this->formArray["propertyAdjMrktValTotal"] + toFloat($land->getAdjustedMarketValue());
 					$this->formArray["propertyTotal"] = $this->formArray["propertyTotal"] + toFloat($land->getAssessedValue());
+/*
+			$summkind = '';
+			$summuse = '';
+			$summadj = 0;
+			$summlvl = 0;
+			$summasv = 0;
+*/
+					//if ($summuse <> $landActualUses->getDescription()) {
+					$thislvl = (double)$land->getAssessmentLevel();
+					$thisuse = $landActualUses->getDescription();
+					if($summlvl <> $thislvl || $summuse <> $thisuse) {
+						if ($summasv > 0) {
+							$summcount++;
+							$this->formArray["summstart"] -= 14;
+							$offset = $this->formArray["summstart"];
+
+							$summitems.= '<textitem xpos="55" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.'LAND'
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="155" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.htmlentities($summuse)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="405" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summadj,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="475" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summlvl,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="545" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summasv,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+						}
+						$summuse = $thisuse;
+						$summlvl = $thislvl;
+						$summadj = 0;
+						$summasv = 0;
+					}
+
+					$summadj += (double)$land->getAdjustedMarketValue();
+					$summasv += toFloat($land->getAssessedValue()); //(double)$land->getAssessedValue();
 				}
 
 				$l++;
 				$this->pl++;
 			}
+
+			if ($markval > 0) {
+				$adjcount++;
+				$this->formArray["adjstart"] -= 14;
+				$offset = $this->formArray["adjstart"];
+
+				$adjitems.= '<textitem xpos="147" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($markval,2).'   (L)'
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="155" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.$adjfact
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="405" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($percadj)
+								.'%</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="475" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($valuadj,2)
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="545" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($adjmark,2)
+								.'</textitem>'."\r\n";
+				$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+			}
+
+
+			if ($summasv > 0) {
+				$summcount++;
+				$this->formArray["summstart"] -= 14;
+				$offset = $this->formArray["summstart"];
+
+				$summitems.= '<textitem xpos="55" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.'LAND'
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="155" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.htmlentities($summuse)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="405" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summadj,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="475" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summlvl,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="545" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summasv,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+			}
+
+
+			for ($ll=$l; $ll < 5; $ll++) {
+					$this->formArray["landstart"] -= 19;
+					$offset = $this->formArray["landstart"];
+					$landitems.= '<lineitem x1="50" y1="'.($offset-8).'" x2="550" y2="'.($offset-8).'">blurb</lineitem>';
+			}
+
+
+			$this->formArray["adjcount"] += $adjcount;
+			$this->formArray["adjitems"] .= $adjitems;
+			$this->formArray["summcount"] += $summcount;
+			$this->formArray["summitems"] .= $summitems;
+			$this->formArray["landitems"] = $landitems;
+
+			//if ($mixedUnits) {
+			if ($finalUnit == 'has.') {
+				$this->formArray["totalarea"] = number_format($totalarea/10000,4).' has.';
+			}
+			else {
+				$this->formArray["totalarea"] = number_format($totalarea,2).' sqm.';
+			}
+
+//			$this->formArray["totalarea"] = number_format($totalarea,4);
 		}
 		$this->formArray["landTotal"] = $landTotal;
-		//inserted this code
-		$this->formArray["totalArea"] = $totalArea;
 	}
 
 	function displayPlantsTreesList($plantsTreesList){
 		$plantTotal = 0;
 		$plantCount = 0;
-        if (count($plantsTreesList)){
 			$p = 0;
+        if (count($plantsTreesList)){
+			$plantitems = '';
+
+			$adjcount = $this->formArray["adjcount"];
+			$adjfact = '';
+			$percadj = 0;
+			$markval = 0;
+			$valuadj = 0;
+			$adjmark = 0;
+
+			$summcount = $this->formArray["summcount"];
+			$summuse = '';
+			$summadj = 0;
+			$summlvl = 0;
+			$summasv = 0;
+
 			foreach ($plantsTreesList as $key => $plantsTrees){
 				if($this->pl==0){
 					//$this->formArray["arpNumber"] = $plantsTrees->getArpNumber();
@@ -847,7 +1295,10 @@ class PrintLandFAAS{
 
 					$this->formArray["dateApprovedBy"] = $plantsTrees->getApprovedByDate();
 				}
-				if($p < 9){
+				if($p < 14){
+					$this->formArray["plantstart"] -= 17;
+					$offset = $this->formArray["plantstart"];
+
 					// productClass
 					$plantsTreesClasses = new PlantsTreesClasses;
 					if(is_numeric($plantsTrees->getProductClass())){
@@ -857,19 +1308,117 @@ class PrintLandFAAS{
 					else{
 						$this->formArray["productClass".($p+1)] = $plantsTrees->getProductClass();
 					}
-
+					$plantitems.= '<textitem xpos="55" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="left">'
+									.$this->formArray["productClass".($p+1)]
+									.'</textitem>'."\r\n";
 					$this->formArray["areaPlanted".($p+1)] = $plantsTrees->getAreaPlanted();
+
+					$plantitems.= '<textitem xpos="228" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["areaPlanted".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["totalNumber".($p+1)] = $plantsTrees->getTotalNumber();
+
+					$plantitems.= '<textitem xpos="290" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["totalNumber".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["nonFruit".($p+1)] = $plantsTrees->getNonFruitBearing();
+
+					$plantitems.= '<textitem xpos="342" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["nonFruit".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["fruit".($p+1)] = $plantsTrees->getFruitBearing();
+
+					$plantitems.= '<textitem xpos="380" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["fruit".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["age".($p+1)] = $plantsTrees->getAge();
+
+					$plantitems.= '<textitem xpos="426" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["age".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["unitPrice".($p+1)] = $plantsTrees->getUnitPrice();
+
+					$plantitems.= '<textitem xpos="482" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.$this->formArray["unitPrice".($p+1)]
+									.'</textitem>'."\r\n";
+
 					$this->formArray["plantMrktVal".($p+1)] = $plantsTrees->getMarketValue();
+
+					$plantitems.= '<textitem xpos="545" ypos="'
+									.$offset
+									.'" font="Helvetica" size="8" align="right">'
+									.number_format($plantsTrees->getMarketValue(),2)
+									.'</textitem>'."\r\n";
+
+					$plantitems.= '<lineitem x1="50" y1="'.($offset-6).'" x2="550" y2="'.($offset-6).'">blurb</lineitem>';
+
 					$plantTotal = $plantTotal + toFloat($plantsTrees->getMarketValue());
-					//inserted this code
-					$plantCount = $plantCount + toFloat($plantsTrees->getTotalNumber());
+					$plantCount += toFloat($plantsTrees->getTotalNumber());
 				}
-				if($this->pl < 6){
+				if($this->pl < 14){
+					if ($percadj <> (float)$plantsTrees->getPercentAdjustment()) {
+						if ($markval > 0) {
+							$adjcount++;
+							$this->formArray["adjstart"] -= 16;
+							$offset = $this->formArray["adjstart"];
+
+							$adjitems.= '<textitem xpos="147" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($markval,2).'   (P)'
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="155" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.$adjfact
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="405" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($percadj)
+											.'%</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="475" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($valuadj,2)
+											.'</textitem>'."\r\n";
+							$adjitems.= '<textitem xpos="545" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($adjmark,2)
+											.'</textitem>'."\r\n";
+							$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+						}
+						$percadj = (float)$plantsTrees->getPercentAdjustment();
+						$adjfact = $plantsTrees->getAdjustmentFactor();
+						$markval = 0;
+						$valuadj = 0;
+						$adjmark = 0;
+					}
+
+					$markval += (double)$plantsTrees->getMarketValue();
+					$valuadj += (double)$plantsTrees->getValueAdjustment();
+					$adjmark += (double)$plantsTrees->getAdjustedMarketValue();
+
 					$this->formArray["valAdjFacMrktVal".($this->pl+1)] = $plantsTrees->getMarketValue();
 					$this->formArray["adjFacTxt".($this->pl+1)] = $plantsTrees->getAdjustmentFactor();
 					$this->formArray["adjFacInt".($this->pl+1)] = "P";
@@ -878,32 +1427,170 @@ class PrintLandFAAS{
 					$this->formArray["valAdjFacAdjMrktVal".($this->pl+1)] = $plantsTrees->getAdjustedMarketValue();
 					$this->formArray["valAdjFacTotal"] = $this->formArray["valAdjFacTotal"] + toFloat($plantsTrees->getAdjustedMarketValue());
 				}
-				if($this->pl < 5){
+				if($this->pl < 14){
 					$this->formArray["kind".($this->pl+1)] = $plantsTrees->getKind();
 
 					// actualUse
 
 					$plantsTreesActualUses = new PlantsTreesActualUses;
-					if(is_numeric($plantsTrees->getActualUse())){
+					//if(is_numeric($plantsTrees->getActualUse())){
 						$plantsTreesActualUses->selectRecord($plantsTrees->getActualUse());
 						$this->formArray["propertyActualUse".($this->p+1)] = $plantsTreesActualUses->getDescription();
-					}
-					else{
-						$this->formArray["propertyActualUse".($this->p+1)] = $plantsTrees->getActualUse();
-					}
+					//}
+					//else{
+					//	$this->formArray["propertyActualUse".($this->p+1)] = $plantsTrees->getActualUse();
+					//}
 
 					$this->formArray["propertyAdjMrktVal".($this->pl+1)] = $plantsTrees->getAdjustedMarketValue();
 					$this->formArray["level".($this->pl+1)] = $plantsTrees->getAssessmentLevel();
 					$this->formArray["assessedValue".($this->pl+1)] = $plantsTrees->getAssessedValue();
 					$this->formArray["propertyAdjMrktValTotal"] = $this->formArray["propertyAdjMrktValTotal"] + toFloat($plantsTrees->getAdjustedMarketValue());
 					$this->formArray["propertyTotal"] = $this->formArray["propertyTotal"] + toFloat($plantsTrees->getAssessedValue());
+
+
+					if ($summuse <> $plantsTreesActualUses->getDescription()) {
+						if ($summasv > 0) {
+							$summcount++;
+							$this->formArray["summstart"] -= 14;
+							$offset = $this->formArray["summstart"];
+
+							$summitems.= '<textitem xpos="55" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.'IMPROVEMENTS'
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="155" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="left">'
+											.htmlentities($summuse)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="405" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summadj,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="475" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summlvl,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<textitem xpos="545" ypos="'
+											.$offset
+											.'" font="Helvetica" size="8" align="right">'
+											.number_format($summasv,2)
+											.'</textitem>'."\r\n";
+							$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+						}
+						$summuse = $plantsTreesActualUses->getDescription();
+						$summlvl = (double)$plantsTrees->getAssessmentLevel();
+						$summadj = 0;
+						$summasv = 0;
+					}
+
+					$summadj += (double)$plantsTrees->getAdjustedMarketValue();
+					$summasv += (double)str_replace(",","",$plantsTrees->getAssessedValue());
+
 				}
 				$p++;
 				$this->pl++;
 			}
+
+			if ($markval > 0) {
+				$adjcount++;
+				$this->formArray["adjstart"] -= 16;
+				$offset = $this->formArray["adjstart"];
+
+				$adjitems.= '<textitem xpos="147" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($markval,2).'   (P)'
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="155" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.$adjfact
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="405" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($percadj)
+								.'%</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="475" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($valuadj,2)
+								.'</textitem>'."\r\n";
+				$adjitems.= '<textitem xpos="545" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($adjmark,2)
+								.'</textitem>'."\r\n";
+				$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+			}
+
+			if ($summasv > 0) {
+				$summcount++;
+				$this->formArray["summstart"] -= 14;
+				$offset = $this->formArray["summstart"];
+
+				$summitems.= '<textitem xpos="55" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.'IMPROVEMENTS'
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="155" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="left">'
+								.htmlentities($summuse)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="405" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summadj,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="475" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summlvl,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<textitem xpos="545" ypos="'
+								.$offset
+								.'" font="Helvetica" size="8" align="right">'
+								.number_format($summasv,2)
+								.'</textitem>'."\r\n";
+				$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+			}
 		}
+
+
+			for ($pp=$p; $pp < 14; $pp++) {
+					$this->formArray["plantstart"] -= 17;
+					$offset = $this->formArray["plantstart"];
+					$plantitems.= '<lineitem x1="50" y1="'.($offset-6).'" x2="550" y2="'.($offset-6).'">blurb</lineitem>';
+			}
+
+			for ($ll=$adjcount; $ll < 8; $ll++) {
+					$this->formArray["adjstart"] -= 16;
+					$offset = $this->formArray["adjstart"];
+					if($ll < 5) {
+						$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+					}
+			}
+
+			for ($ll=$summcount; $ll < 8; $ll++) {
+					$this->formArray["summstart"] -= 16;
+					$offset = $this->formArray["summstart"];
+					if($ll < 5) {
+						$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+					}
+			}
+
+			$this->formArray["adjcount"] += $adjcount;
+			$this->formArray["adjitems"] .= $adjitems;
+			$this->formArray["summitems"] .= $summitems;
+			$this->formArray["plantitems"] = $plantitems;
+		//}
 		$this->formArray["plantTotal"] = $plantTotal;
-		//inserted this code
 		$this->formArray["plantCount"] = $plantCount;
 	}
 
@@ -924,6 +1611,8 @@ class PrintLandFAAS{
 	
 	function Main(){
 		$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
+
+
 		if (!$xmlStr = $AFSDetails->getAFS($this->formArray["afsID"])){
 			exit("afs not found");
 		}
@@ -933,13 +1622,12 @@ class PrintLandFAAS{
 			}
 			else {
 				$afs = new AFS;
-				$afs->parseDomDocument($domDoc);
+ 		        $afs->parseDomDocument($domDoc);
 
 				$this->formArray["arpNumber"] = $afs->arpNumber;
 				$this->formArray["propertyIndexNumber"] = $afs->propertyIndexNumber;
 				$this->formArray["taxability"] = $afs->taxability;
 				$this->formArray["effectivity"] = $afs->effectivity;
-
 				$this->displayODAFS($this->formArray["afsID"]);
 
 				$this->displayTD($this->formArray["afsID"]);
@@ -947,21 +1635,23 @@ class PrintLandFAAS{
 				$landList = $afs->getLandArray();
 
 				if(count($landList)){
-					$this->displayLandList($landList);
+			        $this->displayLandList($landList);
 				}
 
 				$plantsTreesList = $afs->getPlantsTreesArray();
 
-				if(count($plantsTreesList)){
+//				if(count($plantsTreesList)){
 					$this->displayPlantsTreesList($plantsTreesList);
-				}
+//				}
 			}
 		}
 
 		$this->setForm();
-		
+
         $this->tpl->parse("templatePage", "rptsTemplate");
         $this->tpl->finish("templatePage");
+//		$this->tpl->p("templatePage");
+
 
 		$testpdf = new PDFWriter;
         $testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
@@ -971,7 +1661,6 @@ class PrintLandFAAS{
         else {
         	$testpdf->writePDF($name);
         }
-
 		//header("location: ".$testpdf->pdfPath);
 		exit;
 
