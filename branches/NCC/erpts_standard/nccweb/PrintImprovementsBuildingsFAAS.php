@@ -91,13 +91,14 @@ class PrintImprovementsBuildingsFAAS{
 			,"bldgCore1" => ""
 			,"addItems" => ""
 			,"subTotal" => ""
-
+			, "marketValue" => ""
 			,"adjustments" => ""
 			,"depreciationRate" => ""
 			,"subTotal2" => ""
 			,"depreciationRate" => ""
 
 			,"accumulatedDepreciation" => ""
+			,"depreciatedMarketValue" => ""
 
 			,"kind1" => ""
 			,"actualUse1" => ""
@@ -437,19 +438,17 @@ class PrintImprovementsBuildingsFAAS{
 					$this->formArray["totalBuildingArea"] = $improvementsBuildings->getTotalBuildingArea();
 					$this->formArray["numberOfStoreys"] = $improvementsBuildings->getNumberOfStoreys();
 					$this->formArray["cctNumber"] = $improvementsBuildings->getCctNumber();
-					//$this->formArray["bldgCore1"] = $improvementsBuildings->getBuildingCoreAndAdditionalItems();
-					$this->formArray["bldgCore1"] = number_format($improvementsBuildings->getUnitValue(),2);
-					$this->formArray["depMarketValue"] = $improvementsBuildings->getDepreciatedMarketValue();
-					$this->formArray["marketValue"] = number_format($improvementsBuildings->getMarketValue(),2);
-					$this->formArray["addItems"] = number_format($improvementsBuildings->getAddItems(),2);
+					$this->formArray["bldgCore1"] = $improvementsBuildings->getBuildingCoreAndAdditionalItems();
+					$this->formArray["addItems"] = "";
 					$this->formArray["subTotal"] = "";
 
-					$this->formArray["adjustments"] = number_format($improvementsBuildings->getMarketValue() + $improvementsBuildings->getAddItems(),2);
+					$this->formArray["adjustments"] = "";
 					$this->formArray["depreciationRate"] = $improvementsBuildings->getDepreciationRate();
 					$this->formArray["subTotal2"] = "";
 
 					$this->formArray["depreciationRate"] = $improvementsBuildings->getDepreciationRate();
 
+					$this->formArray["depreciatedMarketValue"] = $improvementsBuildings->getDepreciatedMarketValue();
 					$this->formArray["accumulatedDepreciation"] = $improvementsBuildings->getAccumulatedDepreciation();
 
 					if (is_a($improvementsBuildings->propertyAdministrator,Person)){
@@ -541,7 +540,7 @@ class PrintImprovementsBuildingsFAAS{
 						$this->formArray["actualUse".($i+1)] = $improvementsBuildings->getActualUse();
 					}
 
-					$this->formArray["depMarketValue".($i+1)] = $improvementsBuildings->getDepreciatedMarketValue();
+					$this->formArray["marketValue".($i+1)] = $improvementsBuildings->getMarketValue();
 					$this->formArray["assessmentLevel".($i+1)] = $improvementsBuildings->getAssessmentLevel();
 					$this->formArray["assessedValue".($i+1)] = $improvementsBuildings->getAssessedValue();
 
@@ -550,14 +549,6 @@ class PrintImprovementsBuildingsFAAS{
 
 				$i++;
 			}
-				for ($j=$i;$j<4;$j++){
-					$this->formArray["kind".($j+1)] = '';
-					$this->formArray["actualUse".($j+1)] = '';
-					$this->formArray["depMarketValue".($j+1)] = '';
-					$this->formArray["assessmentLevel".($j+1)] = '';
-					$this->formArray["assessedValue".($j+1)] = '';
-				}
-
 		}
 		$this->formArray["valAdjFacTotal"] = $valAdjFacTotal;
 		$this->formArray["propertyAdjMrktValTotal"] = $propertyAdjMrktValTotal;

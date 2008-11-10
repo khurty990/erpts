@@ -4,6 +4,8 @@ include_once("web/prepend.php");
 include_once("web/clibPDFWriter.php");
 
 include_once("assessor/Barangay.php");
+include_once("assessor/Province.php");
+include_once("assessor/ProvinceRecords.php");
 
 include_once("assessor/Address.php");
 include_once("assessor/Company.php");
@@ -85,6 +87,7 @@ class RPTOPDetails{
 		$this->formArray["ownerID"] = $ownerID;
 		$this->formArray["lguType"] = "";
 		$this->formArray["lguName"] = "";
+		$this->formArray["provinceName"] = "";
 		$this->formArray["ownerName"] = "";
 		$this->formArray["preparedBy"] = "";
 		$this->formArray["preparedByDesignation"] = "";
@@ -1212,11 +1215,11 @@ class RPTOPDetails{
 
 			$penaltyLUTArray = $this->getPenaltyLUTArray();
 
-			if($totalMonths >= count($penaltyLUTArray)){
+			if($totalMonths >= count($penaltyLUTArray)-1){
 				$penaltyPercentage = 0.72;
 			}
 			else{			
-				$penaltyPercentage = $penaltyLUTArray[$totalMonths];
+				$penaltyPercentage = $penaltyLUTArray[$totalMonths-1];
 			}
 
 			$penalty = $due->getTaxDue() * $penaltyPercentage;
@@ -1252,6 +1255,18 @@ class RPTOPDetails{
 				$this->formArray["lguType"] = strtoupper($erptsSettings->getLguType());
 				$this->tpl->set_var("lguName", $this->formArray["lguName"]);
 				$this->tpl->set_var("lguType", $this->formArray["lguType"]);
+
+				if(strtolower($this->formArray["lguType"])=="municipality"){
+					$provinceRecords = new ProvinceRecords;
+					$condition = "WHERE status='active' ORDER BY provinceID ASC LIMIT 1";
+					if($provinceRecords->selectRecords($condition)){
+						if(is_array($provinceRecords->arrayList)){
+							$province = $provinceRecords->arrayList[0];
+							$this->formArray["provinceName"] = strtoupper($province->getDescription());
+							$this->tpl->set_var("provinceName", strtoupper($this->formArray["provinceName"]));
+						}
+					}
+				}
 			}
 		}
 	}
@@ -1926,8 +1941,80 @@ class RPTOPDetails{
 		if(is_array($this->tdArrayList)){
 			ksort($this->tdArrayList);
 			reset($this->tdArrayList);
-			$this->tpl->set_block("rptsTemplate", "TDList", "TDListBlock");
+//			$this->tpl->set_block("rptsTemplate", "TDList", "TDListBlock");
+			$this->tpl->set_block("rptsTemplate", "Page", "PageBlock");
+			$this->tpl->set_block("Page", "TDList", "TDListBlock");
+			$this->tpl->set_block("Page", "TotalDue", "TotalDueBlock");
 			$this->formArray["totalTaxDue"] = 0;
+
+			$maxRows = 20;
+			$numRows = count($this->tdArrayList);
+			$numPages = ceil($numRows/$maxRows);
+			$rowStr = "";
+			$j = 0;
+			$page = 0;
+			foreach($this->tdArrayList as $tdRecord){
+				++$j;
+				if ($j>$maxRows) {
+					$this->formArray["tdYPosValue"] = "564";
+					$this->tpl->set_var("TDListBlock", $rowStr);
+					$this->tpl->set_var("PageNumber", ++$page);
+					if ($page==$numPages)
+						$this->tpl->set_var("TotalDueBlock", $this->tpl->subst("TotalDue"));
+					else
+						$this->tpl->set_var("TotalDueBlock", "");
+					$this->tpl->parse("PageBlock", "Page", true);
+					$rowStr = "";
+					$j = 1;
+				}
+
+				$this->tpl->set_var("arpNumber", $tdRecord["arpNumber"]);
+				$this->tpl->set_var("class", $tdRecord["class"]);
+				$this->tpl->set_var("location", $tdRecord["location"]);
+				$this->tpl->set_var("year", $tdRecord["year"]);
+				$this->tpl->set_var("taxDue", formatCurrency($tdRecord["taxDue"]));
+				$this->tpl->set_var("tdYPos", $this->formArray["tdYPosValue"]);
+				$this->formArray["tdYPosValue"]-=15;
+				$this->formArray["totalTaxDue"] += $tdRecord["taxDue"];
+				$rowStr .= $this->tpl->subst("TDList");
+			}
+			$this->tpl->set_var("TDListBlock", $rowStr);
+			$this->tpl->set_var("PageNumber", ++$page);
+			if ($page==$numPages)
+				$this->tpl->set_var("TotalDueBlock", $this->tpl->subst("TotalDue"));
+			else
+				$this->tpl->set_var("TotalDueBlock", "");
+			$this->tpl->parse("PageBlock", "Page", true);
+//			echo $this->tpl->subst("Page");
+
+/*
+			$maxRows = 5;
+			$numRows = count($this->tdArrayList);
+			$numPages = ceil($numRows/$maxRows);
+			$tdRecord = current($this->tdArrayList);
+			for ($page=0; $page<$numPages; ++$page) {
+				$rowStr = "";
+				$this->formArray["tdYPosValue"] = "564";
+				for ($currRow=0; $currRow<$maxRows; ++$currRow) {
+//					$tdRecord = $this->tdArrayList[($page*$maxRows)+$currRow];
+
+					$this->tpl->set_var("arpNumber", $tdRecord["arpNumber"]);
+					$this->tpl->set_var("class", $tdRecord["class"]);
+					$this->tpl->set_var("location", $tdRecord["location"]);
+					$this->tpl->set_var("year", $tdRecord["year"]);
+					$this->tpl->set_var("taxDue", formatCurrency($tdRecord["taxDue"]));
+					$this->tpl->set_var("tdYPos", $this->formArray["tdYPosValue"]);
+					$this->formArray["tdYPosValue"]-=15;
+					$rowStr .= $this->tpl->subst("TDList");
+
+					$this->formArray["totalTaxDue"] += $tdRecord["taxDue"];
+					$tdRecord = next($this->tdArrayList);
+				}
+				echo $rowStr;
+				$this->tpl->set_var("TDListBlock", $rowStr);
+				$this->tpl->set_var("PageNum", $page+1);
+				$this->tpl->parse("PageBlock", "Page", true);
+			}
 
 			foreach($this->tdArrayList as $tdRecord){
 				$this->tpl->set_var("arpNumber", $tdRecord["arpNumber"]);
@@ -1941,6 +2028,7 @@ class RPTOPDetails{
 				$this->tpl->parse("TDListBlock", "TDList", true);
 				$this->formArray["tdYPosValue"]-=15;
 			}
+*/
 		}
 		
 		$this->setForm();
@@ -1957,6 +2045,8 @@ class RPTOPDetails{
 		$this->tpl->finish("templatePage");
 		$this->tpl->p("templatePage");
 		*/
+
+		$this->tpl->set_var("today", date("F j, Y",strtotime($this->now)));
 
 		$this->setLguDetails();
 

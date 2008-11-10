@@ -142,41 +142,22 @@
 	
    </page>
    <page height="784" width="584" number="2" orientation="0">
-    <textitem xpos="55" ypos="737" font="Helvetica-Bold" size="8" align="left">Building Core:</textitem>
-	<textitem xpos="200" ypos="737" font="Helvetica" size="9" align="right">{bldgCore1}</textitem>
-	<lineitem x1="50" y1="730" x2="325" y2="730">blurb</lineitem>
-	<textitem xpos="200" ypos="717" font="Helvetica" size="9" align="right">{marketValue}</textitem>
-	<textitem xpos="230" ypos="697" font="Helvetica-Bold" size="8" align="left">Sub-Total:</textitem>
-
-	<textitem xpos="330" ypos="737" font="Helvetica-Bold" size="8" align="left">Additional Items:</textitem>
-	<textitem xpos="460" ypos="717" font="Helvetica" size="9" align="right">{addItems}</textitem>
-	<textitem xpos="460" ypos="697" font="Helvetica-Bold" size="8" align="left">Sub-Total:</textitem>
+    <textitem xpos="55" ypos="737" font="Helvetica-Bold" size="9" align="left">Building Core:</textitem>
+	<textitem xpos="55" ypos="717" font="Helvetica" size="9" align="left">{bldgCore1}</textitem>
+	<textitem xpos="330" ypos="737" font="Helvetica-Bold" size="9" align="left">Additional Items:</textitem>
+	<textitem xpos="330" ypos="717" font="Helvetica" size="9" align="left">{addItems}</textitem>
+	<textitem xpos="430" ypos="697" font="Helvetica-Bold" size="9" align="left">Sub-Total:</textitem>
 	<textitem xpos="525" ypos="697" font="Helvetica" size="9" align="right">{subTotal}</textitem>
-	<textitem xpos="55" ypos="680" font="Helvetica-Bold" size="8" align="left">Adjustments:</textitem>
-	<textitem xpos="200" ypos="660" font="Helvetica" size="9" align="right">{adjustments}</textitem>
-	<textitem xpos="230" ypos="660" font="Helvetica-Bold" size="8" align="left">Sub-Total:</textitem>
-	<textitem xpos="230" ypos="650" font="Helvetica-Bold" size="8" align="left">Total:</textitem>
-
-	<lineitem x1="50" y1="677" x2="550" y2="677">blurb</lineitem>
-	<lineitem x1="50" y1="645" x2="550" y2="645">blurb</lineitem>
-
-	<textitem xpos="55" ypos="632" font="Helvetica-Bold" size="8" align="left">Depreciation Rate:</textitem>
-	<textitem xpos="200" ypos="632" font="Helvetica" size="9" align="right">{depreciationRate}%</textitem>
-	<textitem xpos="230" ypos="657" font="Helvetica" size="9" align="right">{subTotal2}</textitem>
-<!--
+	<textitem xpos="55" ypos="677" font="Helvetica-Bold" size="9" align="left">Adjustments:</textitem>
+	<textitem xpos="55" ypos="657" font="Helvetica" size="9" align="left">{adjustments}</textitem>
+	<textitem xpos="55" ypos="637" font="Helvetica-Bold" size="9" align="left">Depreciation Rate:</textitem>
+	<textitem xpos="317" ypos="637" font="Helvetica" size="9" align="right">{depreciationRate}</textitem>
+	<textitem xpos="430" ypos="657" font="Helvetica-Bold" size="9" align="left">Sub-Total:</textitem>
+	<textitem xpos="525" ypos="657" font="Helvetica" size="9" align="right">{subTotal2}</textitem>
 	<textitem xpos="330" ypos="637" font="Helvetica-Bold" size="9" align="left">Depreciation Rate:</textitem>
-	<textitem xpos="525" ypos="637" font="Helvetica" size="9" align="right">{depreciationRate}%</textitem>
--->
-	<textitem xpos="55" ypos="617" font="Helvetica-Bold" size="8" align="left">Accumulated Depreciation:</textitem>
-	<textitem xpos="230" ypos="617" font="Helvetica" size="9" align="right">{accumulatedDepreciation}</textitem>
-
-	<textitem xpos="330" ypos="680" font="Helvetica-Bold" size="8" align="left">Adjustments (Include Depreciation):</textitem>
-	<textitem xpos="460" ypos="660" font="Helvetica-Bold" size="8" align="left">Sub-Total:</textitem>
-	<textitem xpos="460" ypos="650" font="Helvetica-Bold" size="8" align="left">Total:</textitem>
-
-	<textitem xpos="330" ypos="632" font="Helvetica-Bold" size="8" align="left">Depreciated Market Value:</textitem>
-	<textitem xpos="460" ypos="617" font="Helvetica" size="9" align="right">{depMarketValue}</textitem>
-	
+	<textitem xpos="525" ypos="637" font="Helvetica" size="9" align="right">{depreciationRate}</textitem>
+	<textitem xpos="55" ypos="617" font="Helvetica-Bold" size="9" align="left">Accumulated Depreciation:</textitem>
+	<textitem xpos="317" ypos="617" font="Helvetica" size="9" align="right">{accumulatedDepreciation}</textitem>
 	<textitem xpos="55" ypos="597" font="Helvetica-Bold" size="9" align="left">PROPERTY ASSESSMENT SUMMARY:</textitem>
     
 	<textitem xpos="115" ypos="567" font="Helvetica-Bold" size="9" align="center">KIND:</textitem>
@@ -189,22 +170,22 @@
 	
 	<textitem xpos="55" ypos="537" font="Helvetica" size="9" align="left">{kind1}</textitem>
 	<textitem xpos="185" ypos="537" font="Helvetica" size="9" align="left">{actualUse1}</textitem>
-	<textitem xpos="415" ypos="537" font="Helvetica" size="9" align="right">{depMarketValue1}</textitem>
+	<textitem xpos="415" ypos="537" font="Helvetica" size="9" align="right">{marketValue1}</textitem>
 	<textitem xpos="485" ypos="537" font="Helvetica" size="9" align="right">{assessmentLevel1}</textitem>
 	<textitem xpos="545" ypos="537" font="Helvetica" size="" align="right">{assessedValue1}</textitem>
 	<textitem xpos="55" ypos="517" font="Helvetica" size="9" align="left">{kind2}</textitem>
 	<textitem xpos="185" ypos="517" font="Helvetica" size="9" align="left">{actualUse2}</textitem>
-	<textitem xpos="415" ypos="517" font="Helvetica" size="9" align="right">{depMarketValue2}</textitem>
+	<textitem xpos="415" ypos="517" font="Helvetica" size="9" align="right">{marketValue2}</textitem>
 	<textitem xpos="485" ypos="517" font="Helvetica" size="9" align="right">{assessmentLevel2}</textitem>
 	<textitem xpos="545" ypos="517" font="Helvetica" size="9" align="right">{assessedValue2}</textitem>
 	<textitem xpos="55" ypos="497" font="Helvetica" size="9" align="left">{kind3}</textitem>
 	<textitem xpos="185" ypos="497" font="Helvetica" size="9" align="left">{actualUse3}</textitem>
-	<textitem xpos="415" ypos="497" font="Helvetica" size="9" align="right">{depMarketValue3}</textitem>
+	<textitem xpos="415" ypos="497" font="Helvetica" size="9" align="right">{marketValue3}</textitem>
 	<textitem xpos="485" ypos="497" font="Helvetica" size="9" align="right">{assessmentLevel3}</textitem>
 	<textitem xpos="545" ypos="497" font="Helvetica" size="9" align="right">{assessedValue3}</textitem>
 	<textitem xpos="55" ypos="477" font="Helvetica" size="9" align="left">{kind4}</textitem>
 	<textitem xpos="185" ypos="477" font="Helvetica" size="9" align="left">{actualUse4}</textitem>
-	<textitem xpos="415" ypos="477" font="Helvetica" size="9" align="right">{depMarketValue4}</textitem>
+	<textitem xpos="415" ypos="477" font="Helvetica" size="9" align="right">{marketValue4}</textitem>
 	<textitem xpos="485" ypos="477" font="Helvetica" size="9" align="right">{assessmentLevel4}</textitem>
 	<textitem xpos="545" ypos="477" font="Helvetica" size="9" align="right">{assessedValue4}</textitem>
 	<textitem xpos="55" ypos="457" font="Helvetica-Bold" size="9" align="left">TOTAL:</textitem>
@@ -232,9 +213,8 @@
 	<lineitem x1="50" y1="307" x2="325" y2="307">blurb</lineitem>
 	<lineitem x1="350" y1="307" x2="450" y2="307">blurb</lineitem>
 	<lineitem x1="490" y1="307" x2="550" y2="307">blurb</lineitem>
-	<textitem xpos="150" ypos="300" font="Helvetica-Bold" size="7" align="left">
-	Municipal Assessor                          Date</textitem>
-	<textitem xpos="408" ypos="300" font="Helvetica-Bold" size="7" align="center">Provincial Assessor</textitem>
+	<textitem xpos="252" ypos="300" font="Helvetica-Bold" size="7" align="center">Date</textitem>
+	<textitem xpos="408" ypos="300" font="Helvetica-Bold" size="7" align="center">City/Mun/Prov Assessor-Designate</textitem>
 	<textitem xpos="520" ypos="300" font="Helvetica-Bold" size="7" align="center">Date</textitem>
 	
 	<textitem xpos="55" ypos="277" font="Helvetica-Bold" size="9" align="left">MEMORANDA:</textitem>
@@ -268,6 +248,7 @@
 	
 	<lineitem x1="50" y1="750" x2="550" y2="750">blurb</lineitem>
 	<lineitem x1="50" y1="690" x2="550" y2="690">blurb</lineitem>
+	<lineitem x1="50" y1="630" x2="550" y2="630">blurb</lineitem>
 	<lineitem x1="50" y1="610" x2="550" y2="610">blurb</lineitem>
 	<lineitem x1="50" y1="590" x2="550" y2="590">blurb</lineitem>
 	<lineitem x1="50" y1="550" x2="550" y2="550">blurb</lineitem>
