@@ -378,7 +378,8 @@ $this->formatCurrency("assessmentLevel8");
 
 					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["propertyMarketValue".$p]);
 					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
-
+					//Inserted this code September 16, 2008
+					$this->formArray["area".$p] = $improvementsBuildings->getTotalBuildingArea();
 					$this->formArray["p"]++;
 				}
 			}
@@ -419,7 +420,8 @@ $this->formatCurrency("assessmentLevel8");
 
 					$this->formArray["kind".$p] = $machineriesClassesDescription;
 					$this->formArray["classification".$p] = $machineriesActualUsesDescription;
-
+					//inserted September 17, 2008
+					$this->formArray["propertyActualUse".$p] = $machineriesActualUsesDescription;
 					$this->formArray["propertyMarketValue".$p] = un_number_format($machineries->getAdjustedMarketValue());
 					$this->formArray["assessmentLevel".$p] = un_number_format($machineries->getAssessmentLevel());
 					$this->formArray["assessedValue".$p] = un_number_format($machineries->getAssessedValue());

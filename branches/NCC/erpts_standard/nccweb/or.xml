@@ -20,7 +20,7 @@ COPY)</textitem>-->
           <textitem xpos="550" ypos="310" font="Times-Bold" size="24" >No. {orNum}</textitem>
           <!-- top right corner to place page number
 		     <textitem xpos="698" ypos="322" font="Times-Bold" size="9" align="right">{receiptPageNumber}</textitem>
-		  -->
+	  code by renonj   -->
           <!--<textitem xpos="688" ypos="306" font="Times-Bold" size="16" >T</textitem>-->
           <textitem xpos="87" ypos="270" font="Times-Bold" size="7" >Municipality/Province</textitem>
           <textitem xpos="87" ypos="256" font="Times-Bold" size="11" >{province}</textitem>
@@ -167,7 +167,7 @@ year</textitem>
           <textitem xpos="650" ypos="150" font="Times-Bold" size="8" align="left">{grandTotal2}</textitem>
 
           <textbox x1="94" y1="138" x2="173" y2="125" font="Arial" size="7">{lotAddress3}</textbox>
-<!--          <textitem xpos="180" ypos="138" font="Times" size="6" align="left">{blockNumber3}</textitem> -->
+<!-- <textitem xpos="180" ypos="138" font="Times" size="6" align="left">{blockNumber3}</textitem> -->
           <textitem xpos="200" ypos="132" font="Arial" size="7" align="center">{blockNumber3}{landClass3}</textitem>
           <textitem xpos="255" ypos="138" font="Times-Bold" size="8" align="center">{idleStatus3}{tdNum3}</textitem>
           <textitem xpos="255" ypos="132" font="Arial" size="7" align="center">{dueDate3}</textitem>
@@ -182,7 +182,7 @@ year</textitem>
           <textitem xpos="650" ypos="135" font="Times-Bold" size="8" align="left">{grandTotal3}</textitem>
 
           <textbox x1="94" y1="123" x2="173" y2="110" font="Arial" size="7">{lotAddress4}</textbox>
-<!--          <textitem xpos="180" ypos="123" font="Times" size="6" align="left">{blockNumber4}</textitem> -->
+<!-- <textitem xpos="180" ypos="123" font="Times" size="6" align="left">{blockNumber4}</textitem> -->
           <textitem xpos="200" ypos="117" font="Arial" size="7" align="center">{blockNumber4}{landClass4}</textitem>
           <textitem xpos="255" ypos="123" font="Times-Bold" size="8" align="center">{idleStatus4}{tdNum4}</textitem>
           <textitem xpos="255" ypos="117" font="Arial" size="7" align="center">{dueDate4}</textitem>
@@ -197,7 +197,7 @@ year</textitem>
           <textitem xpos="650" ypos="120" font="Times-Bold" size="8" align="left">{grandTotal4}</textitem>
 
           <textbox x1="94" y1="108" x2="173" y2="95" font="Arial" size="7">{lotAddress5}</textbox>
-<!--          <textitem xpos="180" ypos="108" font="Times" size="6" align="left">{blockNumber5}</textitem> -->
+<!--<textitem xpos="180" ypos="108" font="Times" size="6" align="left">{blockNumber5}</textitem> -->
           <textitem xpos="200" ypos="102" font="Arial" size="7" align="center">{blockNumber5}{landClass5}</textitem>
           <textitem xpos="255" ypos="108" font="Times-Bold" size="8" align="center">{idleStatus5}{tdNum5}</textitem>
           <textitem xpos="255" ypos="102" font="Arial" size="7" align="center">{dueDate5}</textitem>
@@ -212,7 +212,7 @@ year</textitem>
           <textitem xpos="650" ypos="105" font="Times-Bold" size="8" align="left">{grandTotal5}</textitem>
 
           <textbox x1="94" y1="93" x2="173" y2="80" font="Arial" size="7">{lotAddress6}</textbox>
-<!--          <textitem xpos="180" ypos="93" font="Times" size="6" align="left">{blockNumber6}</textitem> -->
+<!--<textitem xpos="180" ypos="93" font="Times" size="6" align="left">{blockNumber6}</textitem> -->
           <textitem xpos="200" ypos="87" font="Arial" size="7" align="center">{blockNumber6}{landClass6}</textitem>
           <textitem xpos="255" ypos="93" font="Times-Bold" size="8" align="center">{idleStatus6}{tdNum6}</textitem>
           <textitem xpos="255" ypos="87" font="Arial" size="7" align="center">{dueDate6}</textitem>

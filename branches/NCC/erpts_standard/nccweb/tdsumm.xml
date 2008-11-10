@@ -7,7 +7,8 @@
 
 	<!---Begin of Inserted code -->
            <image xpos="110" ypos="718" width="65" height="60" src="images/logoprovince.jpg"></image>
-        <!-- End of Inserted Code-->
+           <image xpos="425" ypos="718" width="65" height="60" src="images/logo-ginatilan.jpg"></image>
+	<!-- End of Inserted Code-->
 
 
 
@@ -99,7 +100,9 @@
 -->
 
 		<textitem xpos="20" ypos="465" font="Helvetica-Bold" size="10" align="left">KIND OF PROPERTY ASSESSED</textitem>
+		
 		<textitem xpos="50" ypos="450" font="Helvetica-Bold" size="10" align="left">LAND</textitem>
+		{propertyKind1}
 		<textitem xpos="50" ypos="427" font="Helvetica-Bold" size="10" align="left">BUILDING</textitem>
 		<textitem xpos="320" ypos="450" font="Helvetica-Bold" size="10" align="left">MACHINERY</textitem>
 		<textitem xpos="320" ypos="427" font="Helvetica-Bold" size="10" align="left">OTHERS:</textitem>
@@ -146,28 +149,30 @@
                 <textitem xpos="472" ypos="325" font="Helvetica" size="9" align="right">{propertyAssessmentLevel4}%</textitem>
                 <textitem xpos="566" ypos="325" font="Helvetica" size="9" align="right">{propertyAssessedValue4}</textitem>^M                ^M
                                 <!-- inserted code from argao 2page td.xml ends here -->^M
-
-  <!--
-	<textitem xpos="40" ypos="452" font="Helvetica" size="10" align="left">{kind1}</textitem>
-	<textitem xpos="146" ypos="452" font="Helvetica" size="9" align="left">{classification1}</textitem>
+{propertyKind1}
+{propertyKind2}
+{propertyKind3}
+{propertyKind4}
+        <!--<textitem xpos="26" ypos="449" font="Helvetica" size="11" align="left">{propertyKind1}</textitem>-->
+	<!--<textitem xpos="146" ypos="452" font="Helvetica" size="9" align="left">{classification1}</textitem>
 	<textitem xpos="337" ypos="452" font="Helvetica" size="10" align="right">{marketValue1}</textitem>
 	<textitem xpos="358" ypos="452" font="Helvetica" size="10" align="left">{assessmentLevel1}</textitem>
-	<textitem xpos="558" ypos="452" font="Helvetica" size="10" align="right">{assessedValue1}</textitem>
+	<textitem xpos="558" ypos="452" font="Helvetica" size="10" align="right">{assessedValue1}</textitem>-->
 
-	<textitem xpos="40" ypos="441" font="Helvetica" size="10" align="left">{kind2}</textitem>
-	<textitem xpos="146" ypos="441" font="Helvetica" size="9" align="left">{classification2}</textitem>
+       <!--<textitem xpos="26" ypos="427" font="Helvetica" size="10" align="left">{propertyKind2}</textitem>-->
+	<!--<textitem xpos="146" ypos="441" font="Helvetica" size="9" align="left">{classification2}</textitem>
 	<textitem xpos="337" ypos="441" font="Helvetica" size="10" align="right">{marketValue2}</textitem>
 	<textitem xpos="358" ypos="441" font="Helvetica" size="10" align="left">{assessmentLevel2}</textitem>
 	<textitem xpos="558" ypos="441" font="Helvetica" size="10" align="right">{assessedValue2}</textitem>
 
-	<textitem xpos="40" ypos="430" font="Helvetica" size="10" align="left">{kind3}</textitem>
+	<textitem xpos="40" ypos="430" font="Helvetica" size="10" align="left">{propertyKind3}</textitem>
 	<textitem xpos="146" ypos="430" font="Helvetica" size="9" align="left">{classification3}</textitem>
 	<textitem xpos="337" ypos="430" font="Helvetica" size="10" align="right">{marketValue3}</textitem>
 	<textitem xpos="358" ypos="430" font="Helvetica" size="10" align="left">{assessmentLevel3}</textitem>
 	<textitem xpos="558" ypos="430" font="Helvetica" size="10" align="right">{assessedValue3}</textitem>
 
 
-	<textitem xpos="40" ypos="419" font="Helvetica" size="10" align="left">{kind4}</textitem>
+	<textitem xpos="40" ypos="419" font="Helvetica" size="10" align="left">{propertyKind4}</textitem>
 	<textitem xpos="146" ypos="419" font="Helvetica" size="9" align="left">{classification4}</textitem>
 	<textitem xpos="337" ypos="419" font="Helvetica" size="10" align="right">{marketValue4}</textitem>
 	<textitem xpos="358" ypos="419" font="Helvetica" size="10" align="left">{assessmentLevel4}</textitem>
