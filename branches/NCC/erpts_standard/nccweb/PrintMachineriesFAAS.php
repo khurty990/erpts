@@ -22,7 +22,7 @@ include_once("assessor/ODHistoryRecords.php");
 # Define Interface Class
 #####################################
 class PrintMachineriesFAAS{
-	
+
 	var $tpl;
 	var $formArray;
 	function PrintMachineriesFAAS($http_post_vars,$sess,$odID,$ownerID,$afsID,$print){
@@ -31,7 +31,7 @@ class PrintMachineriesFAAS{
 
 		$this->tpl->set_file("rptsTemplate", "machfaas.xml") ;
 		$this->tpl->set_var("TITLE", "Print Machineries FAAS");
-		
+
        	$this->formArray = array(
 			"arpNumber" => ""
 			,"propertyIndexNumber" => ""
@@ -365,7 +365,7 @@ class PrintMachineriesFAAS{
 		$this->formArray["odID"] = $odID;
 		$this->formArray["ownerID"] = $ownerID;
 		$this->formArray["afsID"] = $afsID;
-        
+
 		$this->formArray["propertyID"] = $propertyID;
         $this->formArray["propertyType"] = $propertyType;
 		$this->formArray["print"] = $print;
@@ -374,13 +374,13 @@ class PrintMachineriesFAAS{
 			$this->formArray[$key] = $value;
 		}
 	}
-	
+
 	function formatCurrency($key){
 		if($this->formArray[$key]!=""){
 			$this->formArray[$key] = number_format(toFloat($this->formArray[$key]), 2, ".", ",");
 		}
 	}
-	
+
 	function setForm(){
 		$this->formatCurrency("totAcqCst");
 		$this->formatCurrency("totOthers");
@@ -418,7 +418,7 @@ class PrintMachineriesFAAS{
 			else {
 				$td = new TD;
 				$td->parseDomDocument($domDoc);
-				
+
 				$this->formArray["previousOwner"] = $td->getPreviousOwner();
 				$this->formArray["previousAssessedValue"] = $td->getPreviousAssessedValue();
 			}
@@ -582,7 +582,7 @@ class PrintMachineriesFAAS{
 
 						// NCC Modification checked and implemented by K2 : November 10, 2005
 						// details:
-						//		commented out line 585, added line 586 
+						//		commented out line 585, added line 586
 						//		changed "city" to "municipality"
 
 						// $this->formArray["city"] = $od->locationAddress->getMunicipalityCity();
@@ -604,7 +604,7 @@ class PrintMachineriesFAAS{
 							$this->displayOwnerList($domDoc);
 						}
 					}
-				}	
+				}
 			}
 		}
 	}
@@ -647,7 +647,7 @@ class PrintMachineriesFAAS{
 							if($address1!="")
 								$address1 .= ", ";
 							$address1.= $machineries->propertyAdministrator->addressArray[0]->getBarangay();
-							
+
 							$address2 = $machineries->propertyAdministrator->addressArray[0]->getDistrict();
 							if($address2!="")
 								$address2 .= ", ";
@@ -814,7 +814,7 @@ class PrintMachineriesFAAS{
 		}
 
 		$this->setForm();
-		
+
         $this->tpl->parse("templatePage", "rptsTemplate");
         $this->tpl->finish("templatePage");
 
@@ -828,7 +828,7 @@ class PrintMachineriesFAAS{
         }
         else {
         	$testpdf->writePDF($name);
-        }		
+        }
 //		header("location: ".$testpdf->pdfPath);
 		exit;
 
