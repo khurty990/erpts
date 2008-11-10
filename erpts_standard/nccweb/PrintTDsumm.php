@@ -50,6 +50,7 @@ class TDDetails{
 			, "Address" => ""
 			, "areaOfGroundFloor" => ""
                         , "unit" => ""			
+			, "propertyKind"=> ""
 			, "administrator" => ""
 			, "adminAddress" => ""
 			, "location" => ""
@@ -682,7 +683,7 @@ class TDDetails{
 			$nFindingsTotalArea = 0;
 			$lTotalMarketValue = 0;
 			$l2TotalMarketValue = 0;
-
+			$propertyKind = '';
 			$lTotalAdjMarketValue = 0;
 			$lTotalValueAdjustment = 0;
 
@@ -955,7 +956,8 @@ class TDDetails{
 			$i = 0;
 			$mTotalMarketValue = 0;
 			foreach ($machineriesList as $key => $machineries){
-				// kind
+				// k/ind
+
 				$machineriesClasses = new MachineriesClasses;
 				if(is_numeric($machineries->getKind())){
 					$machineriesClasses->selectRecord($machineries->getKind());
@@ -1016,6 +1018,7 @@ class TDDetails{
 		$swornLandTotal = 0;
 		$swornImprovementTotal = 0;
 		$swornOverallTotal = 0;
+		//$propertyKind = '';
 		$i = 1;
 		$flag = 0;
 		$counter = 0;
@@ -1095,7 +1098,18 @@ $landActualUsesCode =="IND" || $landActualUsesCode =="MI" || $landActualUsesCode
 				$this->formArray["propertyActualUse".($i)] = "Agricultural";
 						}
 			
-			$this->formArray["propertyKind".($i)] = "Land";
+			$this->formArray["propertyKind".($i)] = "X";
+			//inserted June 13, 2008
+			
+		       $propertyKind.= '<textitem xpos="26" ypos="449' .$offset 
+                                                                        .'" font="Helvetica" size="11" align="left">'
+                                                                        .'</textitem>'."\r\n";
+			//$landitems.= '<textitem xpos="297" ypos="'
+                        //                                                .$offset
+                        //                                                .'" font="Helvetica" size="8" align="right">'
+                         //                                               .$runArea
+                          //                                              .'</textitem>'."\r\n";
+			
 			//inserted May 31, 2008
 			$this->formArray["classification".($i)] = $landClassesDescription;
 			$this->formArray["propertyActualUse".($i)] = $landActualUsesDescription;
@@ -1151,7 +1165,7 @@ $landActualUsesCode =="IND" || $landActualUsesCode =="MI" || $landActualUsesCode
 				//$i++;
 				}
 			}
-			$this->formArray["propertyKind".($i)] = "PlantTrees";
+			$this->formArray["propertyKind".($i)] = "X";
 			//inserted May 31, 2008
 			$this->formArray["classification".($i)] = $plantsTreesClassesDescription;
 			$this->formArray["propertyActualUse".($i)] = $plantsTreesActualUsesDescription;
@@ -1210,7 +1224,11 @@ $landActualUsesCode =="IND" || $landActualUsesCode =="MI" || $landActualUsesCode
 		// $i++;
 				}
 			}
-		$this->formArray["propertyKind".($i)] = "ImprovementsBuildings";
+		$this->formArray["propertyKind".($i)] = "X";
+		$propertyKind.= '<textitem xpos="26" ypos="427' .$offset
+                                                                        .'" font="Helvetica" size="11" align="left">'
+                                                                        .'</textitem>'."\r\n";
+
 		//Inserted May 31, 2008
 		$this->formArray["classification".($i)] = $improvementsBuildingsClassesDescription;
 		$this->formArray["propertyActualUse".($i)] = $improvementsBuildingsActualUsesDescription;
@@ -1268,7 +1286,7 @@ $landActualUsesCode =="IND" || $landActualUsesCode =="MI" || $landActualUsesCode
 		//			$i++;
 				}
 			}
-		$this->formArray["propertyKind".($i)] ="Machineries";
+		$this->formArray["propertyKind".($i)] ="X";
 		$this->formArray["classification".($i)] = $machineriesClassesDescription;
 		$this->formArray["propertyActualUse".($i)] =$machineriesActualUsesDescription;
 		$this->formArray["propertyMarketValue".($i)] =$nMachineriesTotalAdjustedMarketValue;
