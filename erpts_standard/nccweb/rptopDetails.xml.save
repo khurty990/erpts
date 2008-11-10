@@ -119,9 +119,9 @@
 		<textitem xpos="108.5" ypos="319.5" font="Helvetica" size="9" align="left">{pin1a}</textitem>
 		<textitem xpos="108.5" ypos="311.75" font="Helvetica" size="9" align="left">{pin1b}</textitem>
 
-		<textitem xpos="172" ypos="314" font="Helvetica" size="8" align="left">{location1}</textitem>
-		<textitem xpos="172" ypos="319.5" font="Helvetica" size="8" align="left">{location1a}</textitem>
-		<textitem xpos="172" ypos="311.75" font="Helvetica" size="8" align="left">{location1b}</textitem>
+		<textitem xpos="172" ypos="314" font="Helvetica" size="9.5" align="left">{location1}</textitem>
+		<textitem xpos="172" ypos="319.5" font="Helvetica" size="9" align="left">{location1a}</textitem>
+		<textitem xpos="172" ypos="311.75" font="Helvetica" size="9" align="left">{location1b}</textitem>
 
 		<textitem xpos="299" ypos="314" font="Helvetica" size="9.5" align="left">{classification1}</textitem>
 		<textitem xpos="352.5" ypos="319.5" font="Helvetica" size="9.5" align="left">{area1}</textitem>
@@ -140,9 +140,9 @@
 		<textitem xpos="108.5" ypos="301.5" font="Helvetica" size="9" align="left">{pin2a}</textitem>
 		<textitem xpos="108.5" ypos="293.75" font="Helvetica" size="9" align="left">{pin2b}</textitem>
 
-		<textitem xpos="172" ypos="296" font="Helvetica" size="8" align="left">{location2}</textitem>
-		<textitem xpos="172" ypos="301.5" font="Helvetica" size="8" align="left">{location2a}</textitem>
-		<textitem xpos="172" ypos="293.75" font="Helvetica" size="8" align="left">{location2b}</textitem>
+		<textitem xpos="172" ypos="296" font="Helvetica" size="9.5" align="left">{location2}</textitem>
+		<textitem xpos="172" ypos="301.5" font="Helvetica" size="9" align="left">{location2a}</textitem>
+		<textitem xpos="172" ypos="293.75" font="Helvetica" size="9" align="left">{location2b}</textitem>
 
 		<textitem xpos="299" ypos="296" font="Helvetica" size="9.5" align="left">{classification2}</textitem>
 		<textitem xpos="352.5" ypos="301.5" font="Helvetica" size="9.5" align="left">{area2}</textitem>
@@ -161,9 +161,9 @@
 		<textitem xpos="108.5" ypos="283.5" font="Helvetica" size="9" align="left">{pin3a}</textitem>
 		<textitem xpos="108.5" ypos="275.75" font="Helvetica" size="9" align="left">{pin3b}</textitem>
 
-		<textitem xpos="172" ypos="278" font="Helvetica" size="8" align="left">{location3}</textitem>
-		<textitem xpos="172" ypos="283.5" font="Helvetica" size="8" align="left">{location3a}</textitem>
-		<textitem xpos="172" ypos="275.75" font="Helvetica" size="8" align="left">{location3b}</textitem>
+		<textitem xpos="172" ypos="278" font="Helvetica" size="9.5" align="left">{location3}</textitem>
+		<textitem xpos="172" ypos="283.5" font="Helvetica" size="9" align="left">{location3a}</textitem>
+		<textitem xpos="172" ypos="275.75" font="Helvetica" size="9" align="left">{location3b}</textitem>
 
 		<textitem xpos="299" ypos="278" font="Helvetica" size="9.5" align="left">{classification3}</textitem>
 		<textitem xpos="352.5" ypos="283.5" font="Helvetica" size="9.5" align="left">{area3}</textitem>
@@ -182,9 +182,9 @@
 		<textitem xpos="108.5" ypos="265.5" font="Helvetica" size="9" align="left">{pin4a}</textitem>
 		<textitem xpos="108.5" ypos="257.75" font="Helvetica" size="9" align="left">{pin4b}</textitem>
 
-		<textitem xpos="172" ypos="260" font="Helvetica" size="8" align="left">{location4}</textitem>
-		<textitem xpos="172" ypos="265.5" font="Helvetica" size="8" align="left">{location4a}</textitem>
-		<textitem xpos="172" ypos="257.75" font="Helvetica" size="8" align="left">{location4b}</textitem>
+		<textitem xpos="172" ypos="260" font="Helvetica" size="9.5" align="left">{location4}</textitem>
+		<textitem xpos="172" ypos="265.5" font="Helvetica" size="9" align="left">{location4a}</textitem>
+		<textitem xpos="172" ypos="257.75" font="Helvetica" size="9" align="left">{location4b}</textitem>
 
 		<textitem xpos="299" ypos="260" font="Helvetica" size="9.5" align="left">{classification4}</textitem>
 		<textitem xpos="352.5" ypos="265.5" font="Helvetica" size="9.5" align="left">{area4}</textitem>
@@ -203,9 +203,9 @@
 		<textitem xpos="108.5" ypos="247.5" font="Helvetica" size="9" align="left">{pin5a}</textitem>
 		<textitem xpos="108.5" ypos="239.75" font="Helvetica" size="9" align="left">{pin5b}</textitem>
 
-		<textitem xpos="172" ypos="242" font="Helvetica" size="8" align="left">{location5}</textitem>
-		<textitem xpos="172" ypos="247.5" font="Helvetica" size="8" align="left">{location5a}</textitem>
-		<textitem xpos="172" ypos="239.75" font="Helvetica" size="8" align="left">{location5b}</textitem>
+		<textitem xpos="172" ypos="242" font="Helvetica" size="9.5" align="left">{location5}</textitem>
+		<textitem xpos="172" ypos="247.5" font="Helvetica" size="9" align="left">{location5a}</textitem>
+		<textitem xpos="172" ypos="239.75" font="Helvetica" size="9" align="left">{location5b}</textitem>
 
 		<textitem xpos="299" ypos="242" font="Helvetica" size="9.5" align="left">{classification5}</textitem>
 		<textitem xpos="352.5" ypos="247.5" font="Helvetica" size="9.5" align="left">{area5}</textitem>
@@ -224,9 +224,9 @@
 		<textitem xpos="108.5" ypos="229.5" font="Helvetica" size="9" align="left">{pin6a}</textitem>
 		<textitem xpos="108.5" ypos="221.75" font="Helvetica" size="9" align="left">{pin6b}</textitem>
 
-		<textitem xpos="172" ypos="224" font="Helvetica" size="8" align="left">{location6}</textitem>
-		<textitem xpos="172" ypos="229.5" font="Helvetica" size="8" align="left">{location6a}</textitem>
-		<textitem xpos="172" ypos="221.75" font="Helvetica" size="8" align="left">{location6b}</textitem>
+		<textitem xpos="172" ypos="224" font="Helvetica" size="9.5" align="left">{location6}</textitem>
+		<textitem xpos="172" ypos="229.5" font="Helvetica" size="9" align="left">{location6a}</textitem>
+		<textitem xpos="172" ypos="221.75" font="Helvetica" size="9" align="left">{location6b}</textitem>
 
 		<textitem xpos="299" ypos="224" font="Helvetica" size="9.5" align="left">{classification6}</textitem>
 		<textitem xpos="352.5" ypos="229.5" font="Helvetica" size="9.5" align="left">{area6}</textitem>

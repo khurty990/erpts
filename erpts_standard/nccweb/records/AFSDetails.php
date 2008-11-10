@@ -1,4 +1,4 @@
-<?php 
+<?php
 # Setup PHPLIB in this Area
 include_once("web/prepend.php");
 include_once("assessor/Address.php");
@@ -35,11 +35,24 @@ class AFSDetails{
 	var $formArray;
 	
 	function AFSDetails($http_post_vars,$sess,$afsID){
+		global $auth;
+
 		$this->sess = $sess;
+		$this->user = $auth->auth;
+		$this->formArray["uid"] = $auth->auth["uid"];
+		$this->user = $auth->auth;
+
+		// must have atleast AM-VIEW access
+		$pageType = "%%1%%%%%%%";
+		if (!checkPerms($this->user["userType"],$pageType)){
+			header("Location: Unauthorized.php".$this->sess->url(""));
+			exit;
+		}
+
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "AFSDetails.htm") ;
-		$this->tpl->set_var("TITLE", "Owner List");
+		$this->tpl->set_var("TITLE", "FAAS / TD Details");
 		
 		$this->formArray["afsID"] = $afsID;
 		$this->formArray["landFormAction"] = "";
@@ -67,6 +80,7 @@ class AFSDetails{
 		$this->formArray["machTotalAssessedValue"] = number_format($this->formArray["machTotalAssessedValue"], 2, '.', ',');
 		$this->formArray["totalMarketValue"] = number_format($this->formArray["totalMarketValue"], 2, '.', ',');
 		$this->formArray["totalAssessedValue"] = number_format($this->formArray["totalAssessedValue"], 2, '.', ',');
+
 		foreach ($this->formArray as $key => $value){
 			if ($key == "totalMarketValue" || $key == "totalAssessedValue"){
 				$this->tpl->set_var($key, $value);
@@ -77,6 +91,63 @@ class AFSDetails{
 		$this->initCheckBox("affidavitOfOwnership");
 		$this->initCheckBox("barangayCertificate");
 		$this->initCheckBox("landTagging");
+	}
+
+	function hideBlock($tempVar){
+		$this->tpl->set_block("rptsTemplate", $tempVar, $tempVar."Block");
+		$this->tpl->set_var($tempVar."Block", "");
+	}
+
+	function setPageDetailPerms(){
+		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
+			// hide Blocks if userType is not at least AM-Edit
+
+			$this->hideBlock("RPUIdentificationEncodeLink");
+			$this->hideBlock("GISTechnicalDescriptionEncodeLink");
+			$this->hideBlock("TDEncodeLink");
+			$this->hideBlock("AddLandLink");
+			$this->hideBlock("AddPlantsTreesLink");
+			$this->hideBlock("AddImprovementsBuildingsLink");
+			$this->hideBlock("AddMachineriesLink");
+
+			$this->tpl->set_var("ownerViewAccess","viewOnly");
+			$this->tpl->set_var("removePropertyDisabled", "disabled");
+
+		}
+		else{
+
+			$this->tpl->set_var("ownerViewAccess","view");
+			$this->tpl->set_var("removePropertyDisabled", "");
+
+		}
+	}
+
+	function setLandListBlockPerms(){
+		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
+			$this->tpl->set_block("LandList", "EditLandLink", "EditLandLinkBlock");
+			$this->tpl->set_var("EditLandLinkBlock", "<s>Edit</s>");
+		}
+	}
+
+	function setPlantsTreesListBlockPerms(){
+		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
+			$this->tpl->set_block("PlantsTreesList", "EditPlantsTreesLink", "EditPlantsTreesLinkBlock");
+			$this->tpl->set_var("EditPlantsTreesLinkBlock", "<s>Edit</s>");
+		}
+	}
+
+	function setImprovementsBuildingsListBlockPerms(){
+		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
+			$this->tpl->set_block("ImprovementsBuildingsList", "EditImprovementsBuildingsLink", "EditImprovementsBuildingsLinkBlock");
+			$this->tpl->set_var("EditImprovementsBuildingsLinkBlock", "<s>Edit</s>");
+		}
+	}
+
+	function setMachineriesListBlockPerms(){
+		if(!checkPerms($this->user["userType"],"%1%%%%%%%%")){
+			$this->tpl->set_block("MachineriesList", "EditMachineriesLink", "EditMachineriesLinkBlock");
+			$this->tpl->set_var("EditMachineriesLinkBlock", "<s>Edit</s>");
+		}
 	}
 	
 	function displayOwnerList($domDoc){
@@ -148,6 +219,68 @@ class AFSDetails{
 			$this->tpl->set_var("effectivity", $afs->effectivity);
 
 			$this->tpl->parse("RPUIdentificationTableBlock", "RPUIdentificationTable", true);
+		}
+	}
+
+	function displayGISTechnicalDescription($afs){
+		$this->tpl->set_block("rptsTemplate", "GISTechnicalDescriptionTable", "GISTechnicalDescriptionTableBlock");
+		$this->tpl->set_block("rptsTemplate", "GISTechnicalDescriptionDBEmpty", "GISTechnicalDescriptionDBEmptyBlock");
+
+		if($afs->cadastralLotNumber=="" && $afs->gisTechnicalDescription==""){
+			$this->hideBlock("PointsList");
+			$this->tpl->set_var("GISTechnicalDescriptionTableBlock", "");
+			$this->tpl->parse("GISTechnicalDescriptionDBEmptyBlock", "GISTechnicalDescriptionDBEmpty", true);
+		}
+		else{
+			$this->tpl->set_var("GISTechnicalDescriptionDBEmptyBlock", "");
+	
+			$this->tpl->set_var("cadastralLotNumber", $afs->cadastralLotNumber);
+
+			// parse gisTechnicalDescription
+
+			$this->formArray["gisTechnicalDescription"] = $afs->gisTechnicalDescription;
+
+						if($this->formArray["gisTechnicalDescription"]==""){
+							$this->hideBlock("PointsList");
+						}
+						else{
+							// parse gisTechnicalDescription into $pointsArray
+							// separate each pointRecord at "," and each point at "-"
+
+							$gisTechDescArray = explode(",",$this->formArray["gisTechnicalDescription"]);
+							foreach($gisTechDescArray as $pointString){
+								$pointArray = explode("-",$pointString);
+								$pointID = $pointArray[0];
+
+								$pointsArray[$pointID]["pointType"] = $pointArray[1];
+								$pointsArray[$pointID]["quadrant"] = $pointArray[2];
+								$pointsArray[$pointID]["bearingDeg"] = $pointArray[3];
+								$pointsArray[$pointID]["bearingMin"] = $pointArray[4];
+								$pointsArray[$pointID]["distance"] = $pointArray[5];
+							}
+
+							if(is_array($pointsArray)){
+								$this->tpl->set_block("rptsTemplate", "PointsList", "PointsListBlock");
+					
+								for($pointID=1; $pointID<=count($pointsArray) ; $pointID++){
+									$this->tpl->set_var("pointID",$pointID);
+									$this->tpl->set_var("pointType",$pointsArray[$pointID]["pointType"]);
+									$this->tpl->set_var("quadrant",$pointsArray[$pointID]["quadrant"]);
+									$this->tpl->set_var("bearingDeg",$pointsArray[$pointID]["bearingDeg"]);
+									$this->tpl->set_var("bearingMin",$pointsArray[$pointID]["bearingMin"]);
+									$this->tpl->set_var("distance", $pointsArray[$pointID]["distance"]);
+									$this->tpl->parse("PointsListBlock", "PointsList", true);
+								}
+							}
+
+
+						}
+
+
+
+
+
+			$this->tpl->parse("GISTechnicalDescriptionTableBlock", "GISTechnicalDescriptionTable", true);
 		}
 	}
 
@@ -229,7 +362,7 @@ class AFSDetails{
 				$TDDetails = new SoapObject(NCCBIZ."TDDetails.php", "urn:Object");
 
 				foreach($succeedingODList as $key => $odHistory){
-					$succeedingODID = $odHistory->getPreviousODID();
+					$succeedingODID = $odHistory->getPresentODID();
 					$succeedingAFSID = $AFSEncode->getAfsID($succeedingODID);
 
 					$succeedingTDxml = $TDDetails->getTDFromAfsID($succeedingAFSID);
@@ -253,6 +386,7 @@ class AFSDetails{
 				}
 
 				$td->setDomDocument();
+
 				$domDoc = $td->getDomDocument();
 				$xmlStr = $domDoc->dump_mem(true);
 
@@ -288,8 +422,12 @@ class AFSDetails{
 
 				// update Cancels/CanceledBy TDNumber
 
-				$td = $this->updateTDCancelsTDNumber($td);
-				$td = $this->updateTDCanceledByTDNumber($td);
+				if($td->getCancelsTDNumber()==""){
+					$td = $this->updateTDCancelsTDNumber($td);
+				}
+				if($td->getCanceledByTDNumber()==""){
+					$td = $this->updateTDCanceledByTDNumber($td);
+				}
 
 				$this->formArray["tdID"] = $td->tdID;
 				$this->formArray["taxDeclarationNumber"] = $td->taxDeclarationNumber;
@@ -362,28 +500,15 @@ class AFSDetails{
 				}
 
 				$this->formArray["enteredInRPARForYear"] = $td->enteredInRPARForYear;
-
 				$this->formArray["previousOwner"] = $td->previousOwner;
-				$this->formArray["previousAssessedValue"] = $td->previousAssessedValue;
+				$this->tpl->set_var("previousOwner", $td->previousOwner);
 
-				$this->tpl->set_var("td", $this->formArray["td"]);
-				$this->tpl->set_var("taxDeclarationNumber", $this->formArray["taxDeclarationNumber"]);
-				$this->tpl->set_var("provincialAssessor", $this->formArray["provincialAssessor"]);
-				$this->tpl->set_var("pa_yearValue", $this->formArray["pa_yearValue"]);
-				$this->tpl->set_var("pa_month", $this->formArray["pa_month"]);
-				$this->tpl->set_var("pa_dayValue", $this->formArray["pa_dayValue"]);
-				$this->tpl->set_var("cityMunicipalAssessor", $this->formArray["cityMunicipalAssessor"]);
-				$this->tpl->set_var("cm_yearValue", $this->formArray["cm_yearValue"]);
-				$this->tpl->set_var("cm_month", $this->formArray["cm_month"]);
-				$this->tpl->set_var("cm_dayValue", $this->formArray["cm_dayValue"]);
-				$this->tpl->set_var("cm_yearValue", $this->formArray["cm_yearValue"]);
-				$this->tpl->set_var("cancelsTDNumber", $this->formArray["cancelsTDNumber"]);
-				$this->tpl->set_var("canceledByTDNumber", $this->formArray["canceledByTDNumber"]);
-				$this->tpl->set_var("taxBeginsWithTheYear", $this->formArray["taxBeginsWithTheYear"]);
-				$this->tpl->set_var("ceasesWithTheYear", $this->formArray["ceasesWithTheYear"]);
-				$this->tpl->set_var("enteredInRPARForBy", $this->formArray["enteredInRPARForBy"]);
-				$this->tpl->set_var("previousOwner", $this->formArray["previousOwner"]);
-				$this->tpl->set_var("previousAssessedValue", $this->formArray["previousAssessedValue"]);
+				$this->formArray["previousAssessedValue"] = $td->previousAssessedValue;
+				if($td->previousAssessedValue!=""){
+					$this->tpl->set_var("previousAssessedValue", number_format(toFloat($td->previousAssessedValue), 2, ".", ","));
+				}
+
+				$this->tpl->set_var("memoranda", $td->memoranda);
 
 				$this->tpl->set_var("TDDBEmptyBlock", "");
 				$this->tpl->parse("TDTableBlock", "TDTable", true);
@@ -401,6 +526,9 @@ class AFSDetails{
 		$this->tpl->set_block("rptsTemplate", "toggle".$TempVar."List", "toggle".$TempVar."ListBlock");
 		$this->tpl->set_var("toggle".$TempVar."ListBlock", "");
 		$this->tpl->set_var($tempVar."Ctr", 0);
+
+		$this->tpl->set_block("rptsTemplate", $TempVar."Totals", $TempVar."TotalsBlock");
+		$this->tpl->set_var($TempVar."TotalsBlock", "");
 
 		$this->formArray[$tempVar."TotalMarketValue"] = 0;
 		$this->formArray[$tempVar."TotalAssessedValue"] = 0;
@@ -434,6 +562,38 @@ class AFSDetails{
 			$this->tpl->set_var("togglePlantsTreesListBlock", "");
 			$this->tpl->set_block("rptsTemplate", "PlantsTreesList", "PlantsTreesListBlock");
 			$this->tpl->set_var("PlantsTreesListBlock", "");
+		}
+	}
+
+	function displayImprovementsBuildings($improvementsBuildingsList){
+		//improvementsBuildings
+		if(count($improvementsBuildingsList)){
+			$this->displayImprovementsBuildingsList($improvementsBuildingsList);
+		}
+		else{
+			$this->tpl->set_var("improvementsBuildingsCtr", 0);
+			$this->tpl->set_block("rptsTemplate", "defaultImprovementsBuildingsList", "defaultImprovementsBuildingsListBlock");
+			$this->tpl->set_var("defaultImprovementsBuildingsListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "toggleImprovementsBuildingsList", "toggleImprovementsBuildingsListBlock");
+			$this->tpl->set_var("toggleImprovementsBuildingsListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "ImprovementsBuildingsList", "ImprovementsBuildingsListBlock");
+			$this->tpl->set_var("ImprovementsBuildingsListBlock", "");
+		}
+	}
+
+	function displayMachineries($machineriesList){
+		//machineries
+		if(count($machineriesList)){
+			$this->displayMachineriesList($machineriesList);
+		}
+		else{
+			$this->tpl->set_var("machineriesCtr", 0);
+			$this->tpl->set_block("rptsTemplate", "defaultMachineriesList", "defaultMachineriesListBlock");
+			$this->tpl->set_var("defaultMachineriesListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "toggleMachineriesList", "toggleMachineriesListBlock");
+			$this->tpl->set_var("toggleMachineriesListBlock", "");
+			$this->tpl->set_block("rptsTemplate", "MachineriesList", "MachineriesListBlock");
+			$this->tpl->set_var("MachineriesListBlock", "");
 		}
 	}
 
@@ -724,16 +884,21 @@ class AFSDetails{
 					}
 				break;
 				case "arpNumber":
-					$lvalue = ($lvalue) ? $lvalue : "enter ARP Number";
+					$lvalue = ($lvalue) ? $lvalue : "";
 					$this->tpl->set_var($lkey,$lvalue);
+				break;
+				case "adjustedMarketValue":
+				case "valueAdjustment":
+				case "marketValue":
+					$this->tpl->set_var($lkey, number_format($lvalue, 2, '.', ','));
 				break;
 				default:
 					if ($lkey <> "") {
 						eval('$tmpval = $value->get'.ucfirst($lkey).'();');
-						//echo '$tmpval = $value->get'.ucfirst($lkey).'();<br>';
+						// echo '$tmpval = $value->get'.ucfirst($lkey).'();<br>';
 						$this->tpl->set_var($lkey,$tmpval);
 					}
-			}				
+			}
 		}
 	}
 	function displayLandList($landList){
@@ -778,6 +943,8 @@ class AFSDetails{
 				$this->tpl->parse("defaultLandListBlock", "defaultLandList", true);
 				$this->tpl->parse("toggleLandListBlock", "toggleLandList", true);
 				//$this->tpl->parse("hideLandListBlock", "hideLandList", true);
+
+				$this->setLandListBlockPerms();
 				$this->tpl->parse("LandListBlock", "LandList", true);
 				$i++;
 			}
@@ -829,8 +996,10 @@ class AFSDetails{
 				$this->tpl->set_var("ctr",$i);
 				$this->tpl->parse("defaultPlantsTreesListBlock", "defaultPlantsTreesList", true);
 				$this->tpl->parse("togglePlantsTreesListBlock", "togglePlantsTreesList", true);
-			//$this->tpl->parse("hidePlantsTreesListBlock", "hidePlantsTreesList", true);
-					$this->tpl->parse("PlantsTreesListBlock", "PlantsTreesList", true);
+				//$this->tpl->parse("hidePlantsTreesListBlock", "hidePlantsTreesList", true);
+
+				$this->setPlantsTreesListBlockPerms();
+				$this->tpl->parse("PlantsTreesListBlock", "PlantsTreesList", true);
 				$i++;
 			}
 			$this->formArray["totalMarketValue"] += $totalMarketValue;
@@ -844,7 +1013,7 @@ class AFSDetails{
 			$this->tpl->set_var("togglePlantsTreesListBlock", "");
 		}
 	}
-	
+
 	function displayImprovementsBuildingsList($improvementsBuildingsList){
 		$this->tpl->set_block("rptsTemplate", "ImprovementsBuildingsDBEmpty", "ImprovementsBuildingsDBEmptyBlock");
 		$this->tpl->set_var("ImprovementsBuildingsDBEmptyBlock", "");
@@ -882,6 +1051,8 @@ class AFSDetails{
 				$this->tpl->parse("defaultImprovementsBuildingsListBlock", "defaultImprovementsBuildingsList", true);
 				$this->tpl->parse("toggleImprovementsBuildingsListBlock", "toggleImprovementsBuildingsList", true);
 				//$this->tpl->parse("hideImprovementsBuildingsListBlock", "hideImprovementsBuildingsList", true);
+
+				$this->setImprovementsBuildingsListBlockPerms();
 				$this->tpl->parse("ImprovementsBuildingsListBlock", "ImprovementsBuildingsList", true);
 				$i++;
 			}
@@ -896,7 +1067,7 @@ class AFSDetails{
 			$this->tpl->set_var("toggleImprovementsBuildingsListBlock", "");
 		}
 	}
-	
+
 	function displayMachineriesList($machineriesList){
 		$this->tpl->set_block("rptsTemplate", "MachineriesDBEmpty", "MachineriesDBEmptyBlock");
 		$this->tpl->set_var("MachineriesDBEmptyBlock", "");
@@ -934,6 +1105,8 @@ class AFSDetails{
 				$this->tpl->parse("defaultMachineriesListBlock", "defaultMachineriesList", true);
 				$this->tpl->parse("toggleMachineriesListBlock", "toggleMachineriesList", true);
 				//$this->tpl->parse("hideMachineriesListBlock", "hideMachineriesList", true);
+
+				$this->setMachineriesListBlockPerms();
 				$this->tpl->parse("MachineriesListBlock", "MachineriesList", true);
 				$i++;
 			}
@@ -1047,33 +1220,49 @@ class AFSDetails{
 				if(count($landList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Land";
+
 					$this->displayLandPlantsTrees($landList,$plantsTreesList);
+					$this->displayGISTechnicalDescription($afs);
+
 					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 					$this->hideProperty('Machineries', 'machineries');
 				}
 				else if(count($plantsTreesList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Land";
+
+					$this->displayGISTechnicalDescription($afs);
 					$this->displayLandPlantsTrees($landList,$plantsTreesList);
+
 					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 					$this->hideProperty('Machineries', 'machineries');
 			    }
 				else if(count($improvementsBuildingsList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "ImprovementsBuildings";
-					$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+					//$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+
+					$this->displayImprovementsBuildings($improvementsBuildingsList);
+
+					$this->hideBlock('GISTechnicalDescriptionHide');
 					$this->hideProperty('Land', 'land');
 					$this->hideProperty('PlantsTrees', 'plantsTrees');
+					$this->hideProperty('Machineries', 'machineries');
 				}
 				else if(count($machineriesList)){
 					$hideTD = false;
 					$this->formArray["propertyType"] = "Machineries";
-					$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
+
+					$this->displayMachineries($machineriesList);
+
+					$this->hideBlock('GISTechnicalDescriptionHide');
 					$this->hideProperty('Land', 'land');
 					$this->hideProperty('PlantsTrees', 'plantsTrees');
+					$this->hideProperty('ImprovementsBuildings', 'improvementsBuildings');
 				}
 				else{
 					$hideTD = true;
+					$this->hideBlock('GISTechnicalDescriptionHide');
 					$this->displayLandPlantsTrees($landList,$plantsTreesList);
 					$this->displayImprovementsBuildingsMachineries($improvementsBuildingsList,$machineriesList);
 
@@ -1094,7 +1283,7 @@ class AFSDetails{
 				else{
 					// Hide TD
 					$this->tpl->set_block("rptsTemplate", "DeclarationOfProperty", "DeclarationOfPropertyBlock");
-					$this->tpl->set_var("DeclarationOfPropertyBlock");
+					$this->tpl->set_var("DeclarationOfPropertyBlock", "");
 				}
 
 				$ODDetails = new SoapObject(NCCBIZ."ODDetails.php", "urn:Object");
@@ -1167,6 +1356,11 @@ class AFSDetails{
 		}
 		//echo $ret;
 		$this->setForm();
+		$this->setPageDetailPerms();
+
+		$this->tpl->set_var("uname", $this->user["uname"]);
+		$this->tpl->set_var("today", date("F j, Y"));
+
 		$this->tpl->set_var("Session", $this->sess->url("").$this->sess->add_query(array("afsID"=>$this->formArray["afsID"])));
 		$this->tpl->parse("templatePage", "rptsTemplate");
 		$this->tpl->finish("templatePage");
