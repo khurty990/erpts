@@ -40,7 +40,7 @@ class PrintMachineriesFAAS{
 			,"userAdmin" => ""
 			,"userAdminAddress" => ""
 			,"userAdminTelNo" => ""
-
+			,"adminTelephone" => ""
 			,"buildingOwner" => ""
 			,"buildingPIN" => ""
 
@@ -574,7 +574,7 @@ class PrintMachineriesFAAS{
 						$this->formArray["street"] = $od->locationAddress->getStreet();
 						$this->formArray["barangay"] = $od->locationAddress->getBarangay();
 						$this->formArray["district"] = $od->locationAddress->getDistrict();
-						$this->formArray["municipality"] = $od->locationAddress->getMunicipalityCity();
+						$this->formArray["city"] = $od->locationAddress->getMunicipalityCity();
 						$this->formArray["province"] = $od->locationAddress->getProvince();
 					}
 
@@ -618,8 +618,8 @@ class PrintMachineriesFAAS{
 
 					$this->formArray["buildingPIN"] = $machineries->getBuildingPin();
 					$this->formArray["landPIN"] = $machineries->getLandPin();
-					//$this->displayLandPINDetails();
-					//$this->displayBuildingPINDetails();
+					$this->displayLandPINDetails();
+					$this->displayBuildingPINDetails();
 
 					$this->formArray["memoranda"] = $machineries->getMemoranda();
 

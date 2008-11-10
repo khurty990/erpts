@@ -289,12 +289,23 @@ class Due
 
 		//$startYear = 2005;
 		$quarterArr = array("Annual"=>1,"Q1"=>1,"Q2"=>2,"Q3"=>3,"Q4"=>4); 
+		// alxjvr:2005.12.07 $startQuarter = $quarterArr[$this->dueType]; // 1
 		$startQuarter = $quarterArr[$this->dueType]; // 1
 		$today = strtotime($today); // 2004-08-05
+
 		$yearCalc = date("Y",$today);// 2004
 		$monthCalc = date("n",$today);// 8
+/*
+		echo ' : startYear = '.$yearCalc.'<br>';
+		echo ' : startQuarter = '.$startQuarter.'<br>';
+
+		echo ' : yearCalc = '.$yearCalc.'<br>';
+		echo ' : monthCalc = '.$monthCalc.'<br>';
+*/
 		$penalty = 0;
 		$yearDiff = $yearCalc - $startYear;// 0
+
+//		echo ' : yearDiff = '.$yearDiff.'<br>';
 
 		$months = 0;
 
@@ -314,7 +325,8 @@ class Due
 
 		*/
 
-		$months = ($yearDiff * 12) + ($monthCalc - (($startQuarter-1)*3));
+		//alxjvr:2005.12.07 $months = ($yearDiff * 12) + ($monthCalc - (($startQuarter-1)*3));
+		$months = ($yearDiff * 12) + $monthCalc;
 
 		return $months;
 	}
