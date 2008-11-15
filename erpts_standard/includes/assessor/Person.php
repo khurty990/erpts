@@ -200,9 +200,18 @@ class Person
 	function getMiddleName() {
 		return $this->middleName;
 	}
-	function getProperName() {
-                return $this->getFullName();
-        }
+
+	/* 
+		Modified by: JC
+		Purpose    : Argao Version uses getProperName in line 252 
+			     of PrintImprovementsBuildingsFAAS.php
+		Description: Wrapper to getFullName() method
+		
+	
+	*/
+	function getProperName(){
+		return $this->getFullName();
+	}
 	function getFullName(){
 		//$fullName = $this->lastName .", ". $this->firstName ." ". $this->middleName;
 
