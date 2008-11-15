@@ -1194,7 +1194,7 @@ class RPTOPDetails{
 	}
 
 
-	function computePenalty($penaltyComputeDate,$due){
+	/**function computePenalty($penaltyComputeDate,$due){
 		// compute Penalty as of $penaltyComputeDate
 		// check if today is exceeding dueDate and compute penalty
 
@@ -1235,7 +1235,46 @@ class RPTOPDetails{
 		}
 
 		return $due;
+	}**/
+function computePenalty($penaltyComputeDate,$due){
+		// compute Penalty as of $penaltyComputeDate
+		// check if today is exceeding dueDate and compute penalty
+
+		if(strtotime($penaltyComputeDate) > strtotime($due->getDueDate())){
+			// count months
+
+			// numYears = today[year] - dueDate[year]
+			$numYears = date("Y",strtotime($penaltyComputeDate)) - date("Y",strtotime($due->getDueDate()));
+			// numMonths = today[month] - dueDate[month]
+			$numMonths = date("n",strtotime($penaltyComputeDate)) - date("n",strtotime($due->getDueDate()));
+			// totalMonths = (numYears*12) + numMonths
+
+			$totalMonths = $due->calculateMonthOverDue(date("Y-m-d",strtotime($penaltyComputeDate)));
+
+			// associate penaltyPercentage
+
+			if($totalMonths >= count($this->penaltyLUTArray)){
+				$penaltyPercentage = 0.72;
+			}
+			else{			
+				$penaltyPercentage = $this->penaltyLUTArray[$totalMonths];
+			}
+
+			$penalty = $due->getTaxDue() * $penaltyPercentage;
+
+			$due->setMonthsOverDue($totalMonths);
+			$due->setPenaltyPercentage($penaltyPercentage);
+			$due->setPenalty($penalty);
+		}
+		else{
+			$due->setMonthsOverDue(0);
+			$due->setPenaltyPercentage(0.00);
+			$due->setPenalty(0.00);
+		}
+
+		return $due;
 	}
+
 
 	function setLguDetails(){
 		$eRPTSSettingsDetails = new SoapObject(NCCBIZ."eRPTSSettingsDetails.php", "urn:Object");

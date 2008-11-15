@@ -570,7 +570,7 @@ class PrintRPTOPDetailsPDF{
 				// grab Due from tdID
 									
 				$this->formArray["totalTaxDue"] = 0.00;
-
+	
 				$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");
 									
 				if (!$xmlStr = $DueDetails->getDueFromTdID($tvalue->getTdID())){
@@ -600,15 +600,50 @@ class PrintRPTOPDetailsPDF{
 					$this->formArray["sef".$tdCtr] = $due->getSEFTax();
 					$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
 		
-					$this->formArray["totalBasic"] += $due->getBasicTax();
-					$this->formArray["totalSef"] += $due->getSEFTax();
-					$this->formArray["totalTaxes"] += $due->getTaxDue();
+	//WRONG CODE -------------------------------------------------->
+		//$this->formArray["totalBasic"] += $due->getBasicTax();
+		//$this->formArray["totalSef"] += $due->getSEFTax();
+		//$this->formArray["totalTaxes"] += $due->getTaxDue();	
+	//------------------------------------------------------------->	
+
 							}
 					}
 
 
 										}
+}
+
+	$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
+			+ $this->formArray["plantTotalMarketValue"]
+			+ $this->formArray["bldgTotalMarketValue"]
+			+ $this->formArray["machTotalMarketValue"];
+	$this->formArray["totalAssessedValue"] = $this->formArray["landTotalAssessedValue"]
+			+ $this->formArray["plantTotalAssessedValue"]
+			+ $this->formArray["bldgTotalAssessedValue"]
+			+ $this->formArray["machTotalAssessedValue"];
+	//NEW CODE - Argao----Added on 03152008-------------------------------------------->
+	//Computes Grand Totals on Basic, SEF and Total-----By CHT
+	$this->formArray["totalBasic"] = ($this->formArray["totalAssessedValue"])*.01;
+	$this->formArray["totalSef"] = ($this->formArray["totalAssessedValue"])*.01;
+	$this->formArray["totalTaxes"] = $this->formArray["totalBasic"] 
+			+ $this->formArray["totalSef"];							
+	//--------------------------------------------------------------------------------->
+
+	if($this->tdPagingArray["tdPageRecordsCounter"]==$this->tdPagingArray["tdPageBy"]){
+										// if 6
+										$this->setForm();
+										$this->resetTDPageRecords();
+										$this->tpl->set_var("tdPageNumber",$this->tdPagingArray["tdPageNumber"]);
+										$this->tpl->set_var("tdTotalPages",$this->tdPagingArray["tdTotalPages"]);
+
+										if($this->tdPagingArray["tdPageNumber"] > 1){
+											$this->tpl->set_var("FirstPageTextBlock", "");
+											$this->tpl->parse("ContinuedFromPreviousPageTextBlock","ContinuedFromPreviousPageText", true);
 									}
+										else if($this->tdPagingArray["tdPageNumber"]==1){
+											$this->tpl->parse("FirstPageTextBlock", "FirstPageText", true);
+											$this->tpl->set_var("ContinuedFromPreviousPageTextBlock","");
+										}
 
 				$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
 								+ $this->formArray["plantTotalMarketValue"]

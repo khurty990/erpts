@@ -76,39 +76,40 @@ align="right">{propertyIndexNumber}</textitem>
 	<textitem xpos="540" ypos="376" font="Helvetica" size="8" align="right">{landTotal}</textitem>
 	<lineitem x1="50" y1="371" x2="550" y2="371">blurb</lineitem>
 
-	<lineitem x1="123" y1="371" x2="123" y2="500">blurb</lineitem>
-	<lineitem x1="230" y1="371" x2="230" y2="500">blurb</lineitem>
-	<lineitem x1="300" y1="371" x2="300" y2="500">blurb</lineitem>
-	<lineitem x1="392" y1="371" x2="392" y2="500">blurb</lineitem>
-	<lineitem x1="440" y1="371" x2="440" y2="500">blurb</lineitem>
+	<lineitem x1="123" y1="273" x2="123" y2="500">blurb</lineitem>
+	<lineitem x1="230" y1="273" x2="230" y2="500">blurb</lineitem>
+	<lineitem x1="300" y1="273" x2="300" y2="500">blurb</lineitem>
+	<lineitem x1="392" y1="273" x2="392" y2="500">blurb</lineitem>
+	<lineitem x1="440" y1="273" x2="440" y2="500">blurb</lineitem>
 
 
-	<textitem xpos="55" ypos="358" font="Helvetica-Bold" size="9" align="left">PLANTS AND TREES APPRAISAL:</textitem>
-	<lineitem x1="50" y1="353" x2="550" y2="353">blurb</lineitem>
-	<textitem xpos="108" ypos="340" font="Helvetica-Italic" size="9" align="center">Product Class</textitem>
-	<textitem xpos="200" ypos="340" font="Helvetica-Italic" size="9" align="center">Area</textitem>
-	<textitem xpos="200" ypos="330" font="Helvetica-Italic" size="9" align="center">Planted</textitem>
-	<textitem xpos="264" ypos="340" font="Helvetica-Italic" size="9" align="center">Total Number</textitem>
-	<textitem xpos="322" ypos="340" font="Helvetica-Italic" size="9" align="center">Non-fruit</textitem>
-	<textitem xpos="322" ypos="330" font="Helvetica-Italic" size="9" align="center">Bearing</textitem>
-	<textitem xpos="368" ypos="340" font="Helvetica-Italic" size="9" align="center">Fruit</textitem>
-	<textitem xpos="368" ypos="330" font="Helvetica-Italic" size="9" align="center">Bearing</textitem>
-	<textitem xpos="414" ypos="340" font="Helvetica-Italic" size="9" align="center">Age</textitem>
-	<textitem xpos="460" ypos="340" font="Helvetica-Italic" size="9" align="center">Unit Price</textitem>
-	<textitem xpos="518" ypos="340" font="Helvetica-Italic" size="9" align="center">Market Value</textitem>
-	<lineitem x1="50" y1="325" x2="550" y2="325">blurb</lineitem>
+	<textitem xpos="55" ypos="264" font="Helvetica-Bold" size="9" align="left">PLANTS AND TREES APPRAISAL:</textitem>
+	<lineitem x1="50" y1="258" x2="550" y2="258">blurb</lineitem>
+	<textitem xpos="108" ypos="246" font="Helvetica-Italic" size="9" align="center">Product Class</textitem>
+	<textitem xpos="200" ypos="246" font="Helvetica-Italic" size="9" align="center">Area</textitem>
+	<textitem xpos="200" ypos="236" font="Helvetica-Italic" size="9" align="center">Planted</textitem>
+	<textitem xpos="264" ypos="246" font="Helvetica-Italic" size="9" align="center">Total Number</textitem>
+	<textitem xpos="322" ypos="246" font="Helvetica-Italic" size="9" align="center">Non-fruit</textitem>
+	<textitem xpos="322" ypos="236" font="Helvetica-Italic" size="9" align="center">Bearing</textitem>
+	<textitem xpos="368" ypos="246" font="Helvetica-Italic" size="9" align="center">Fruit</textitem>
+	<textitem xpos="368" ypos="236" font="Helvetica-Italic" size="9" align="center">Bearing</textitem>
+	<textitem xpos="414" ypos="246" font="Helvetica-Italic" size="9" align="center">Age</textitem>
+	<textitem xpos="460" ypos="246" font="Helvetica-Italic" size="9" align="center">Unit Price</textitem>
+	<textitem xpos="518" ypos="246" font="Helvetica-Italic" size="9" align="center">Market Value</textitem>
+	<lineitem x1="50" y1="235" x2="550" y2="235">blurb</lineitem>
 
 	{plantitems}
 
-	<lineitem x1="170" y1="69" x2="170" y2="353">blurb</lineitem>
-	<lineitem x1="230" y1="69" x2="230" y2="353">blurb</lineitem>
-	<lineitem x1="300" y1="69" x2="300" y2="353">blurb</lineitem>
-	<lineitem x1="346" y1="69" x2="346" y2="353">blurb</lineitem>
-	<lineitem x1="392" y1="69" x2="392" y2="353">blurb</lineitem>
-	<lineitem x1="392" y1="69" x2="392" y2="353">blurb</lineitem>
-	<lineitem x1="438" y1="69" x2="438" y2="353">blurb</lineitem>
-	<lineitem x1="484" y1="69" x2="484" y2="353">blurb</lineitem>
-	<lineitem x1="50" y1="69" x2="550" y2="69">blurb</lineitem>
+	<lineitem x1="170" y1="16" x2="170" y2="258">blurb</lineitem>
+	<lineitem x1="230" y1="16" x2="230" y2="258">blurb</lineitem>
+	<lineitem x1="300" y1="16" x2="300" y2="258">blurb</lineitem>
+	<lineitem x1="346" y1="16" x2="346" y2="258">blurb</lineitem>
+	<lineitem x1="392" y1="16" x2="392" y2="258">blurb</lineitem>
+	<lineitem x1="392" y1="16" x2="392" y2="258">blurb</lineitem>
+	<lineitem x1="438" y1="16" x2="438" y2="258">blurb</lineitem>
+	<lineitem x1="484" y1="16" x2="484" y2="258">blurb</lineitem>
+	<!--<lineitem x1="50" y1="69" x2="550" y2="69">blurb</lineitem>
+	<lineitem x1="50" y1="47" x2="550" y2="47">blurb</lineitem>-->
 
 
 	<textitem xpos="108" ypos="75" font="Helvetica-Bold" size="9" align="center">TOTAL</textitem>
@@ -136,8 +137,8 @@ align="right">{propertyIndexNumber}</textitem>
 
 	<!-- vertical lines -->
 
-	<lineitem x1="50" y1="69" x2="50" y2="876">blurb</lineitem>
-	<lineitem x1="550" y1="69" x2="550" y2="876">blurb</lineitem>
+	<lineitem x1="50" y1="16" x2="50" y2="876">blurb</lineitem>
+	<lineitem x1="550" y1="16" x2="550" y2="876">blurb</lineitem>
 	<lineitem x1="300" y1="736" x2="300" y2="836">blurb</lineitem>
 	<lineitem x1="300" y1="516" x2="300" y2="716">blurb</lineitem>
    </page>
@@ -161,7 +162,8 @@ align="right">{propertyIndexNumber}</textitem>
 	<lineitem x1="410" y1="693" x2="410" y2="861">blurb</lineitem>
 	<lineitem x1="480" y1="693" x2="480" y2="861">blurb</lineitem>
 
-	{adjitems}
+	
+	{adjitems} 
 
 	<textitem xpos="100" ypos="698" font="Helvetica-Bold" size="9" align="center">TOTAL</textitem>
 	<textitem xpos="244" ypos="698" font="Helvetica" size="9" align="right">{adjFacTotal}</textitem>
@@ -184,7 +186,7 @@ align="right">{propertyIndexNumber}</textitem>
 	<lineitem x1="410" y1="510" x2="410" y2="675">blurb</lineitem>
 	<lineitem x1="480" y1="510" x2="480" y2="675">blurb</lineitem>
 
-	{summitems}
+ {summitems} 
 
 	<textitem xpos="100" ypos="514" font="Helvetica-Bold" size="9" align="center">TOTAL</textitem>
 	<textitem xpos="405" ypos="514" font="Helvetica" size="9" align="right">{propertyAdjMrktValTotal}</textitem>

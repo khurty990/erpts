@@ -1036,7 +1036,8 @@ class NoticeOfDelinquencyPrint{
 				$this->tpl->set_var("class", $tdRecord["class"]);
 
 				if(strlen($tdRecord["location"]) > 25){
-					$this->formArray["tdYPosValue"]-=15;
+					// tdYPosValue change from 15 to 8 by cht
+					$this->formArray["tdYPosValue"]-=8;
 				}
 
 				$this->tpl->set_var("location", $tdRecord["location"]);
@@ -1050,7 +1051,8 @@ class NoticeOfDelinquencyPrint{
 				
 				$this->formArray["totalTaxDue"] += $tdRecord["taxDue"];
 				$this->tpl->parse("TDListBlock", "TDList", true);
-				$this->formArray["tdYPosValue"]-=15;
+				// tdYPosValue change from 15 to 8 by cht
+				$this->formArray["tdYPosValue"]-=8;
 			}
 		}
 
