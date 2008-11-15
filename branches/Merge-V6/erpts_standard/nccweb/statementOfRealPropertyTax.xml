@@ -12,8 +12,8 @@
     <textitem xpos="300" ypos="632" font="Helvetica-Bold" size="10" align="center">{ownerName}</textitem>
     <textitem xpos="300" ypos="618" font="Helvetica-Bold" size="10" align="center">{today}</textitem>
 
-    <textitem xpos="100" ypos="584" font="Helvetica-Bold" size="10" align="center">A.R.P. #</textitem>
-    <textitem xpos="180" ypos="584" font="Helvetica-Bold" size="10" align="center">Class</textitem>
+    <textitem xpos="100" ypos="584" font="Helvetica-Bold" size="10" align="center">TD NO.</textitem>
+    <textitem xpos="180" ypos="584" font="Helvetica-Bold" size="10" align="center">CLASS</textitem>
     <textitem xpos="297" ypos="584" font="Helvetica-Bold" size="10" align="center">LOCATION</textitem>
     <textitem xpos="422" ypos="584" font="Helvetica-Bold" size="10" align="center">YEAR</textitem>
     <textitem xpos="510" ypos="584" font="Helvetica-Bold" size="10" align="center">TAX DUE</textitem>

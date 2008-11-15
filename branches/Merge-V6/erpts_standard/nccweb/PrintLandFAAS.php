@@ -52,7 +52,7 @@ class PrintLandFAAS{
 			,"landitems" => ""
 			,"totalarea" => ""
 
-			,"plantstart" => 332
+			,"plantstart" => 242
 			,"plantitems" => ""
 
 			,"adjstart" => 840
@@ -884,11 +884,11 @@ class PrintLandFAAS{
 					$this->formArray["dateAssessedBy"] = $land->getAppraisedByDate();
 				}
 
-
+				// Land Appraisal
 				$this->formArray["landstart"] -= 19;
 				$offset = $this->formArray["landstart"];
-
-				if($l < 5){
+				// 5 Change to 11
+				if($l < 11){
 
 					// classification
 					$landClasses = new LandClasses;
@@ -992,7 +992,7 @@ class PrintLandFAAS{
 					$landitems.= '<lineitem x1="50" y1="'.($offset-8).'" x2="550" y2="'.($offset-8).'">blurb</lineitem>';
 				}
 
-				if($this->pl < 5){
+				if($this->pl < 11){
 					if ($percadj <> (float)$land->getPercentAdjustment()) {
 						if ($markval > 0) {
 							$adjcount++;
@@ -1061,7 +1061,9 @@ class PrintLandFAAS{
 					$this->formArray["level".($this->pl+1)] = $land->getAssessmentLevel();
 					$this->formArray["assessedValue".($this->pl+1)] = $land->getAssessedValue();
 					$this->formArray["propertyAdjMrktValTotal"] = $this->formArray["propertyAdjMrktValTotal"] + toFloat($land->getAdjustedMarketValue());
+					
 					$this->formArray["propertyTotal"] = $this->formArray["propertyTotal"] + toFloat($land->getAssessedValue());
+					
 /*
 			$summkind = '';
 			$summuse = '';
@@ -1142,11 +1144,14 @@ class PrintLandFAAS{
 				$adjitems.= '<textitem xpos="475" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
+
 								.number_format($valuadj,2)
 								.'</textitem>'."\r\n";
 				$adjitems.= '<textitem xpos="545" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
+
+
 								.number_format($adjmark,2)
 								.'</textitem>'."\r\n";
 				$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
@@ -1171,13 +1176,16 @@ class PrintLandFAAS{
 				$summitems.= '<textitem xpos="405" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
-								.number_format($summadj,2)
+								// summadj change to adjmark
+								.number_format($adjmark,2)
 								.'</textitem>'."\r\n";
 				$summitems.= '<textitem xpos="475" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
 								.number_format($summlvl,2)
 								.'</textitem>'."\r\n";
+				// Inserted 08222008
+				$summasv = ($adjmark * ($summlvl/100));
 				$summitems.= '<textitem xpos="545" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
@@ -1186,8 +1194,8 @@ class PrintLandFAAS{
 				$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
 			}
 
-
-			for ($ll=$l; $ll < 5; $ll++) {
+                        // 5 change to 11
+			for ($ll=$l; $ll < 11; $ll++) {
 					$this->formArray["landstart"] -= 19;
 					$offset = $this->formArray["landstart"];
 					$landitems.= '<lineitem x1="50" y1="'.($offset-8).'" x2="550" y2="'.($offset-8).'">blurb</lineitem>';
@@ -1295,10 +1303,12 @@ class PrintLandFAAS{
 
 					$this->formArray["dateApprovedBy"] = $plantsTrees->getApprovedByDate();
 				}
-				if($p < 14){
+				// Added and Transfer 08222008
 					$this->formArray["plantstart"] -= 17;
 					$offset = $this->formArray["plantstart"];
-
+				
+				if($p < 14){
+					
 					// productClass
 					$plantsTreesClasses = new PlantsTreesClasses;
 					if(is_numeric($plantsTrees->getProductClass())){
@@ -1503,7 +1513,8 @@ class PrintLandFAAS{
 				$adjitems.= '<textitem xpos="147" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
-								.number_format($markval,2).'   (P)'
+					// Note markval was change to plantTotal
+								.number_format($plantTotal,2).'   (P)'
 								.'</textitem>'."\r\n";
 				$adjitems.= '<textitem xpos="155" ypos="'
 								.$offset
@@ -1520,11 +1531,15 @@ class PrintLandFAAS{
 								.'" font="Helvetica" size="8" align="right">'
 								.number_format($valuadj,2)
 								.'</textitem>'."\r\n";
+// Inserted 08222008
+$adjmark = $plantTotal + $valuadj;
+
 				$adjitems.= '<textitem xpos="545" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
 								.number_format($adjmark,2)
 								.'</textitem>'."\r\n";
+
 				$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
 			}
 
@@ -1533,32 +1548,28 @@ class PrintLandFAAS{
 				$this->formArray["summstart"] -= 14;
 				$offset = $this->formArray["summstart"];
 
-				$summitems.= '<textitem xpos="55" ypos="'
-								.$offset
+	$summitems.= '<textitem xpos="55" ypos="'.$offset
 								.'" font="Helvetica" size="8" align="left">'
 								.'IMPROVEMENTS'
 								.'</textitem>'."\r\n";
-				$summitems.= '<textitem xpos="155" ypos="'
-								.$offset
-								.'" font="Helvetica" size="8" align="left">'
+	$summitems.= '<textitem xpos="155" ypos="'.$offset.'" font="Helvetica" size="8" align="left">'
 								.htmlentities($summuse)
 								.'</textitem>'."\r\n";
-				$summitems.= '<textitem xpos="405" ypos="'
-								.$offset
+	$summitems.= '<textitem xpos="405" ypos="'.$offset
 								.'" font="Helvetica" size="8" align="right">'
-								.number_format($summadj,2)
+				// summadj change adjmark
+				.number_format($adjmark,2)
 								.'</textitem>'."\r\n";
-				$summitems.= '<textitem xpos="475" ypos="'
-								.$offset
+	$summitems.= '<textitem xpos="475" ypos="'.$offset
 								.'" font="Helvetica" size="8" align="right">'
 								.number_format($summlvl,2)
 								.'</textitem>'."\r\n";
-				$summitems.= '<textitem xpos="545" ypos="'
-								.$offset
+	$summasv = ($adjmark * ($summlvl/100));
+	$summitems.= '<textitem xpos="545" ypos="'.$offset
 								.'" font="Helvetica" size="8" align="right">'
 								.number_format($summasv,2)
 								.'</textitem>'."\r\n";
-				$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
+	$summitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>'; 
 			}
 		}
 
@@ -1569,7 +1580,7 @@ class PrintLandFAAS{
 					$plantitems.= '<lineitem x1="50" y1="'.($offset-6).'" x2="550" y2="'.($offset-6).'">blurb</lineitem>';
 			}
 
-			for ($ll=$adjcount; $ll < 8; $ll++) {
+			for ($ll=$adjcount; $ll < 11; $ll++) {
 					$this->formArray["adjstart"] -= 16;
 					$offset = $this->formArray["adjstart"];
 					if($ll < 5) {
@@ -1577,7 +1588,7 @@ class PrintLandFAAS{
 					}
 			}
 
-			for ($ll=$summcount; $ll < 8; $ll++) {
+			for ($ll=$summcount; $ll < 11; $ll++) {
 					$this->formArray["summstart"] -= 16;
 					$offset = $this->formArray["summstart"];
 					if($ll < 5) {
@@ -1590,6 +1601,7 @@ class PrintLandFAAS{
 			$this->formArray["summitems"] .= $summitems;
 			$this->formArray["plantitems"] = $plantitems;
 		//}
+		
 		$this->formArray["plantTotal"] = $plantTotal;
 		$this->formArray["plantCount"] = $plantCount;
 	}

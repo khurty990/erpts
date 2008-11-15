@@ -108,7 +108,7 @@
 		<textitem xpos="513.25" ypos="332" font="Helvetica" size="9.5" align="center">Assessed Value</textitem>
 
 		<textitem xpos="583.25" ypos="332" font="Helvetica" size="9.5" align="center">Basic Tax</textitem>
-		<textitem xpos="646.75" ypos="332" font="Helvetica" size="9.5" align="center">SEF - Tax</textitem>
+		<textitem xpos="646.75" ypos="332" font="Helvetica" size="9.5" align="center">SEF Tax</textitem>
 		<textitem xpos="713.25" ypos="332" font="Helvetica" size="9.5" align="center">Total</textitem>
 
 		<textitem xpos="65" ypos="314" font="Helvetica" size="9.5" align="center">{arpNumber1}</textitem>
@@ -220,7 +220,7 @@
 		<textitem xpos="65" ypos="229.5" font="Helvetica" size="9" align="center">{arpNumber6a}</textitem>
 		<textitem xpos="65" ypos="221.75" font="Helvetica" size="9" align="center">{arpNumber6b}</textitem>
 
-		<textitem xpos="108.5" ypos="224" font="Helvetica" size="9.5" align="left">{pin6}</textitem>
+		<textitem xpos="108.5" ypos="224" font="Helvetica" size="9" align="left">{pin6}</textitem>
 		<textitem xpos="108.5" ypos="229.5" font="Helvetica" size="9" align="left">{pin6a}</textitem>
 		<textitem xpos="108.5" ypos="221.75" font="Helvetica" size="9" align="left">{pin6b}</textitem>
 

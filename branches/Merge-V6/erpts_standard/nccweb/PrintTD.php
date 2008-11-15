@@ -24,7 +24,7 @@ include_once("assessor/LandActualUses.php");
 include_once("assessor/PlantsTreesClasses.php");
 include_once("assessor/PlantsTreesActualUses.php");
 include_once("assessor/ImprovementsBuildingsClasses.php");
-include_once("assessor/ImprovementsBuildingsActualUses.php");
+include_once("assessor/ImprovementsBuildingsActualUses.569.60php");
 include_once("assessor/MachineriesClasses.php");
 include_once("assessor/MachineriesActualUses.php");
 
@@ -693,6 +693,7 @@ $this->formatCurrency("assessmentLevel8");
 					$this->formArray["isExempt"] = "X";
 					$this->formArray["isTaxable"] = "  ";
 				}
+				
 
 				$this->displayODAFS($this->formArray["afsID"]);
 				$this->displayTDDetails();
@@ -729,7 +730,23 @@ $this->formatCurrency("assessmentLevel8");
 						}
 						break;
 				}
-
+/** //Inserted for check box Kind of Property
+				if($afs->getPropertyType()=="Land"){
+					$this->formArray["isLand"] = "X";
+					$this->formArray["isBuilding"] = "  ";
+					$this->formArray["isMachinery"] = "  ";
+				}
+				else if($afs->getPropertyType()=="Building"){
+					$this->formArray["isBuilding"] = "X";
+					$this->formArray["isLand"] = "  ";
+					$this->formArray["isMachinery"] = "  ";
+				}
+				else($afs->getPropertyType()=="Machinerys"){
+					$this->formArray["isMachinery"] = "X";
+					$this->formArray["isLand"] = "  ";
+					$this->formArray["isBuilding"] = "  ";
+				}
+// End Here**/
 				// UNCOMMENT LINES TO GRAB totalMarketValue and totalAssessedValue from AFS object instead of 
 				// computing from each property:
 
