@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 <contents>
 
 	<!-- BEGIN Page -->
@@ -60,10 +60,10 @@
 		<!-- end ypos=234 -->
 
 		<!-- tdYPos starts at 366 decrements by 11 until 234 -->
-		
+
 		<!-- BEGIN TDList -->
 
-		<textitem xpos="18" ypos="{tdYPos}" font="Helvetica" size="8" align="left">{arpNumber}</textitem>
+		<textitem xpos="30" ypos="{tdYPos}" font="Helvetica" size="8" align="left">{arpNumber}</textitem>
 		<textitem xpos="156.375" ypos="{tdYPos}" font="Helvetica" size="9" align="center">{year}</textitem>
 		<textbox x1="206.5" y1="{tdYPos}" x2="319.75" y2="{tdYPos}" font="Helvetica" size="8" hmode="left">{location}</textbox>
 
@@ -108,7 +108,7 @@
 		<textitem xpos="605" ypos="41" font="Helvetica-Bold" size="11" align="center">{signatory2}</textitem>
 		<textitem xpos="605" ypos="26" font="Helvetica" size="11" align="center">{signatory2Designation}</textitem>
 
-		
+
 		<lineitem x1="35" y1="127" x2="155" y2="127">amount</lineitem>
 
 

@@ -39,7 +39,7 @@ include_once("assessor/ODHistoryRecords.php");
 # Define Interface Class
 #####################################
 class AssessmentRollReport{
-	
+
 	var $tpl;
 	var $formArray;
 	var $sess;
@@ -49,13 +49,13 @@ class AssessmentRollReport{
 		//echo "username=>".$auth->auth["uname"];
 
 		$this->formArray = $formArray;
-		
+
 		$this->formArray["uid"] = $auth->auth["uid"];
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "AssessmentRollReportPrint.htm") ;
 		$this->tpl->set_var("TITLE", "Assessment Roll Report");
-		
+
 		$this->sess = $sess;
 
 		$this->formArray["formAction"] = $formAction;
@@ -148,7 +148,7 @@ class AssessmentRollReport{
 
 	function filterArchives(){
 		$condition = " AND ".OD_TABLE.".transactionCode <> 'CA'";
-		$condition.= " GROUP BY ".OD_TABLE.".odID "; 
+		$condition.= " GROUP BY ".OD_TABLE.".odID ";
 		$condition.= " ORDER BY ".OD_TABLE.".odID ASC";
 		return $condition;
 	}
@@ -204,7 +204,7 @@ class AssessmentRollReport{
 				$propertyTable = PROVINCE_TABLE;
 				break;
 	   }
-	
+
 		$this->tpl->set_block("rptsTemplate", $TempVar."List", $TempVar."ListBlock");
 
 		$TempVarList = new SoapObject(NCCBIZ.$TempVar."List.php", "urn:Object");
@@ -292,7 +292,7 @@ class AssessmentRollReport{
 				}
 			}
 		}
-	
+
 	}
 
 	function getAFSDetails($odID){
@@ -356,14 +356,14 @@ class AssessmentRollReport{
 								$precedingAFS = $this->getAFSDetails($precedingODID);
 
 				$this->tpl->set_var("precedingTransactionCode", $value->getTransactionCode());
-			// diri edit nako 					
+			// diri edit nako
 		$this->tpl->set_var("precedingcancelsTDNumber", $precedingTD->getcancelsTDNumber());
 	$this->tpl->set_var("precedingAssessedValue", number_format($precedingAFS->getTotalAssessedValue(), 2, ".", ","));
 							}
 					}
 				}
 			}
-		}	
+		}
 	}
 
 	function displaySucceedingOD(){
@@ -406,7 +406,7 @@ class AssessmentRollReport{
 						}
 				}
 			}
-		}	
+		}
 	}
 
 	function setForm(){
@@ -434,7 +434,7 @@ class AssessmentRollReport{
 			$this->tpl->set_var($key, $value);
 		}
 	}
-	
+
 	function Main(){
 		switch ($this->formArray["formAction"]){
 			case "view":
@@ -499,7 +499,7 @@ class AssessmentRollReport{
 					$this->tpl->set_block("rptsTemplate", "NotFound", "NotFoundBlock");
 					$this->tpl->set_var("message", "properties not found");
 					$this->tpl->parse("NotFoundBlock", "NotFound", true);
-					
+
 					$this->tpl->set_block("rptsTemplate", "Report", "ReportBlock");
 					$this->tpl->set_var("ReportBlock", "");
 				}
@@ -527,10 +527,10 @@ class AssessmentRollReport{
 				$this->formArray["odID"] = $value->getOdID();
                         	$this->formArray["afsID"] = $afs->getAfsID();
 				//$od = $this->getODDetails($value->getOdID());
-				
-			
+
+
 			$this->tpl->set_var("transactionCode", $value->getTransactionCode());
-                     	
+
 			$td = new TD;
                         if($td->selectRecord("", $this->formArray["afsID"])){
                         $this->tpl->set_var("taxDeclarationNumber", $td->getTaxDeclarationNumber());
@@ -538,19 +538,19 @@ class AssessmentRollReport{
                         else{
                         $this->tpl->set_var("taxDeclarationNumber","");
                         }
-			
-                        
-			
+
+
+
 			$this->tpl->set_var("area", $value->getLandArea());
- 			$this->tpl->set_var("marketValue", number_format($afs->getTotalMarketValue()));			
+ 			$this->tpl->set_var("marketValue", number_format($afs->getTotalMarketValue()));
 
 			$this->tpl->set_var("assessedValue", number_format($afs->getTotalAssessedValue(), 2, '.', ','));
-			
+
 			$this->tpl->set_var("cancelsTDNumber", $td->getCancelsTDNumber());
 			$this->tpl->set_var("previousAssessedValue", $td->getPreviousAssessedValue());
 			$this->tpl->set_var("previousOwner", $td->getPreviousOwner());
-			$this->tpl->set_var("canceledByTDNumber", $td->getCanceledByTDNumber());	
-			
+			$this->tpl->set_var("canceledByTDNumber", $td->getCanceledByTDNumber());
+
 
 								$landList = $afs->getLandArray();
 								$plantsTreesList = $afs->getPlantsTreesArray();
@@ -567,7 +567,7 @@ class AssessmentRollReport{
 									$kind = "Land";
 									$land = $landList[0];
 									$class = $land->getClassification();
-	
+
 									$landClasses = new LandClasses;
 									$landClasses->selectRecord($class);
 									$class = $landClasses->getDescription();
@@ -575,9 +575,9 @@ class AssessmentRollReport{
 								else if(count($plantsTreesList)){
 									$kind = "Land";
 									$plantsTrees = $plantsTreesList[0];
-	
+
 									$class = $plantsTrees->getProductClass();
-	
+
 									$plantsTreesClasses = new PlantsTreesClasses;
 									$plantsTreesClasses->selectRecord($class);
 									$class = $plantsTreesClasses->getDescription();
@@ -586,7 +586,7 @@ class AssessmentRollReport{
 									$kind = "Improvements/Buildings";
 									$improvementsBuildings = $improvementsBuildingsList[0];
 									$class = $improvementsBuildings->getBuildingClassification();
-	
+
 									$improvementsBuildingsClasses = new ImprovementsBuildingsClasses;
 									$improvementsBuildingsClasses->selectRecord($class);
 									$class = $improvementsBuildingsClasses->getDescription();
@@ -596,10 +596,10 @@ class AssessmentRollReport{
 									$machineries = $machineriesList[0];
 									$class = $machineries->getKind();
 								}
-	
+
 								$this->tpl->set_var("kind", $kind);
 								$this->tpl->set_var("class", $class);
-	
+
 								$oValue = $value->owner;
 
 								if(is_array($oValue->personArray)){
@@ -620,19 +620,19 @@ class AssessmentRollReport{
 									$this->tpl->set_var("ownerNames", "");
 								}
 								unset($ownerNamesArray);
-	
+
 								if (count($oValue->personArray)){
 									$firstOwner = $oValue->personArray[0]->getLastName();
 									$firstOwner.= ", ";
 									$firstOwner.= $oValue->personArray[0]->getFirstName();
 									$firstOwner.= " ";
 									$firstOwner.= substr($oValue->personArray[0]->getMiddleName(), 0, 1) . ".";
-	
+
 									$pAddress = ($oValue->personArray[0]->addressArray) ? 	$oValue->personArray[0]->addressArray[0]->getFullAddress() : "no address" ;
-	
+
 									$firstOwnerAddress = $pAddress;
 									$firstOwnerTelephone = $oValue->personArray[0]->getTelephone();
-	
+
 									$this->tpl->set_var("firstOwner", $firstOwner);
 									$this->tpl->set_var("firstOwnerAddress", $firstOwnerAddress);
 									$this->tpl->set_var("firstOwnerTelephone", $firstOwnerTelephone);
@@ -640,12 +640,12 @@ class AssessmentRollReport{
 								if (count($oValue->companyArray)){
 									if($firstOwner==""){
 										$firstOwner = $oValue->companyArray[0]->getCompanyName();
-	
+
 										$cAddress = ($oValue->companyArray[0]->addressArray) 	?$oValue->companyArray[0]->addressArray[0]->getFullAddress() : "no address";
-	
+
 										$firstOwnerAddress = $cAddress;
 										$firstOwnerTelephone = $oValue->companyArray[0]->getTelephone();
-	
+
 										$this->tpl->set_var("firstOwner", $firstOwner);
 										$this->tpl->set_var("firstOwnerAddress", $firstOwnerAddress);
 										$this->tpl->set_var("firstOwnerTelephone", $firstOwnerTelephone);
@@ -675,14 +675,14 @@ class AssessmentRollReport{
 								$this->displayPrecedingOD();
 								$this->displaySucceedingOD();
 						//$this->tpl->set_var("transactionCode", $value->getTransactionCode());
-								
+
 								$this->tpl->parse("ReportListBlock", "ReportList", true);
 
-							
+
 							}
 
 						}
-	
+
 					}
 				}
 
@@ -696,13 +696,13 @@ class AssessmentRollReport{
 				$this->tpl->set_var("ReportBlock", "");
 				break;
 		}
-		
+
         $this->setForm();
         $this->tpl->set_var("Session", $this->sess->url(""));
 		$this->tpl->set_var("rpts_Session", $this->sess->id);
         $this->tpl->parse("templatePage", "rptsTemplate");
         $this->tpl->finish("templatePage");
-        $this->tpl->p("templatePage");		
+        $this->tpl->p("templatePage");
 
 	}
 }

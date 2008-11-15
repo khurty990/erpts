@@ -46,6 +46,7 @@ class PrintReceiptDetailsPDF{
 			"receiptIDArray" => $receiptID
 
 			,"pageNumber" => 1
+			,"receiptPageNumber" => ""
 			,"receiptType" => ""
 			,"prevORNum" => ""
 			,"porMonth" => ""
@@ -168,6 +169,20 @@ class PrintReceiptDetailsPDF{
 			,"grandTotal4" => ""
 			,"grandTotal5" => ""
 			,"grandTotal6" => ""
+
+			,"landClass1" => ""
+			,"landClass2" => ""
+			,"landClass3" => ""
+			,"landClass4" => ""
+			,"landClass5" => ""
+			,"landClass6" => ""
+
+			,"dueDate1" => ""
+			,"dueDate2" => ""
+			,"dueDate3" => ""
+			,"dueDate4" => ""
+			,"dueDate5" => ""
+			,"dueDate6" => ""
 
 		);
 
@@ -713,16 +728,20 @@ class PrintReceiptDetailsPDF{
 											$od = $this->getOD($afs->getOdID());
 											$this->setvar("lotAddress".$i,$od->locationAddress->getStreet().", ".$od->locationAddress->getBarangay());
 											$this->setvar("blockNumber".$i,$od->getLotNumber().", ".$od->getBlockNumber());
+											$this->setvar("landClass".$i, $payment->getPropertyClassification());
 											$this->setvar("tdNum".$i,$tdNum);
+											$this->setvar("dueDate".$i, "(".substr($payment->getDueDate(),0,4).")");
 											$this->setvar("assessedValue".$i,$assessedValue,true);
 											$this->setvar("subTotal".$i,$collection->getTaxDue(),true);
 
 											if($collection->getPenalty() > 0){
 												if($collection->getAmnesty()=="true"){
-													$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " % (amnesty)",true);
+													//	$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " % (amnesty)",true);
+													$this->setvar("penalty".$i,$collection->getPenalty());
 												}
 												else{
-													$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " %",true);
+													// $this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " %",true);
+													$this->setvar("penalty".$i,$collection->getPenalty());
 												}
 											}
 											$this->setvar("grandTotal".$i,$collection->getAmountPaid(),true);

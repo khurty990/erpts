@@ -47,6 +47,7 @@ class PrintRPTOPDetailsPDF{
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "rptopDetails.xml") ;
+		
 		$this->tpl->set_var("TITLE", "Print RPTOP");
 
 		$this->formArray["rptopID"] = $rptopID;
@@ -181,12 +182,18 @@ class PrintRPTOPDetailsPDF{
 			,"totalBasic" => ""
 			,"totalSef" => ""
 			,"totalTaxes" => ""
-
+			,"grandtotalBasic" => ""
 			,"municipalAssessor" => ""
 			,"municipalTreasurer" => ""
 
 		);
 
+		$this->formArray["pageNumber"] = 1;
+
+		$this->tdPagingArray["tdPageNumber"] = 1;
+		$this->tdPagingArray["tdCount"] = 0;
+		$this->tdPagingArray["tdTotalPages"] = 1;
+		$this->tdPagingArray["tdPageBy"] = 6;
 	}
 
 	function formatCurrency($key){
@@ -239,10 +246,30 @@ class PrintRPTOPDetailsPDF{
 		$this->formatCurrency("totalSef");
 		$this->formatCurrency("totalTaxes");
 
-		$this->formArray["pageNumber"] = 1;
-
 		foreach ($this->formArray as $key => $value){
 			$this->tpl->set_var($key, html_entity_to_alpha($value));
+		}
+	}
+
+	function resetTDPageRecords(){
+		for($i=1 ; $i<=6 ; $i++){
+			$this->formArray["arpNumber".$i] = "";
+			$this->formArray["arpNumber".$i."a"] = "";
+			$this->formArray["arpNumber".$i."b"] = "";
+			$this->formArray["location".$i] = "";
+			$this->formArray["location".$i."a"] = "";
+			$this->formArray["location".$i."b"] = "";
+			$this->formArray["area".$i] = "";
+			$this->formArray["lotNo".$i] = "";
+			$this->formArray["pin".$i] = "";
+			$this->formArray["pin".$i."a"] = "";
+			$this->formArray["pin".$i."b"] = "";
+			$this->formArray["classification".$i] = "";
+			$this->formArray["marketValue".$i] = "";
+			$this->formArray["assessedValue".$i] = "";
+			$this->formArray["basic".$i] = "";
+			$this->formArray["sef".$i] = "";
+			$this->formArray["totalTax".$i] = "";
 		}
 	}
 
@@ -251,13 +278,13 @@ class PrintRPTOPDetailsPDF{
 		$eRPTSSettings->selectRecord(1);
 
 		$this->formArray["lguType"] = strtoupper($eRPTSSettings->getLguType());
-		$this->formArray["lguName"] = $eRPTSSettings->getLguName();
+		$this->formArray["lguName"] = strtoupper($eRPTSSettings->getLguName());
 	}
 
 
 	function displayOwnerList($domDoc){
 		$owner = new Owner;
-		$owner->parseDomDocument($domDoc);
+			$owner->parseDomDocument($domDoc);
 
 		$oValue = $owner;
 	
@@ -293,20 +320,24 @@ class PrintRPTOPDetailsPDF{
 		}
 
 		if($number!=""){
-			$address1 = $number;
+			$address2 = $number;
 		}
-		if($address1!=""){
-			$address1.= " ".$street;
-		}
-		if($address1!=""){
-			$address1.= ", ".$barangay;
+		if($street!=""){
+			$address2 .= " ".$street;
+		}		
+		if($address2!=""){
+			$address2.= ", ".$barangay;
+		}					
+		else{
+			$address2 .= $barangay;
 		}
 		if($municipalityCity!=""){
-			$address2 = $municipalityCity;
+			$address2.= ", ".$municipalityCity;
 		}
 		if($address2!=""){
 			$address2.= ", ".$province;
 		}
+
 		if($district != "" &&  $district !="no district"){
 			$address2 = $district." , ".$address2;
 		}
@@ -319,6 +350,8 @@ class PrintRPTOPDetailsPDF{
 
 
 	function Main(){
+		$this->displayLGUName();
+
 		$RPTOPDetails = new SoapObject(NCCBIZ."RPTOPDetails.php", "urn:Object");
 		if (!$xmlStr = $RPTOPDetails->getRPTOP($this->formArray["rptopID"])){
 			exit("xml failed");
@@ -372,11 +405,26 @@ class PrintRPTOPDetailsPDF{
 							else {
 								$cityTreasurer = $value;
 								$this->formArray["municipalTreasurer"] = $cityTreasurer;
-							}						
+							}
 							break;
 						case "tdArray":
 							$tdCtr = 1;
+							$tdContinuousCtr = 1;
+
 							if (count($value)){
+								$this->tdPagingArray["tdCount"] = count($value);
+
+								$this->tdPagingArray["tdPageRecordsCounter"] = 1;
+								$this->tdPagingArray["tdTotalPages"] = ceil($this->tdPagingArray["tdCount"]/$this->tdPagingArray["tdPageBy"]);
+								$this->tdPagingArray["tdPageNumber"] = 1;
+
+								$this->tpl->set_block("rptsTemplate", "Page", "PageBlock");
+
+								$this->tpl->set_block("Page", "FirstPageText", "FirstPageTextBlock");
+								$this->tpl->set_block("Page", "ContinuedFromPreviousPageText", "ContinuedFromPreviousPageTextBlock");
+								$this->tpl->set_block("Page", "ContinuedNextPageText", "ContinuedNextPageTextBlock");
+								$this->tpl->set_block("Page", "Totals", "TotalsBlock");
+
 								foreach($value as $tkey => $tvalue){
 									$this->formArray["arpNumber".$tdCtr] = $tvalue->getTaxDeclarationNumber();
 
@@ -421,8 +469,6 @@ class PrintRPTOPDetailsPDF{
 												$this->formArray["location".$tdCtr."b"] = $locationBarangay;
 												$this->formArray["location".$tdCtr] = "";
 											}
-
-
 
 											$this->formArray["province"] = $locationProvince;
 											$this->formArray["municipalityCity"] = strtoupper($locationMunicipalityCity);
@@ -504,67 +550,171 @@ class PrintRPTOPDetailsPDF{
 												}
 											}
 
-											$this->formArray["classification".$tdCtr] = $reportCodeDescription;
+						$this->formArray["classification".$tdCtr] = $reportCodeDescription;
 
-											$this->formArray["landTotalMarketValue"] += $afs->getLandTotalMarketValue();
-											$this->formArray["landTotalAssessedValue"] += $afs->getLandTotalAssessedValue();
-											$this->formArray["plantTotalMarketValue"] += $afs->getPlantTotalMarketValue();
-											$this->formArray["plantTotalAssessedValue"] += $afs->getPlantTotalAssessedValue();
-											$this->formArray["bldgTotalMarketValue"] += $afs->getBldgTotalMarketValue();
-											$this->formArray["bldgTotalAssessedValue"] += $afs->getBldgTotalAssessedValue();
-											$this->formArray["machTotalMarketValue"] += $afs->getMachTotalMarketValue();
-											$this->formArray["machTotalAssessedValue"] += $afs->getMachTotalAssessedValue();
-											$this->formArray["marketValue".$tdCtr] += $afs->getTotalMarketValue();
-											$this->formArray["assessedValue".$tdCtr] += $afs->getTotalAssessedValue();
+				$this->formArray["landTotalMarketValue"] += $afs->getLandTotalMarketValue();
+				$this->formArray["landTotalAssessedValue"] += $afs->getLandTotalAssessedValue();
+				$this->formArray["plantTotalMarketValue"] += $afs->getPlantTotalMarketValue();
+				$this->formArray["plantTotalAssessedValue"] += $afs->getPlantTotalAssessedValue();
+				$this->formArray["bldgTotalMarketValue"] += $afs->getBldgTotalMarketValue();
+				$this->formArray["bldgTotalAssessedValue"] += $afs->getBldgTotalAssessedValue();
+				$this->formArray["machTotalMarketValue"] += $afs->getMachTotalMarketValue();
+				$this->formArray["machTotalAssessedValue"] += $afs->getMachTotalAssessedValue();
+				$this->formArray["marketValue".$tdCtr] += $afs->getTotalMarketValue();
+				$this->formArray["assessedValue".$tdCtr] += $afs->getTotalAssessedValue();
 
-											$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
-											$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
+				$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
+				$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
 
 
-											// grab Due from tdID
+				// grab Due from tdID
 									
-											$this->formArray["totalTaxDue"] = 0.00;
+				$this->formArray["totalTaxDue"] = 0.00;
 
-											$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");
+				$DueDetails = new SoapObject(NCCBIZ."DueDetails.php", "urn:Object");
 									
-											if (!$xmlStr = $DueDetails->getDueFromTdID($tvalue->getTdID())){
-													$this->formArray["basic".$tdCtr] = "";
-													$this->formArray["sef".$tdCtr] ="";
-													$this->formArray["totalTax".$tdCtr] = "";
+				if (!$xmlStr = $DueDetails->getDueFromTdID($tvalue->getTdID())){
+					$this->formArray["basic".$tdCtr] = "";
+					$this->formArray["sef".$tdCtr] ="";
+					$this->formArray["totalTax".$tdCtr] = "";
 		
-													$this->formArray["totalBasic"] += 0;
-													$this->formArray["totalSef"] += 0;
-													$this->formArray["totalTaxes"] += 0;
-											}
-											else{
-												if(!$domDoc = domxml_open_mem($xmlStr)) {
-													$this->formArray["basic".$tdCtr] = "";
-													$this->formArray["sef".$tdCtr] ="";
-													$this->formArray["totalTax".$tdCtr] = "";
+					$this->formArray["totalBasic"] += 0;
+					$this->formArray["totalSef"] += 0;
+					$this->formArray["totalTaxes"] += 0;
+					}
+					else{
+					if(!$domDoc = domxml_open_mem($xmlStr)) {
+					$this->formArray["basic".$tdCtr] = "";
+					$this->formArray["sef".$tdCtr] ="";
+					$this->formArray["totalTax".$tdCtr] = "";
 		
-													$this->formArray["totalBasic"] += 0;
-													$this->formArray["totalSef"] += 0;
-													$this->formArray["totalTaxes"] += 0;
-												}
-												else {
-													$due = new Due;
-													$due->parseDomDocument($domDoc);
+					$this->formArray["totalBasic"] += 0;
+					$this->formArray["totalSef"] += 0;
+					$this->formArray["totalTaxes"] += 0;
+					}
+					else {
+					$due = new Due;
+					$due->parseDomDocument($domDoc);
 		
-													$this->formArray["basic".$tdCtr] = $due->getBasicTax();
-													$this->formArray["sef".$tdCtr] = $due->getSEFTax();
-													$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
+					$this->formArray["basic".$tdCtr] = $due->getBasicTax();
+					$this->formArray["sef".$tdCtr] = $due->getSEFTax();
+					$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
 		
-													$this->formArray["totalBasic"] += $due->getBasicTax();
-													$this->formArray["totalSef"] += $due->getSEFTax();
-													$this->formArray["totalTaxes"] += $due->getTaxDue();
-												}
-											}
+					$this->formArray["totalBasic"] += $due->getBasicTax();
+					$this->formArray["totalSef"] += $due->getSEFTax();
+					$this->formArray["totalTaxes"] += $due->getTaxDue();
+							}
+					}
 
 
 										}
 									}
 
+				$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
+								+ $this->formArray["plantTotalMarketValue"]
+								+ $this->formArray["bldgTotalMarketValue"]
+								+ $this->formArray["machTotalMarketValue"];
+				$this->formArray["totalAssessedValue"] = $this->formArray["landTotalAssessedValue"]
+								+ $this->formArray["plantTotalAssessedValue"]
+								+ $this->formArray["bldgTotalAssessedValue"]
+								+ $this->formArray["machTotalAssessedValue"];
+				// new modified by charl 02202008------------------------------------
+		$this->formArray["totalBasic"] = $this->formArray["totalAssessedValue"]/100;
+		$this->formArray["totalSef"] = $this->formArray["totalAssessedValue"]/100;
+		$this->formArray["totalTaxes"] = $this->formArray["totalBasic"] + $this->formArray["totalSef"];
+				// -----------------------------------------------------------				
+									
+							
+				if($this->tdPagingArray["tdPageRecordsCounter"]==$this->tdPagingArray["tdPageBy"]){
+										// if 6
+										$this->setForm();
+										$this->resetTDPageRecords();
+										$this->tpl->set_var("tdPageNumber",$this->tdPagingArray["tdPageNumber"]);
+										$this->tpl->set_var("tdTotalPages",$this->tdPagingArray["tdTotalPages"]);
+
+										if($this->tdPagingArray["tdPageNumber"] > 1){
+											$this->tpl->set_var("FirstPageTextBlock", "");
+											$this->tpl->parse("ContinuedFromPreviousPageTextBlock","ContinuedFromPreviousPageText", true);
+										}
+										else if($this->tdPagingArray["tdPageNumber"]==1){
+											$this->tpl->parse("FirstPageTextBlock", "FirstPageText", true);
+											$this->tpl->set_var("ContinuedFromPreviousPageTextBlock","");
+										}
+
+										if($this->tdPagingArray["tdTotalPages"] > 1 && $this->tdPagingArray["tdPageNumber"] < $this->tdPagingArray["tdTotalPages"]){
+											$this->tpl->parse("ContinuedNextPageTextBlock","ContinuedNextPageText", true);
+										}
+										else if($this->tdPagingArray["tdTotalPages"]==1){
+											$this->tpl->set_var("ContinuedNextPageTextBlock","");
+										}
+
+										if($this->tdPagingArray["tdTotalPages"]==$this->tdPagingArray["tdPageNumber"]){
+											$this->tpl->parse("TotalsBlock","Totals", true);
+										}
+										else{
+											$this->tpl->set_var("TotalsBlock", "");
+										}
+
+										$this->tpl->parse("PageBlock","Page",true);
+
+										$this->tpl->set_var("FirstPageTextBlock", "");
+										$this->tpl->set_var("ContinuedFromPreviousPageTextBlock","");
+										$this->tpl->set_var("ContinuedNextPageTextBlock","");
+										$this->tpl->set_var("TotalsBlock", "");
+
+										$this->tdPagingArray["tdPageNumber"]++;
+										$this->formArray["pageNumber"]++;
+
+										// reset counter
+										$this->tdPagingArray["tdPageRecordsCounter"] = 0;
+										$tdCtr=0;
+									}
+									else if($tdContinuousCtr==$this->tdPagingArray["tdCount"]){
+										// if this is the last record, and count is still not 6
+
+										$this->setForm();
+										$this->resetTDPageRecords();
+										$this->tpl->set_var("tdPageNumber",$this->tdPagingArray["tdPageNumber"]);
+										$this->tpl->set_var("tdTotalPages",$this->tdPagingArray["tdTotalPages"]);
+
+										if($this->tdPagingArray["tdPageNumber"] > 1){
+											$this->tpl->set_var("FirstPageTextBlock", "");
+											$this->tpl->parse("ContinuedFromPreviousPageTextBlock","ContinuedFromPreviousPageText", true);
+										}
+										else if($this->tdPagingArray["tdPageNumber"]==1){
+											$this->tpl->parse("FirstPageTextBlock", "FirstPageText", true);
+											$this->tpl->set_var("ContinuedFromPreviousPageTextBlock","");
+										}
+
+										if($this->tdPagingArray["tdTotalPages"] > 1 && $this->tdPagingArray["tdPageNumber"] < $this->tdPagingArray["tdTotalPages"]){
+											$this->tpl->parse("ContinuedNextPageTextBlock","ContinuedNextPageText", true);
+										}
+										else if($this->tdPagingArray["tdTotalPages"]==1){
+											$this->tpl->set_var("ContinuedNextPageTextBlock","");
+										}
+
+										if($this->tdPagingArray["tdTotalPages"]==$this->tdPagingArray["tdPageNumber"]){
+											$this->tpl->parse("TotalsBlock","Totals", true);
+										}
+										else{
+											$this->tpl->set_var("TotalsBlock", "");
+										}
+
+										$this->tpl->parse("PageBlock","Page",true);
+
+										$this->tpl->set_var("FirstPageTextBlock", "");
+										$this->tpl->set_var("ContinuedFromPreviousPageTextBlock","");
+										$this->tpl->set_var("ContinuedNextPageTextBlock","");
+										$this->tpl->set_var("TotalsBlock", "");
+
+										$this->tdPagingArray["tdPageNumber"]++;
+										$this->formArray["pageNumber"]++;
+									}
+
 									$tdCtr++;
+									$tdContinuousCtr++;
+
+									$this->tdPagingArray["tdPageRecordsCounter"]++;
 								}
 							}
 
@@ -574,25 +724,21 @@ class PrintRPTOPDetailsPDF{
 					}
 				}
 
-				$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
-											+ $this->formArray["plantTotalMarketValue"]
-											+ $this->formArray["bldgTotalMarketValue"]
-											+ $this->formArray["machTotalMarketValue"];
-				$this->formArray["totalAssessedValue"] = $this->formArray["landTotalAssessedValue"]
-											+ $this->formArray["plantTotalAssessedValue"]
-											+ $this->formArray["bldgTotalAssessedValue"]
-											+ $this->formArray["machTotalAssessedValue"];
 				unset($rptop);
 
 			}	
 		}
 
-		$this->displayLGUName();
+		$this->tpl->set_block("rptsTemplate","Totals","TotalsBlock");
+		$this->tpl->set_var("TotalsBlock","");
 
-		$this->setForm();
-
+		//$this->setForm();
+	
         $this->tpl->parse("templatePage", "rptsTemplate");
         $this->tpl->finish("templatePage");
+
+//		print_r($this->tpl->get("templatePage"));
+//		exit;
 
 		$testpdf = new PDFWriter;
         $testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
