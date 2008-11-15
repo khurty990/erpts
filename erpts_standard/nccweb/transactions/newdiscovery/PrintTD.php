@@ -77,6 +77,46 @@ class TDDetails{
 			,"marketValue3" => "" // Property [L,P,B,M]
 			,"assessmentLevel3" => "" // Property [L,P,B,M]
 			,"assessedValue3" => "" // Property [L,P,B,M]
+			
+                        /*this is an inserted code by renonj */
+
+			,"kind4" => "" // Property [L,P,B,M]
+			,"classification4" => "" // Property [L,P,B,M]
+			,"marketValue4" => "" // Property [L,P,B,M]
+			,"assessmentLevel4" => "" // Property [L,P,B,M]
+			,"assessedValue4" => "" // Property [L,P,B,M]
+                        
+			,"kind5" => "" // Property [L,P,B,M]
+			,"classification5" => "" // Property [L,P,B,M]
+			,"marketValue5" => "" // Property [L,P,B,M]
+			,"assessmentLevel5" => "" // Property [L,P,B,M]
+			,"assessedValue5" => "" // Property [L,P,B,M]
+ 
+			,"kind6" => "" // Property [L,P,B,M]
+			,"classification6" => "" // Property [L,P,B,M]
+			,"marketValue6" => "" // Property [L,P,B,M]
+			,"assessmentLevel6" => "" // Property [L,P,B,M]
+			,"assessedValue6" => "" // Property [L,P,B,M]
+			
+			,"kind7" => "" // Property [L,P,B,M]
+			,"classification7" => "" // Property [L,P,B,M]
+			,"marketValue7" => "" // Property [L,P,B,M]
+			,"assessmentLevel7" => "" // Property [L,P,B,M]
+			,"assessedValue7" => "" // Property [L,P,B,M]
+
+			,"kind8" => "" // Property [L,P,B,M]
+			,"classification8" => "" // Property [L,P,B,M]
+			,"marketValue8" => "" // Property [L,P,B,M]
+			,"assessmentLevel8" => "" // Property [L,P,B,M]
+			,"assessedValue8" => "" // Property [L,P,B,M]
+
+			,"kind9" => "" // Property [L,P,B,M]
+			,"classification9" => "" // Property [L,P,B,M]
+			,"marketValue9" => "" // Property [L,P,B,M]
+			,"assessmentLevel9" => "" // Property [L,P,B,M]
+			,"assessedValue9" => "" // Property [L,P,B,M]
+                        //ends here
+
 			,"totalMarketValue" => 0  // Property [L,P,B,M]
 			,"totalAssessedValue" => 0  // Property [L,P,B,M]
 			,"totalAssessedValueInWords" => ""
@@ -105,7 +145,8 @@ class TDDetails{
 			return false;
 
 		if(is_numeric($this->formArray[$key]))
-			$this->formArray[$key] = number_format(un_number_format($this->formArray[$key]), 2, ".", ",");
+		//edited this code (from 2-3)
+    	$this->formArray[$key] = number_format(un_number_format($this->formArray[$key]), 3, ".", ",");
 	}
 	
 	function setForm(){
@@ -116,6 +157,11 @@ class TDDetails{
 		$this->formatCurrency("marketValue3");
 		$this->formatCurrency("assessedValue3");
 
+
+                /* this is an inserted */
+		$this->formatCurrency("marketValue4");
+		$this->formatCurrency("assessedValue4");
+		
 		$this->formatCurrency("totalMarketValue");
 		$this->formatCurrency("totalAssessedValue");
 
@@ -166,8 +212,8 @@ class TDDetails{
 					$landActualUsesReportCode = $landActualUses->getReportCode();
 				}
 				*/
-
-				if($this->formArray["p"] <= 3){
+                              // edited this code from (3 to 8)
+				if($this->formArray["p"] <= 8){
 					$p = $this->formArray["p"];
 
 					$this->formArray["kind".$p] = $land->getKind();
@@ -217,18 +263,18 @@ class TDDetails{
 				}
 				*/
 
-				if($this->formArray["p"] <= 3){
+				if($this->formArray["p"] <= 8){
 					$p = $this->formArray["p"];
 
 					$this->formArray["kind".$p] = $plantsTrees->getKind();
 					$this->formArray["classification".$p] = $plantsTreesClassesDescription;
 
-					$this->formArray["marketValue".$p] = $plantsTrees->getMarketValue();
-					$this->formArray["assessmentLevel".$p] = $plantsTrees->getAssessmentLevel();
-					$this->formArray["assessedValue".$p] = $plantsTrees->getAssessedValue();
+					$this->formArray["marketValue".$p] = un_number_format($plantsTrees->getMarketValue());
+					$this->formArray["assessmentLevel".$p] = un_number_format($plantsTrees->getAssessmentLevel());
+					$this->formArray["assessedValue".$p] = un_number_format($plantsTrees->getAssessedValue());
 
-					$this->formArray["totalMarketValue"] += $this->formArray["marketValue".$p];
-					$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue".$p];
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["marketValue".$p]);
+					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
 
 					$this->formArray["p"]++;
 				}
@@ -269,18 +315,18 @@ class TDDetails{
 
 				*/
 
-				if($this->formArray["p"] <= 3){
+				if($this->formArray["p"] <= 8){
 					$p = $this->formArray["p"];
 
 					$this->formArray["kind".$p] = $improvementsBuildings->getKind();
 					$this->formArray["classification".$p] = $improvementsBuildingsClassesDescription;
 
-					$this->formArray["marketValue".$p] = $improvementsBuildings->getMarketValue();
-					$this->formArray["assessmentLevel".$p] = $improvementsBuildings->getAssessmentLevel();
-					$this->formArray["assessedValue".$p] = $improvementsBuildings->getAssessedValue();
+					$this->formArray["marketValue".$p] = un_number_format($improvementsBuildings->getMarketValue());
+					$this->formArray["assessmentLevel".$p] = un_number_format($improvementsBuildings->getAssessmentLevel());
+					$this->formArray["assessedValue".$p] = un_number_format($improvementsBuildings->getAssessedValue());
 
-					$this->formArray["totalMarketValue"] += $this->formArray["marketValue".$p];
-					$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue".$p];
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["marketValue".$p]);
+					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
 
 					$this->formArray["p"]++;
 				}
@@ -317,18 +363,18 @@ class TDDetails{
 					$machineriesActualUsesCode = $machineries->getActualUse();
 				}
 
-				if($this->formArray["p"] <= 3){
+				if($this->formArray["p"] <= 8){
 					$p = $this->formArray["p"];
 
 					$this->formArray["kind".$p] = $machineriesClassesDescription;
 					$this->formArray["classification".$p] = $machineriesActualUsesDescription;
 
-					$this->formArray["marketValue".$p] = $machineries->getMarketValue();
-					$this->formArray["assessmentLevel".$p] = $machineries->getAssessmentLevel();
-					$this->formArray["assessedValue".$p] = $machineries->getAssessedValue();
+					$this->formArray["marketValue".$p] = un_number_format($machineries->getMarketValue());
+					$this->formArray["assessmentLevel".$p] = un_number_format($machineries->getAssessmentLevel());
+					$this->formArray["assessedValue".$p] = un_number_format($machineries->getAssessedValue());
 
-					$this->formArray["totalMarketValue"] += $this->formArray["marketValue".$p];
-					$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue".$p];
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["marketValue".$p]);
+					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
 
 					$this->formArray["p"]++;
 				}
@@ -349,6 +395,22 @@ class TDDetails{
 
 			$this->formArray["octTctNumber"] = $land->getOctTctNumber();
 			$this->formArray["surveyNumber"] = $land->getSurveyNumber();
+
+			// format textbox for octTctNumber (maxlength for first line is:13)
+			if(strlen($this->formArray["octTctNumber"])<=13){
+				$spaceDifference = 13 - strlen($this->formarray["octTctNumber"]);
+				for($spaceCount=0 ; $spaceCount < $spaceDifference ; $spaceCount++){
+					$this->formArray["octTctNumber"] = " ".$this->formArray["octTctNumber"];
+				}
+			}
+			// format textbox for surveyNumber (maxlength for first line is:15)
+			if(strlen($this->formArray["surveyNumber"])<=15){
+				$spaceDifference = 15 - strlen($this->formarray["surveyNumber"]);
+				for($spaceCount=0 ; $spaceCount < $spaceDifference ; $spaceCount++){
+					$this->formArray["surveyNumber"] = " ".$this->formArray["surveyNumber"];
+				}
+			}
+
 			$this->formArray["area"] = $land->getArea();
 			$this->formArray["unit"] = $land->getUnit();
 
@@ -416,6 +478,35 @@ class TDDetails{
 		
 		$this->formArray["ownerName"] = $ownerName;
 		$this->formArray["ownerAddress"] = $address;
+
+		// wordwrapping for ownerName
+
+		if(strlen($this->formArray["ownerName"]) > 84){
+			$this->formArray["ownerName"] = wordwrap($this->formArray["ownerName"],94, "\n", 1);
+			$this->tpl->set_var("ownerName_fontSize", 7);
+		}
+		else if(strlen($this->formArray["ownerName"]) > 40){
+			$this->formArray["ownerName"] = wordwrap($this->formArray["ownerName"],42, "\n", 1);
+			$this->tpl->set_var("ownerName_fontSize", 9);
+		}
+		else{
+			$this->formArray["ownerName"] = "\n".$this->formArray["ownerName"];
+			$this->tpl->set_var("ownerName_fontSize", 10);
+		}
+
+		// wordwrapping for ownerAddress
+		if(strlen($this->formArray["ownerAddress"]) > 84){
+			$this->formArray["ownerAddress"] = wordwrap($this->formArray["ownerAddress"],62, "\n", 1);
+			$this->tpl->set_var("ownerAddress_fontSize", 7);
+		}
+		else if(strlen($this->formArray["ownerAddress"]) > 36){
+			$this->formArray["ownerAddress"] = wordwrap($this->formArray["ownerAddress"],42, "\n", 1);
+			$this->tpl->set_var("ownerAddress_fontSize", 9);
+		}
+		else{
+			$this->formArray["ownerAddress"] = "\n".$this->formArray["ownerAddress"];
+			$this->tpl->set_var("ownerAddress_fontSize", 10);
+		}
 	}
 
 	function displayODAFS($afsID){
@@ -439,13 +530,33 @@ class TDDetails{
 
 					if (is_object($od->locationAddress)){
 						$this->formArray["location"] = $od->locationAddress->getFullAddress();
-						$this->formArray["numberStreet"] = $od->locationAddress->getNumber()." ". $od->locationAddress->getStreet();
+						if($od->locationAddress->getNumber()!="" && $od->locationAddress->getNumber()!="--" && $od->locationAddress->getNumber()!=" "){
+							$this->formArray["numberStreet"] = $od->locationAddress->getNumber();
+						}
+						if($od->locationAddress->getStreet()!="" && $od->locationAddress->getStreet()!="--" && $od->locationAddress->getStreet()!=" "){
+							$this->formArray["numberStreet"] .= " " . $od->locationAddress->getStreet();
+						}
 						$this->formArray["barangay"] = $od->locationAddress->getBarangay();
 						$this->formArray["municipalityCity"] = $od->locationAddress->getMunicipalityCity();
 					}
 
 					$this->formArray["lotNumber"] = $od->getLotNumber();
 					$this->formArray["blockNumber"] = $od->getBlockNumber();
+
+					// format textbox for lotNumber (maxlength for first line is:19)
+					if(strlen($this->formArray["lotNumber"])<=19){
+						$spaceDifference = 19 - strlen($this->formarray["lotNumber"]);
+						for($spaceCount=0 ; $spaceCount < $spaceDifference ; $spaceCount++){
+							$this->formArray["lotNumber"] = " ".$this->formArray["lotNumber"];
+						}
+					}
+					// format textbox for blockNumber (maxlength for first line is:19)
+					if(strlen($this->formArray["blockNumber"])<=19){
+						$spaceDifference = 19 - strlen($this->formarray["blockNumber"]);
+						for($spaceCount=0 ; $spaceCount < $spaceDifference ; $spaceCount++){
+							$this->formArray["blockNumber"] = " ".$this->formArray["blockNumber"];
+						}
+					}
 
 					$ODEncode = new SoapObject(NCCBIZ."ODEncode.php", "urn:Object");
 					$this->formArray["ownerID"] = $ODEncode->getOwnerID($this->formArray["odID"]);
