@@ -135,7 +135,7 @@ class GeneralRevisionCount{
 
 		// retain PIN except for Consolidation and Subdivision
 		//if($transactionCode=="SD" || $transactionCode=="CS"){
-			$afs->propertyIndexNumber = "";
+			//$afs->propertyIndexNumber = "hello";
 		//}
 
 		$afs->setDomDocument();
@@ -358,7 +358,7 @@ class GeneralRevisionCount{
 
 		// retain PIN except for Consolidation and Subdivision
 		if($transactionCode=="SD" || $transactionCode=="CS"){
-			$afs->propertyIndexNumber = "";
+			$afs->propertyIndexNumber = "****";
 		}
 
 		$afs->setDomDocument();

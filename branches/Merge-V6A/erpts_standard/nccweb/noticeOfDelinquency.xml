@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 <contents>
 
 	<!-- BEGIN Page -->
@@ -61,10 +61,10 @@ personal property of the taxpayers
 		<!-- end ypos=234 -->
 
 		<!-- tdYPos starts at 366 decrements by 11 until 234 -->
-		
+
 		<!-- BEGIN TDList -->
 
-		<textitem xpos="50" ypos="{tdYPos}" font="Helvetica" size="8" align="left">{arpNumber}</textitem>
+		<textitem xpos="30" ypos="{tdYPos}" font="Helvetica" size="8" align="left">{arpNumber}</textitem>
 		<textitem xpos="156.375" ypos="{tdYPos}" font="Helvetica" size="8" align="center">{year}</textitem>
 		<textbox x1="206.5" y1="{tdYPos}" x2="319.75" y2="{tdYPos}" font="Helvetica" size="8" hmode="left">{location}</textbox>
 
@@ -81,7 +81,7 @@ personal property of the taxpayers
 		<lineitem x1="15" y1="401" x2="769" y2="401">top-border</lineitem>
 		<lineitem x1="15" y1="376" x2="769" y2="376">row-1</lineitem>
 		<lineitem x1="15" y1="85" x2="769" y2="85">row-2</lineitem>
-		
+
 		<lineitem x1="15" y1="401" x2="15" y2="70">col-1</lineitem>
 		<lineitem x1="109.25" y1="401" x2="109.25" y2="70">col-2</lineitem>
 		<lineitem x1="203.5" y1="401" x2="203.5" y2="70">col-3</lineitem>
