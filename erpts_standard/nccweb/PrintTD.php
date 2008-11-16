@@ -819,6 +819,8 @@ class TDDetails{
 
 				$this->formArray["totalAssessedValueInWords"] = makewords($this->formArray["totalAssessedValue"]);
 
+				$this->formArray["totalAssessedValueInWords"] = makewords($this->formArray["totalAssessedValue"]);
+
 			}
 		}
 				

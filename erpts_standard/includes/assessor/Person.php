@@ -212,6 +212,9 @@ class Person
 	function getProperName(){
 		return $this->getFullName();
 	}
+	function getProperName() {
+                return $this->getFullName();
+        }
 	function getFullName(){
 		//$fullName = $this->lastName .", ". $this->firstName ." ". $this->middleName;
 

@@ -890,6 +890,8 @@ class PrintLandFAAS{
 				// 5 Change to 11
 				if($l < 11){
 
+				if($l < 5){
+
 					// classification
 					$landClasses = new LandClasses;
 					if(is_numeric($land->getClassification())){

@@ -231,6 +231,7 @@ align="center">{recommendingApproval}</textitem>
 	<textitem xpos="230" ypos="280" font="Helvetica" size="9" align="center">Date</textitem>
 
 	<lineitem x1="50" y1="290" x2="260" y2="290">blurb</lineitem>
+	<lineitem x1="50" y1="238" x2="550" y2="238">blurb</lineitem>
 
 	<textitem xpos="340" ypos="340" font="Helvetica-Bold" size="9" align="left">APPROVED:</textitem>
 	<textitem xpos="420" ypos="295" font="Helvetica-Bold" size="9" align="center">ANTHONY D. SUSUSCO</textitem>
@@ -285,7 +286,7 @@ align="center">{recommendingApproval}</textitem>
     <lineitem x1="50" y1="114" x2="550" y2="114">blurb</lineitem>
     <lineitem x1="50" y1="102" x2="550" y2="102">blurb</lineitem>
 
-	
+
 	<lineitem x1="50" y1="90" x2="550" y2="90">blurb</lineitem>
 
 
