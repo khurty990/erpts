@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary VmWare Server 2.0.1 on CentOS 5.4 plus eRPTS and new kernel
 
 = Introduction =
 
