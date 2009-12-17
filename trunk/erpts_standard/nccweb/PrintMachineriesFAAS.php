@@ -15,6 +15,9 @@ include_once("assessor/RPTOP.php");
 include_once("assessor/AFS.php");
 include_once("assessor/OD.php");
 
+include_once("assessor/ODHistory.php");
+include_once("assessor/ODHistoryRecords.php");
+
 #####################################
 # Define Interface Class
 #####################################
@@ -345,11 +348,11 @@ class PrintMachineriesFAAS{
 
 			,"memoranda" => ""
 
-			,"previous1" => ""
-			,"previous2" => ""
+			,"previous1" => "" // previous arpNumber
+			,"previous2" => "" // previous assessment roll report number (leave blank)
 
-			,"present1" => ""
-			,"present2" => ""
+			,"present1" => "" //  present arpNumber
+			,"present2" => "" // present assessment roll report number (leave blank)
 
 			,"initial1" => ""
 			,"initial2" => ""
@@ -447,11 +450,11 @@ class PrintMachineriesFAAS{
 							$address2 .= ", ";
 						$address2 .= $personValue->addressArray[0]->getProvince();
 
-						$ownerName = $personValue->getName();
+						$ownerName = $personValue->getProperName();
 						$telNo = $personValue->getTelephone();
 					}
 					else{
-						$ownerName = $ownerName." , ".$personValue->getName();
+						$ownerName = $ownerName." , ".$personValue->getProperName();
 						$telNo = $personValue->getTelephone();
 					}
 				}
@@ -517,13 +520,14 @@ class PrintMachineriesFAAS{
 
 		}
 		else{
+			// danny : November 24, 2005 : commented out line that blanks out $this->formArray["landPIN"]
+			//$this->formArray["landPIN"] = "";
 			$this->formArray["landOwner"] = "";
-			$this->formArray["landPIN"] = "";
 		}
 	}
 
 	function displayBuildingPINDetails(){
-		// attempt to capture AFS with associated landPIN
+		// attempt to capture AFS with associated buildingPIN
 		$afs = new AFS;
 		if($afs->selectRecord("","","","WHERE ".AFS_TABLE.".propertyIndexNumber = '".fixQuotes($this->formArray["buildingPIN"])."'")){
 
@@ -539,14 +543,15 @@ class PrintMachineriesFAAS{
 					else if(is_array($od->owner->companyArray)){
 						$companyArray = $od->owner->companyArray;
 						$buildingOwnerCompany = $companyArray[0];
-						$this->formArray["buildingOwner"] = $buildingOwnerpany->getCompanyName();
+						$this->formArray["buildingOwner"] = $buildingOwnerCompany->getCompanyName();
 					}
 				}
 			}
 
 		}
 		else{
-			$this->formArray["buildingPIN"] = "";
+			// danny : November 24, 2005 : commented out line that blanks out $this->formArray["buildingPIN"]
+			//$this->formArray["buildingPIN"] = "";
 			$this->formArray["buildingOwner"] = "";
 		}
 	}
@@ -574,6 +579,13 @@ class PrintMachineriesFAAS{
 						$this->formArray["street"] = $od->locationAddress->getStreet();
 						$this->formArray["barangay"] = $od->locationAddress->getBarangay();
 						$this->formArray["district"] = $od->locationAddress->getDistrict();
+
+						// NCC Modification checked and implemented by K2 : November 10, 2005
+						// details:
+						//		commented out line 585, added line 586 
+						//		changed "city" to "municipality"
+
+						// $this->formArray["city"] = $od->locationAddress->getMunicipalityCity();
 						$this->formArray["municipality"] = $od->locationAddress->getMunicipalityCity();
 						$this->formArray["province"] = $od->locationAddress->getProvince();
 					}
@@ -618,8 +630,8 @@ class PrintMachineriesFAAS{
 
 					$this->formArray["buildingPIN"] = $machineries->getBuildingPin();
 					$this->formArray["landPIN"] = $machineries->getLandPin();
-					//$this->displayLandPINDetails();
-					//$this->displayBuildingPINDetails();
+					$this->displayLandPINDetails();
+					$this->displayBuildingPINDetails();
 
 					$this->formArray["memoranda"] = $machineries->getMemoranda();
 
@@ -709,6 +721,10 @@ class PrintMachineriesFAAS{
 					$this->formArray["dateOper".($i+1)] = $machineries->dateOfOperation;
 					$this->formArray["remarks".($i+1)] = $machineries->remarks;
 					$this->formArray["units".($i+1)] = $machineries->numberOfUnits;
+
+					// NCC Modification checked and implemented by K2 : November 10, 2005
+					// details:
+					//		formatCurrency() removed for variables in lines 726 to 733
 					$this->formArray["acqCost".($i+1)] = $machineries->acquisitionCost;
 					$this->formArray["freight".($i+1)] = $machineries->freightCost;
 					$this->formArray["insurnc".($i+1)] = $machineries->insuranceCost;
@@ -726,6 +742,9 @@ class PrintMachineriesFAAS{
 					$totalAssessmentValue = $totalAssessmentValue + toFloat($machineries->assessedValue);
 				}
 				if($i < 4){
+					// NCC Modification checked and implemented by K2 : November 10, 2005
+					// details:
+					//		formatCurrency() removed for variables in lines 747 and 749 (marketValue, assessedValue)
 					$this->formArray["kind".($i+1)] = $machineries->kind;
 					$this->formArray["marketValue".($i+1)] = $machineries->marketValue;
 					$this->formArray["assessmentLevel".($i+1)] = $machineries->assessmentLevel;
@@ -739,6 +758,26 @@ class PrintMachineriesFAAS{
 		$this->formArray["totMrktVal"] = $totMrktVal;
 		$this->formArray["totalMarketValue"] = $totalMarketValue;
 		$this->formArray["totalAssessmentValue"] = $totalAssessmentValue;
+	}
+
+	function displayPostingSummary($afs){
+		// previous
+		$presentODID = $afs->odID;
+		$condition = sprintf("WHERE presentODID='%s'",fixQuotes($presentODID));
+
+		$odHistoryRecords = new ODHistoryRecords;
+		if($odHistoryRecords->selectRecords($condition)){
+			$odHistory = $odHistoryRecords->arrayList[0];
+			$previousODID = $odHistory->previousODID;
+
+			$previousAFS = new AFS;
+			if($previousAFS->selectRecord("","",$previousODID,"")){
+				$this->formArray["previous1"] = $previousAFS->arpNumber;
+			}
+		}
+
+		// present
+		$this->formArray["present1"] = $afs->arpNumber;
 	}
 
 	function Main(){
@@ -763,6 +802,8 @@ class PrintMachineriesFAAS{
 				$this->displayODAFS($this->formArray["afsID"]);
 
 				$this->displayTD($this->formArray["afsID"]);
+
+				$this->displayPostingSummary($afs);
 
 				$machineriesList = $afs->getMachineriesArray();
 

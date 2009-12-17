@@ -24,7 +24,7 @@ include_once("assessor/LandActualUses.php");
 include_once("assessor/PlantsTreesClasses.php");
 include_once("assessor/PlantsTreesActualUses.php");
 include_once("assessor/ImprovementsBuildingsClasses.php");
-include_once("assessor/ImprovementsBuildingsActualUses.php");
+include_once("assessor/ImprovementsBuildingsActualUses.569.60php");
 include_once("assessor/MachineriesClasses.php");
 include_once("assessor/MachineriesActualUses.php");
 
@@ -48,8 +48,11 @@ class TDDetails{
 			,"propertyIndexNumber" => "" // AFS
 			,"ownerName" => "" // OD->Owner
 			,"ownerAddress" => "" // OD->Owner
+			,"telephone" => ""
+			, "tin" => ""
 			,"administratorName" => ""
 			,"administratorAddress" => ""
+			, "adminTelephone" => ""
 			,"numberStreet" => "" // LocationAddress
 			,"barangay" => "" // LocationAddress
 			,"municipalityCity" => "" // LocationAddress
@@ -62,9 +65,119 @@ class TDDetails{
 			,"east" => "" // Land
 			,"west" => "" // Land
 			,"p" => 1 //propertyCounter
-			,"ypos" => 470 //propertyCounter
-			,"landitems" => "" // Property [L,P,B,M]
-			,"plantitems" => "" // Property [L,P,B,M]
+
+			,"kind1" => "" // Property [L,P,B,M]
+			,"landActualUses1" => ""
+			,"area1" => ""
+			,"unit1" => ""
+			,"classification1" => "" // Property [L,P,B,M]
+			,"propertyMarketValue1" => ""
+			//,"marketValue1" => "" // Property [L,P,B,M]
+			,"assessmentLevel1" => "" // Property [L,P,B,M]
+			,"assessedValue1" => "" // Property [L,P,B,M]
+			
+			,"kind2" => "" // Property [L,P,B,M]
+			,"area2" => ""
+			,"unit2" => ""
+			,"landActualUses2" => ""
+			,"classification2" => "" // Property [L,P,B,M]
+			,"propertyMarketValue2" => "" // Property [L,P,B,M]
+			,"assessmentLevel2" => "" // Property [L,P,B,M]
+			,"assessedValue2" => "" // Property [L,P,B,M]
+			
+			,"kind3" => "" // Property [L,P,B,M]
+			,"area3" => ""
+			, "unit3" => ""
+			,"landActualUses3" => ""
+			,"classification3" => "" // Property [L,P,B,M]
+			,"propertyMarketValue3" => "" // Property [L,P,B,M]
+			,"assessmentLevel3" => "" // Property [L,P,B,M]
+			,"assessedValue3" => "" // Property [L,P,B,M]
+			
+                        /*this is an inserted code by renonj */
+
+			,"kind4"  => "" // Property [L,P,B,M]
+			,"area4" => ""
+			,"unit4" => ""
+			,"landActualUses4" => ""
+			,"classification4" => "" // Property [L,P,B,M]
+			,"propertyMarketValue4" => "" // Property [L,P,B,M]
+			,"assessmentLevel4" => "" // Property [L,P,B,M]
+			,"assessedValue4" => "" // Property [L,P,B,M]
+                        
+			,"kind5" => "" // Property [L,P,B,M]
+			,"area5" => ""
+			,"unit5" => ""
+			,"landActualUses5" => ""			
+			,"classification5" => "" // Property [L,P,B,M]
+			,"propertyMarketValue5" => "" // Property [L,P,B,M]
+			,"assessmentLevel5" => "" // Property [L,P,B,M]
+			,"assessedValue5" => "" // Property [L,P,B,M]
+ 
+			,"kind6" => "" // Property [L,P,B,M]
+ 			,"area6" => ""
+			,"unit6" => ""
+			,"landActualUses6" => ""			
+			,"classification6" => "" // Property [L,P,B,M]
+			,"propertyMarketValue6" => "" // Property [L,P,B,M]
+			,"assessmentLevel6" => "" // Property [L,P,B,M]
+			,"assessedValue6" => "" // Property [L,P,B,M]
+			
+			,"kind7" => "" // Property [L,P,B,M]
+			,"area7" => ""
+			,"unit7" => ""
+			,"landActualUses7" => ""			
+			,"classification7" => "" // Property [L,P,B,M]
+			,"propertyMarketValue7" => "" // Property [L,P,B,M]
+			,"assessmentLevel7" => "" // Property [L,P,B,M]
+			,"assessedValue7" => "" // Property [L,P,B,M]
+
+			,"kind8" => "" // Property [L,P,B,M]
+			,"area8" => ""
+			,"unit8" => ""
+			,"landActualUses8" => ""			
+			,"classification8" => "" // Property [L,P,B,M]
+			,"propertyMarketValue8" => "" // Property [L,P,B,M]
+			,"assessmentLevel8" => "" // Property [L,P,B,M]
+			,"assessedValue8" => "" // Property [L,P,B,M]
+
+			,"kind9" => "" // Property [L,P,B,M]
+			,"area9" => ""
+			,"unit9" => ""
+			,"landActualUses9" => ""			
+			,"classification9" => "" // Property [L,P,B,M]
+			,"propertyMarketValue9" => "" // Property [L,P,B,M]
+			,"assessmentLevel9" => "" // Property [L,P,B,M]
+			,"assessedValue9" => "" // Property [L,P,B,M]
+
+			,"kind10" => "" // Property [L,P,B,M]
+			,"area10" => ""
+			,"unit10" => ""
+			,"landActualUses10" => ""			
+			,"classification10" => "" // Property [L,P,B,M]
+			,"propertyMarketValue10" => "" // Property [L,P,B,M]
+			,"assessmentLevel10" => "" // Property [L,P,B,M]
+			,"assessedValue10" => "" // Property [L,P,B,M]
+
+			,"kind11" => "" // Property [L,P,B,M]
+			,"area11" => ""
+			,"unit11" => ""
+			,"landActualUses11" => ""			
+			,"classification11" => "" // Property [L,P,B,M]
+			,"propertyMarketValue11" => "" // Property [L,P,B,M]
+			,"assessmentLevel11" => "" // Property [L,P,B,M]
+			,"assessedValue11" => "" // Property [L,P,B,M]
+
+			,"kind12" => "" // Property [L,P,B,M]
+			,"area12" => ""
+			,"unit12" => ""
+			,"landActualUses12" => ""			
+			,"classification12" => "" // Property [L,P,B,M]
+			,"propertyMarketValue12" => "" // Property [L,P,B,M]
+			,"assessmentLevel12" => "" // Property [L,P,B,M]
+			,"assessedValue12" => "" // Property [L,P,B,M]
+                        //ends here
+
 			,"totalMarketValue" => 0  // Property [L,P,B,M]
 			,"totalAssessedValue" => 0  // Property [L,P,B,M]
 			,"totalAssessedValueInWords" => ""
@@ -75,11 +188,18 @@ class TDDetails{
 			,"isTaxable" => "" // AFS
 			,"isExempt" => "" // AFS
 			,"verifiedBy" => ""
+		        ,"taxBeginsWithTheYear" => ""	
 			,"cityAssessor" => "" // TD
 			,"cancelsTDNumber" => "" // TD
+			,"previousOwner" => "" // TD
+			,"previousAssessedValue" => "" // TD
 			,"memoranda" => "" // TD
 			,"propertyType" => "" // TD
-		);
+			,"isLand" => "" // AFS
+			,"isBuilding" => "" // AFS
+			,"isMachinery" => "" // AFS
+			
+	);	
 
 		$this->formArray["odID"] = $odID;
 		$this->formArray["ownerID"] = $ownerID;
@@ -93,47 +213,78 @@ class TDDetails{
 			return false;
 
 		if(is_numeric($this->formArray[$key]))
-			$this->formArray[$key] = number_format(un_number_format($this->formArray[$key]), 2, ".", ",");
+		//edited this code (from 2-3)
+    	$this->formArray[$key] = number_format(un_number_format($this->formArray[$key]), 2, ".", ",");
 	}
-	
+	 function formatCurrency1($key){
+                if($this->formArray[$key]=="")
+                        return false;
+
+                if(is_numeric($this->formArray[$key]))
+                //
+        $this->formArray[$key] = number_format(un_number_format($this->formArray[$key]), 0, ".", ",");
+        }
+       function formatCurrency3($key){
+		if($this->formArray[$key]=="")
+			return false;
+
+		if(is_numeric($this->formArray[$key]))
+		//edited this code (from 2-3)
+    	$this->formArray[$key] = number_format(roundToNearestTen($this->formArray[$key]), 2, ".", ",");
+	}
+
 	function setForm(){
-		/*
-		$this->formatCurrency("marketValue1");
+		$this->formatCurrency3("propertyMarketValue1");
+		$this->formatCurrency3("propertyMarketValue2");
+		$this->formatCurrency3("propertyMarketValue3");
+		$this->formatCurrency3("propertyMarketValue4");
+		$this->formatCurrency3("propertyMarketValue5");
+		$this->formatCurrency3("propertyMarketValue6");
+		$this->formatCurrency3("propertyMarketValue7");
+		$this->formatCurrency3("propertyMarketValue8");
+		$this->formatCurrency3("propertyMarketValue9");
+		$this->formatCurrency3("propertyMarketValue10");
+		$this->formatCurrency3("propertyMarketValue11");
+		$this->formatCurrency3("propertyMarketValue12");
+
 		$this->formatCurrency("assessedValue1");
-		$this->formatCurrency("marketValue2");
 		$this->formatCurrency("assessedValue2");
-		$this->formatCurrency("marketValue3");
 		$this->formatCurrency("assessedValue3");
-		$this->formatCurrency("marketValue4");
 		$this->formatCurrency("assessedValue4");
-		$this->formatCurrency("marketValue5");
 		$this->formatCurrency("assessedValue5");
-		$this->formatCurrency("marketValue6");
 		$this->formatCurrency("assessedValue6");
-*/		
-		$this->formatCurrency("totalMarketValue");
+		$this->formatCurrency("assessedValue7");
+		$this->formatCurrency("assessedValue8");
+		$this->formatCurrency("assessedValue9");
+		$this->formatCurrency("assessedValue10");
+		$this->formatCurrency("assessedValue11");
+		$this->formatCurrency("assessedValue12");
+		
+		$this->formatCurrency1("assessmentLevel1");
+		$this->formatCurrency1("assessmentLevel2");
+		$this->formatCurrency1("assessmentLevel3");
+		$this->formatCurrency1("assessmentLevel4");
+		$this->formatCurrency1("assessmentLevel5");
+		$this->formatCurrency1("assessmentLevel6");
+		$this->formatCurrency1("assessmentLevel7");
+		$this->formatCurrency1("assessmentLevel8");
+		$this->formatCurrency1("assessmentLevel9");
+		$this->formatCurrency1("assessmentLevel10");
+		$this->formatCurrency1("assessmentLevel11");
+		$this->formatCurrency1("assessmentLevel12");
+                /* this is an inserted */
+		
+		$this->formatCurrency("previousAssessedValue");
+		$this->formatCurrency3("totalMarketValue");
 		$this->formatCurrency("totalAssessedValue");
 
 		foreach ($this->formArray as $key => $value){
-			if ($key == "landitems" || $key == "plantitems") {
-				$this->tpl->set_var($key, $value);
-			}
-			else {
-				$this->tpl->set_var($key, html_entity_to_alpha($value));
-			}
+			$this->tpl->set_var($key, html_entity_to_alpha($value));
 		}
 	}
 
 	function displayLandList($landList){
 		if(count($landList)){
-			$items = '';
-//			$offset = 470;
-			$fp = fopen("/home/site/log/td.log","w+");
-
-			$mv = 0;
-			$al = 0;
-			$av = 0;
-
 			foreach($landList as $lkey => $land){
 				// classification
 				$landClasses = new LandClasses;
@@ -146,8 +297,8 @@ class TDDetails{
 					$landClassesDescription = $land->getClassification();
 					$landClassesCode = $land->getClassification();
 				}
-
-				/* just in case subClass and actualUse needs to be drawn from land
+				//edited May 27, 2008
+				// just in case subClass and actualUse needs to be drawn from land
 
 				// subClass
 				$landSubclasses = new LandSubclasses;
@@ -173,84 +324,37 @@ class TDDetails{
 					$landActualUsesCode = $land->getActualUse();
 					$landActualUsesReportCode = $landActualUses->getReportCode();
 				}
-				*/
+				
 
-//				if($this->formArray["p"] <= 10){
-
-					$lvl = number_format($land->getAssessmentLevel(),2);
-					if ($al <> $lvl) {
-						if ($av > 0) {
-							$this->formArray["ypos"] -= 13;
-							$offset = $this->formArray["ypos"];
-
-							$items .= "<textitem xpos=\"25\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">"."Land"."</textitem>";
-							$items .= "<textitem xpos=\"115\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$ld."</textitem>";
-							$items .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($mv,2)."</textitem>";
-							$items .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($al,2)."</textitem>";
-							$items .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($av,2)."</textitem>";
-
-							$offsetx = $offset - 3;
-							$items .= "<lineitem x1=\"25\" y1=\"".$offsetx."\" x2=\"105\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$items .= "<lineitem x1=\"115\" y1=\"".$offsetx."\" x2=\"228\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$items .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$items .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$items .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-						}
-
-						$av = 0;
-						$mv = 0;
-						$al = $lvl;
-					}
-
-					$ld = $landClassesDescription;
-					$mv += $land->getAdjustedMarketValue();
-					$av += un_number_format($land->getAssessedValue());
-
+                              // edited this code from (3 to 8)
+				if($this->formArray["p"] <= 24){
 					$p = $this->formArray["p"];
-					$this->formArray["totalMarketValue"] += $land->getAdjustedMarketValue();
-					$this->formArray["totalAssessedValue"] += un_number_format($land->getAssessedValue());
+
+					$this->formArray["kind".$p] = $land->getKind();
+					//edited May 27, 2008
+					//$this->formArray["classification".$p] = $land->getDescription();
+					$this->formArray["classification".$p] = $landClassesDescription;
+					$this->formArray["landActualUses".$p] = $landActualUsesDescription;
+					//edited May 31, 2008
+					$this->formArray["propertyMarketValue".$p] = un_number_format($land->getAdjustedMarketValue());
+					$this->formArray["assessmentLevel".$p] = un_number_format($land->getAssessmentLevel());
+					$this->formArray["assessedValue".$p] = un_number_format($land->getAssessedValue());
+					
+					$this->formArray["area".$p] = $land->getArea();
+		                        $this->formArray["unit".$p] = $land->getUnit();
+
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["propertyMarketValue".$p]);
+					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
 
 					$this->formArray["p"]++;
-
-//				}
-
+				}
 			}
-
-			if ($av > 0) {
-				$this->formArray["ypos"] -= 13;
-				$offset = $this->formArray["ypos"];
-
-				$items .= "<textitem xpos=\"25\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">"."Land"."</textitem>";
-				$items .= "<textitem xpos=\"115\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$ld."</textitem>";
-				$items .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($mv,2)."</textitem>";
-				$items .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($al,2)."</textitem>";
-				$items .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($av,2)."</textitem>";
-
-				$offsetx = $offset - 3;
-				$items .= "<lineitem x1=\"25\" y1=\"".$offsetx."\" x2=\"105\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$items .= "<lineitem x1=\"115\" y1=\"".$offsetx."\" x2=\"228\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$items .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$items .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$items .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-			}
-
-			fwrite($fp,$items."\r\n");
-			fclose($fp);
-			$this->formArray["landitems"] = $items;
 
 		}
 	}
 
 	function displayPlantsTreesList($plantsTreesList){
 		if(count($plantsTreesList)){
-			$items = '';
-			$offset = 410;
-			$fp = fopen("/home/site/log/tdplants.log","w+");
-
-			$mv = 0;
-			$al = 0;
-			$av = 0;
-			
 			foreach($plantsTreesList as $pkey => $plantsTrees){
 				// productClass
 				$plantsTreesClasses = new PlantsTreesClasses;
@@ -264,90 +368,38 @@ class TDDetails{
 					$plantsTreesClassesCode = $plantsTrees->getProductClass();
 				}
 
-
-				$plantAU = new PlantsTreesActualUses;
-				if(is_numeric($plantsTrees->getActualUse())){
-					$plantAU->selectRecord($plantsTrees->getActualUse());
-					$plantActualUse = htmlentities($plantAU->getDescription());
-				}
-				else{
-					$plantActualUse = $plantsTrees->getActualUse();
-				}
-
-/*
-				//just in case actualUse needs to be drawn from plantsTrees
+				// just in case actualUse needs to be drawn from plantsTrees
 
 				// actualUse
-				$plantsTreesClasses = new PlantsTreesActualUses;
+				$plantsTreesActualUses = new PlantsTreesActualUses;
 				if(is_numeric($plantsTrees->getActualUse())){
-					$plantsTreesClassess->selectRecord($plantsTrees->getActualUse());
-					$plantsTreesClassesDescription = $plantsTreesActualUses->getDescription();
-					$plantsTreesClassesCode = $plantsTreesActualUses->getCode();
+					$plantsTreesActualUses->selectRecord($plantsTrees->getActualUse());
+					$plantsTreesActualUsesDescription = $plantsTreesActualUses->getDescription();
+					$plantsTreesActualUsesCode = $plantsTreesActualUses->getCode();
 				}
 				else{
-					$plantsTreesClassesDescription = $plantsTrees->getActualUse();
-					$plantsTreesClassesCode = $plantsTrees->getActualUse();
+					$plantsTreesActualUsesDescription = $plantsTrees->getActualUse();
+					$plantsTreesActualUsesCode = $plantsTrees->getActualUse();
 				}
-				*/
+				
 
-//				if($this->formArray["p"] <= 10){
-					$lvl = number_format($plantsTrees->getAssessmentLevel(),2);
-					if ($al <> $lvl) {
-						if ($av > 0) {
-							$this->formArray["ypos"] -= 13;
-							$offset = $this->formArray["ypos"];
-
-							$plantitems .= "<textitem xpos=\"25\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">"."Plants/Trees"."</textitem>";
-							$plantitems .= "<textitem xpos=\"115\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$ld."</textitem>";
-							$plantitems .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($mv,2)."</textitem>";
-							$plantitems .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($al,2)."</textitem>";
-							$plantitems .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($av,2)."</textitem>";
-
-							$offsetx = $offset - 3;
-							$plantitems .= "<lineitem x1=\"25\" y1=\"".$offsetx."\" x2=\"105\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$plantitems .= "<lineitem x1=\"115\" y1=\"".$offsetx."\" x2=\"228\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$plantitems .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$plantitems .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-							$plantitems .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-						}
-
-						$av = 0;
-						$mv = 0;
-						$al = $lvl;
-					}
-
-					$ld = $plantActualUse;
-					$mv += $plantsTrees->getAdjustedMarketValue();
-					$av += un_number_format($plantsTrees->getAssessedValue());
-
+				if($this->formArray["p"] <= 24){
 					$p = $this->formArray["p"];
 
-					$this->formArray["totalMarketValue"] += $plantsTrees->getAdjustedMarketValue();
-					$this->formArray["totalAssessedValue"] += un_number_format($plantsTrees->getAssessedValue());
+					$this->formArray["kind".$p] = $plantsTrees->getKind();
+					$this->formArray["classification".$p] = $plantsTreesClassesDescription;
+					$this->formArray["landActualUses".$p] = $plantsTreesActualUsesDescription;	
+					$this->formArray["propertyMarketValue".$p] = un_number_format($plantsTrees->getAdjustedMarketValue());
+					$this->formArray["assessmentLevel".$p] = un_number_format($plantsTrees->getAssessmentLevel());
+					$this->formArray["assessedValue".$p] = un_number_format($plantsTrees->getAssessedValue());
+
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["propertyMarketValue".$p]);
+					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
 
 					$this->formArray["p"]++;
-//				}
+				}
 			}
 
-			if ($av > 0) {
-				$this->formArray["ypos"] -= 13;
-				$offset = $this->formArray["ypos"];
-
-				$plantitems .= "<textitem xpos=\"25\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">"."Plants/Trees"."</textitem>";
-				$plantitems .= "<textitem xpos=\"115\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$ld."</textitem>";
-				$plantitems .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($mv,2)."</textitem>";
-				$plantitems .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($al,2)."</textitem>";
-				$plantitems .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($av,2)."</textitem>";
-
-				$offsetx = $offset - 3;
-				$plantitems .= "<lineitem x1=\"25\" y1=\"".$offsetx."\" x2=\"105\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$plantitems .= "<lineitem x1=\"115\" y1=\"".$offsetx."\" x2=\"228\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$plantitems .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$plantitems .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-				$plantitems .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-			}
-
-			$this->formArray["plantitems"] = $plantitems;
 		}
 	}
 
@@ -367,7 +419,7 @@ class TDDetails{
 					$improvementsBuildingsClassesCode = $improvementsBuildings->getBuildingClassification();
 				}
 
-				/* just in case actualUse needs to be drawn from improvementsBuildings
+				// just in case actualUse needs to be drawn from improvementsBuildings
 
 				// actualUse
 				$improvementsBuildingsActualUses = new ImprovementsBuildingsActualUses;
@@ -381,47 +433,24 @@ class TDDetails{
 					$improvementsBuildingsActualUsesCode = $improvementsBuildings->getActualUse();
 				}
 
-				*/
+				
 
-				if($this->formArray["p"] <= 10){
+				if($this->formArray["p"] <= 24){
 					$p = $this->formArray["p"];
 
- 						$this->formArray["ypos"] -= 13;
-						$offset = $this->formArray["ypos"];
-
-					$items .= "<textitem xpos=\"25\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">".$improvementsBuildings->getKind()."</textitem>";
-					$items .= "<textitem xpos=\"115\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$improvementsBuildingsClassesDescription."</textitem>";
-					$items .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($improvementsBuildings->getMarketValue(),2)."</textitem>";
-					$items .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($improvementsBuildings->getAssessmentLevel(),2)."</textitem>";
-					$items .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".$improvementsBuildings->getAssessedValue()."</textitem>";
-
-					$offsetx = $offset - 3;
-					$items .= "<lineitem x1=\"25\" y1=\"".$offsetx."\" x2=\"105\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"115\" y1=\"".$offsetx."\" x2=\"228\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-
-					$this->formArray["totalMarketValue"] += $improvementsBuildings->getMarketValue();
-					$this->formArray["totalAssessedValue"] += un_number_format($improvementsBuildings->getAssessedValue());
-
-
-
-/*
 					$this->formArray["kind".$p] = $improvementsBuildings->getKind();
 					$this->formArray["classification".$p] = $improvementsBuildingsClassesDescription;
-
-					$this->formArray["marketValue".$p] = un_number_format($improvementsBuildings->getMarketValue());
+					$this->formArray["landActualUses".$p] = $improvementsBuildingsActualUsesDescription;
+					$this->formArray["propertyMarketValue".$p] = un_number_format($improvementsBuildings->getAdjustedMarketValue());
 					$this->formArray["assessmentLevel".$p] = un_number_format($improvementsBuildings->getAssessmentLevel());
 					$this->formArray["assessedValue".$p] = un_number_format($improvementsBuildings->getAssessedValue());
 
-					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["marketValue".$p]);
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["propertyMarketValue".$p]);
 					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
-*/
+
 					$this->formArray["p"]++;
 				}
 			}
-			$this->formArray["landitems"] = $items;
 
 		}
 	}
@@ -454,39 +483,19 @@ class TDDetails{
 					$machineriesActualUsesCode = $machineries->getActualUse();
 				}
 
-				if($this->formArray["p"] <= 10){
+				if($this->formArray["p"] <= 24){
 					$p = $this->formArray["p"];
-
- 						$this->formArray["ypos"] -= 12;
-						$offset = $this->formArray["ypos"];
-
-					$items .= "<textitem xpos=\"40\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"left\">".$machineriesClassesDescription."</textitem>";
-					$items .= "<textitem xpos=\"146\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"9\" align=\"left\">".$machineriesActualUsesDescription."</textitem>";
-					$items .= "<textitem xpos=\"337\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($machineries->getMarketValue(),2)."</textitem>";
-					$items .= "<textitem xpos=\"430\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".number_format($machineries->getAssessmentLevel(),2)."</textitem>";
-					$items .= "<textitem xpos=\"558\" ypos=\"".$offset."\" font=\"Helvetica\" size=\"10\" align=\"right\">".$machineries->getAssessedValue()."</textitem>";
-
-					$offsetx = $offset - 3;
-					$items .= "<lineitem x1=\"40\" y1=\"".$offsetx."\" x2=\"120\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"147\" y1=\"".$offsetx."\" x2=\"220\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"244\" y1=\"".$offsetx."\" x2=\"337\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"358\" y1=\"".$offsetx."\" x2=\"445\" y2=\"".$offsetx."\">blurb</lineitem>";
-					$items .= "<lineitem x1=\"457\" y1=\"".$offsetx."\" x2=\"558\" y2=\"".$offsetx."\">blurb</lineitem>";
-
-					$this->formArray["totalMarketValue"] += $machineries->getMarketValue();
-					$this->formArray["totalAssessedValue"] += un_number_format($machineries->getAssessedValue());
-/*
 
 					$this->formArray["kind".$p] = $machineriesClassesDescription;
 					$this->formArray["classification".$p] = $machineriesActualUsesDescription;
 
-					$this->formArray["marketValue".$p] = un_number_format($machineries->getMarketValue());
+					$this->formArray["propertyMarketValue".$p] = un_number_format($machineries->getAdjustedMarketValue());
 					$this->formArray["assessmentLevel".$p] = un_number_format($machineries->getAssessmentLevel());
 					$this->formArray["assessedValue".$p] = un_number_format($machineries->getAssessedValue());
 
-					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["marketValue".$p]);
+					$this->formArray["totalMarketValue"] += un_number_format($this->formArray["propertyMarketValue".$p]);
 					$this->formArray["totalAssessedValue"] += un_number_format($this->formArray["assessedValue".$p]);
-*/
+
 					$this->formArray["p"]++;
 				}
 			}
@@ -703,19 +712,20 @@ class TDDetails{
 			else {
 				$td = new TD;
 				$td->parseDomDocument($domDoc);
-
 				$this->formArray["taxDeclarationNumber"] = $td->getTaxDeclarationNumber();
 				$this->formArray["memoranda"] = $td->getMemoranda();
 				$this->formArray["cancelsTDNumber"] = $td->getCancelsTDNumber();
-
-				//cityMunicipalAssessor
+				$this->formArray["previousOwner"] = $td->getPreviousOwner();
+				$this->formArray["previousAssessedValue"] = $td->getPreviousAssessedValue();
+				$this->formArray["taxBeginsWithTheYear"] = $td->getTaxBeginsWithTheYear();
+				//edited May 28,2008 cityMunicipalAssessor
 				if(is_numeric($td->getCityMunicipalAssessor())){
 					$cityMunicipalAssessor = new Person;
 					$cityMunicipalAssessor->selectRecord($td->cityMunicipalAssessor);
 					$this->formArray["cityAssessor"] = $cityMunicipalAssessor->getFullName();
 				}
 				else{
-					$this->formArray["cityAssessor"] = $td->getCityMunicipalAssessor;
+				 $this->formArray["cityAssessor"] = $td->getCityMunicipalAssessor;
 				}
 
 				$this->formArray["propertyType"] = $td->getPropertyType();
@@ -747,6 +757,7 @@ class TDDetails{
 					$this->formArray["isExempt"] = "X";
 					$this->formArray["isTaxable"] = "  ";
 				}
+				
 
 				$this->displayODAFS($this->formArray["afsID"]);
 				$this->displayTDDetails();
@@ -783,7 +794,23 @@ class TDDetails{
 						}
 						break;
 				}
-
+/** //Inserted for check box Kind of Property
+				if($afs->getPropertyType()=="Land"){
+					$this->formArray["isLand"] = "X";
+					$this->formArray["isBuilding"] = "  ";
+					$this->formArray["isMachinery"] = "  ";
+				}
+				else if($afs->getPropertyType()=="Building"){
+					$this->formArray["isBuilding"] = "X";
+					$this->formArray["isLand"] = "  ";
+					$this->formArray["isMachinery"] = "  ";
+				}
+				else($afs->getPropertyType()=="Machinerys"){
+					$this->formArray["isMachinery"] = "X";
+					$this->formArray["isLand"] = "  ";
+					$this->formArray["isBuilding"] = "  ";
+				}
+// End Here**/
 				// UNCOMMENT LINES TO GRAB totalMarketValue and totalAssessedValue from AFS object instead of 
 				// computing from each property:
 

@@ -170,35 +170,31 @@ function setDefaults(){
 		<td align="center" valign="middle" background="images/nav_area_bg.jpg"><table width="100%%" border="0" cellspacing="0" cellpadding="0">
 
 		  <tr align="center"> 
-		   <td width="0" align=left class="common" colspan=3><b>{uname}</b> : {today}</td>
-		   <td width="0" align=right colspan=6>
-		    <a href="../../AssessorsHome.php{Session}" class="navi" title="Assessor's Module : Home">AM : Home</a>
+		   <td width="0" align=left class="common" colspan=4><b>{uname}</b> : {today}</td>
+		   <td width="0" align=right colspan=5>
+		    <a href="AssessorsHome.php{Session}" class="navi" title="Assessor's Module : Home">AM : Home</a>
 			<font class="navi">&lt;</font>
-		    <a href="../../TransactionsHome.php{Session}" class="navi" title="Transactions">Transactions</a>
-			<font class="navi">&lt;</font>
-			<a href="../../home.php{Session}" class="navi" title="Home">Home</a>		    
+			<a href="home.php{Session}" class="navi" title="Home">Home</a>		    
 		    <font class="navi">|</font>
-			<a href="../../Logout.php" class="navi" title="Logout">Logout</a>
+			<a href="Logout.php" class="navi" title="Logout">Logout</a>
 			<br>&nbsp;
 		   </td>
 		  </tr>
 
 		  <tr align="center"> 
-
-		   <td width="0" nowrap align=center><a href="../subdivision/ODList.php{Session}" class="navi" title="Subdivision">Subdivision</a></td>
-
+		   <td width="0" nowrap align=center><a href="RPUManagementHome.php{Session}" class="navi" title="RPU Management">RPU Management</a></td>
 		   <td width="0" class="navi">|</td>
 
-		   <td width="0" nowrap align=center><a href="../consolidation/ODList.php{Session}" class="navi" title="Consolidation">Consolidation</a></td>
+		   <td width="0" nowrap align=center><a href="ODList.php{Session}" class="navi" title="Real Property Units (RPU List)">RPU List</a></td>
 		   <td width="0" class="navi">|</td>
 
-		   <td width="0" nowrap><a href="ODList.php{Session}" class="navi" title="New Discovery"><u>New Discovery</u></a></td>
+		   <td width="0" nowrap><a href="AFSList.php{Session}" class="navi" title="Field Appraisal & Assessment Sheet (FAAS List)">FAAS List</a></td>
 		   <td width="0" class="navi">|</td>
 
-		   <td width="0" nowrap><a href="../reassessment/ODList.php{Session}" class="navi" title="Reassessment">Reassessment</a></td>
+		   <td width="0" nowrap><a href="TDList.php{Session}" class="navi" title="Tax Declaration (TD List)">TD List</a></td>
 		   <td width="0" class="navi">|</td>
 
-		   <td width="0" nowrap><a href="../changeofowner/ODList.php{Session}" class="navi" title="Change of Owner">Change of Owner</a></td>
+		   <td width="0" nowrap><a href="RPTOPList.php{Session}" class="navi" title="Real Property Tax Order of Payment (RPTOP List)">RPTOP List</a></td>
 
 		  </tr>
 
@@ -223,22 +219,6 @@ function setDefaults(){
 		 <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
 		  <tr> 
 		   <td align="center" valign="top" class="subtitle"> <table width="90%" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td colspan=2 align="center" class="navi">
-					<br>
-					<a href="../cancellation/ODList.php{Session}" class="navi">Permanent Cancellation</a>
-				</td>
-			  </tr>
-			  <tr><td colspan=2>
-			   <br>
-				<font class="navi">
-				<a href="ODList.php{Session}" class="navi">RPU List</a>
-				&nbsp;&nbsp;
-				|
-				&nbsp;&nbsp;
-				<a href="AFSList.php{Session}" class="navi">FAAS List</a>
-				</font>
-			  </td></tr>
 		     <tr>
 				<td colspan=2>&nbsp;</td>
 			 </tr>
@@ -462,11 +442,20 @@ function setDefaults(){
 			   <tr>
 			    <td class="fields" align=left>
 				 <!-- BEGIN TDEncodeLink -->
-			     - <a href="javascript: openWin('TDEncode.php{Session}&tdID={tdID}&afsID={afsID}&propertyType={propertyType}','popupWindow',50,50,600,500);">edit TD</a>
+			     - <a href="javascript: openWin('TDEncode.php{Session}&tdID={tdID}&afsID={afsID}&propertyType={propertyType}','popupWindow',100,50,600,610);">edit TD</a>
 				 <!-- END TDEncodeLink -->
 			    </td>
 			    <td align="right" class="fields">
-			     <input type="button" name="Button" value="Print" onClick="javascript:location.href='PrintTD.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+				<input type="button" name="Button" value="Print(Itemized)"
+onClick="javascript:location.href='PrintTD.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+                                 &nbsp;&nbsp;
+				<input type="button" name="Button" value="Print(Summarized)"
+onClick="javascript:location.href='PrintTDsumm.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
+                                 &nbsp;&nbsp;
+
+
+			     <input type="button" name="Button" value="Print(2page)" 
+onClick="javascript:location.href='PrintTD2page.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true'">
 				 &nbsp;&nbsp;
 			    </td>
 			   </tr>
@@ -574,7 +563,6 @@ function setDefaults(){
 					<strong>{memoranda}</strong><br>
 				  </td>
 				 </tr>
-
 				 <!-- END TD -->
 
 
@@ -1106,7 +1094,7 @@ function setDefaults(){
 				<!-- END AddPlantsTreesLink -->
 			   </td>
 			   <td align=center bgcolor="#F6F6F6">
-				<input type="button" name="Button" value="Print" onClick="location.href='PrintPlantsTreesFAAS.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true';">
+				<input type="button" name="Button" value="Print" onClick="location.href='PrintLandFAAS.php{Session}&odID={odID}&ownerID={ownerID}&afsID={afsID}&print=true';">
 			   </td>
 			  </tr>
 			  <tr align="center" valign="middle" bgcolor="#CCCCCC"> 
@@ -1773,19 +1761,24 @@ function setDefaults(){
 					 <td class="fileds_comment" bgcolor="#CCCCCC" colspan="3">Value 
 					  Computation</td>
 					</tr>
-					<tr> 
-					 <td class="fileds_comment" align="right" bgcolor="#F6F6F6">buildingCoreAndAdditionalItems</td>
-					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{buildingCoreAndAdditionalItems} 
+					<tr>
+					 <td class="fileds_comment" align="right" bgcolor="#F6F6F6">buildingCore</td>
+					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{buildingCoreAndAdditionalItems}
 					  </strong></td>
 					</tr>
-					<tr> 
+					<tr>
+					 <td class="fileds_comment" align="right" bgcolor="#F6F6F6">AdditionalItems</td>
+					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{addItems}
+					  </strong></td>
+					</tr>
+					<tr>
 					 <td class="fileds_comment" align="right" bgcolor="#F6F6F6">depreciationRate</td>
-					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{depreciationRate} 
+					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{depreciationRate}
 					  </strong></td>
 					</tr>
-					<tr> 
+					<tr>
 					 <td class="fileds_comment" align="right" bgcolor="#F6F6F6">accumulatedDepreciation</td>
-					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{accumulatedDepreciation} 
+					 <td class="fileds_comment" colspan="2" bgcolor="#F6F6F6"><strong>{accumulatedDepreciation}
 					  </strong></td>
 					</tr>
 					<tr align="left"> 
@@ -2187,7 +2180,7 @@ function setDefaults(){
 				   </strong></td>
 				 </tr>
 				 <tr> 
-				  <td class="fileds_comment" align="right" bgcolor="#F6F6F6" rowspan="2">Additional 
+				  <td class="fileds_comment" align="right" bgcolor="#F6F6F6" rowspan="2">Additional
 				   Cost</td>
 				  <td class="fileds_comment" bgcolor="#F6F6F6"><strong>{freightCost} 
 				   </strong><br>

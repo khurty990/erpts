@@ -46,6 +46,7 @@ class PrintReceiptDetailsPDF{
 			"receiptIDArray" => $receiptID
 
 			,"pageNumber" => 1
+			,"receiptPageNumber" => ""
 			,"receiptType" => ""
 			,"prevORNum" => ""
 			,"porMonth" => ""
@@ -60,6 +61,10 @@ class PrintReceiptDetailsPDF{
 			,"receivedFrom" => ""
 			,"y1TotalInWords" => "244"
 			,"totalInWords" => ""
+                       //inserted by cht 07282008
+                        ,"netAmountPaid" => ""
+			,"sefTotal" => ""
+                       // end
 			,"amountPaid" => ""
 			,"total" => ""
 			,"paymentMode" => ""
@@ -168,6 +173,20 @@ class PrintReceiptDetailsPDF{
 			,"grandTotal4" => ""
 			,"grandTotal5" => ""
 			,"grandTotal6" => ""
+
+			,"landClass1" => ""
+			,"landClass2" => ""
+			,"landClass3" => ""
+			,"landClass4" => ""
+			,"landClass5" => ""
+			,"landClass6" => ""
+
+			,"dueDate1" => ""
+			,"dueDate2" => ""
+			,"dueDate3" => ""
+			,"dueDate4" => ""
+			,"dueDate5" => ""
+			,"dueDate6" => ""
 
 		);
 
@@ -443,6 +462,10 @@ class PrintReceiptDetailsPDF{
 		$this->setvar("receivedFrom","",false);
 		$this->setvar("y1TotalInWords","",false);
 		$this->setvar("totalInWords","",false);
+		//Inserted by cht 07282008
+		$this->setvar("netAmountPaid","",false);
+		$this->setvar("sefTotal","",false);
+		// End
 		$this->setvar("amountPaid","",false);
 		$this->setvar("total","",false);
 		$this->setvar("paymentMode","",false);
@@ -713,37 +736,49 @@ class PrintReceiptDetailsPDF{
 											$od = $this->getOD($afs->getOdID());
 											$this->setvar("lotAddress".$i,$od->locationAddress->getStreet().", ".$od->locationAddress->getBarangay());
 											$this->setvar("blockNumber".$i,$od->getLotNumber().", ".$od->getBlockNumber());
+											$this->setvar("landClass".$i, $payment->getPropertyClassification());
 											$this->setvar("tdNum".$i,$tdNum);
+											$this->setvar("dueDate".$i, "(".substr($payment->getDueDate(),0,4).")");
 											$this->setvar("assessedValue".$i,$assessedValue,true);
 											$this->setvar("subTotal".$i,$collection->getTaxDue(),true);
 
 											if($collection->getPenalty() > 0){
 												if($collection->getAmnesty()=="true"){
-													$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " % (amnesty)",true);
+													//	$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " % (amnesty)",true);
+													$this->setvar("penalty".$i,$collection->getPenalty());
 												}
 												else{
-													$this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " %",true);
+													// $this->setvar("penalty".$i,round((($collection->getPenalty()/$collection->getTaxDue())*100)) . " %",true);
+													$this->setvar("penalty".$i,$collection->getPenalty());
 												}
 											}
 											$this->setvar("grandTotal".$i,$collection->getAmountPaid(),true);
 											$totalAmountPaid += $collection->getAmountPaid();
-										}
+//Inserted by cht 07282008
+$sefTotal = $total;
+$netAmountPaid = $totalAmountPaid*2;
+//End											}
 
 									}
 								}
 							}
 						}
 
+	// ORIG					
+	//$this->setvar("total",$totalAmountPaid,true);
+	//$this->setvar("amountPaid",$totalAmountPaid,true);
+	//$totalInWords = makewords($totalAmountPaid);
+						$this->setvar("sefTotal",$totalAmountPaid,true);
 						$this->setvar("total",$totalAmountPaid,true);
-						$this->setvar("amountPaid",$totalAmountPaid,true);
-						$totalInWords = makewords($totalAmountPaid);
-
+						$this->setvar("amountPaid",$netAmountPaid,true);
+						$totalInWords = makewords($netAmountPaid);
+						
 //						$totalInWords = "One Hundred Thousand Two Hundred Thirty Four Pesos And Fifty Seven Centavos Only";
 						if(strlen($totalInWords)<62){
-							$this->setvar("y1TotalInWords","235");
+							$this->setvar("y1TotalInWords","254");
 						}
 						else{
-							$this->setvar("y1TotalInWords","244");
+							$this->setvar("y1TotalInWords","263");
 						}
 						$this->setvar("totalInWords",$totalInWords);
 					}
