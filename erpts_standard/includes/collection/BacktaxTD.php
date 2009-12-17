@@ -339,6 +339,12 @@ class BacktaxTD
 
 
 	function calculatePenalty($penaltyComputeDate){
+		// if() added September 23 2005
+		// do not calculate penalties if encoded value is greater than 0
+		if($this->penalties > 0){
+			return true;
+		}
+
 		// initialize penaltyLUTArray
 		$treasurySettings = new TreasurySettings;
 		$treasurySettings->selectRecord();
@@ -377,11 +383,11 @@ class BacktaxTD
 
 			// associate penaltyPercentage
 
-			if($totalMonths >= count($this->penaltyLUTArray)-1){
+			if($totalMonths >= 36) { //alxjvr:2005.12.07 count($this->penaltyLUTArray)-1){
 				$penaltyPercentage = 0.72;
 			}
 			else{			
-				$penaltyPercentage = $this->penaltyLUTArray[$totalMonths-1];
+				$penaltyPercentage = $totalMonths * 0.02; //alxjvr:2005.12.07 $this->penaltyLUTArray[$totalMonths-1];
 			}
 
 			$taxDue = $this->basicTax + $this->sefTax + $this->idleTax;
@@ -455,9 +461,8 @@ class BacktaxTD
 		$sql = sprintf("SELECT * FROM  %s WHERE %s;",
 			BACKTAXTD_TABLE, $condition);
 
-		$dummySql = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
-		$this->db->query($dummySql);
-
+		//$dummySQL = sprintf("INSERT INTO dummySQL(queryString) VALUES('%s');",fixQuotes($sql));
+		//$this->db->query($dummySQL);
 
 		$this->db->query($sql);
 
