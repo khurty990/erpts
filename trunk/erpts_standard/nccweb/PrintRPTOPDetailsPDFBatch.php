@@ -181,6 +181,7 @@ class PrintRPTOPDetailsPDF{
 
 			,"municipalAssessor" => ""
 			,"municipalTreasurer" => ""
+			,"totalOnLastPage" => ""	//RC a place to put a message on all but the last page
 
 		);
 
@@ -442,11 +443,13 @@ class PrintRPTOPDetailsPDF{
 									if ($tdCtr > 6){ // RC 20091012 Deal with multiple page RPTOP (i.e. more than 6 TDs)
 										$this->formArray["tdPageNumber"] = $tdPageNumber;
 										$this->formArray["tdTotalPages"] = $tdTotalPages;
+										$this->formArray["totalOnLastPage"] = "Please Refer to Totals on Last Page...";
 										$this->setForm();  // generate page of output
 										$this->clearDetails(); // clear the values from Form
 										$this->pageNumber++;  //increment PDF Page Number
 										$tdPageNumber++;
 										$tdCtr = 1;		//reset count for lines on new page of RPTOP
+										$this->formArray["totalOnLastPage"] = "";
 									}
 									$this->formArray["arpNumber".$tdCtr] = $tvalue->getTaxDeclarationNumber();
 
@@ -587,8 +590,8 @@ class PrintRPTOPDetailsPDF{
 											$this->formArray["marketValue".$tdCtr] += $afs->getTotalMarketValue();
 											$this->formArray["assessedValue".$tdCtr] += $afs->getTotalAssessedValue();
 
-											$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
-											$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
+//RC											$this->formArray["totalMarketValue"] += $this->formArray["marketValue"];
+//RC											$this->formArray["totalAssessedValue"] += $this->formArray["assessedValue"];
 
 											// grab Due from tdID
 									

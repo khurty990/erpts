@@ -122,9 +122,7 @@
 		<textitem xpos="70.75" ypos="314" font="Helvetica-Bold" size="9.5" align="center">{arpNumber1}</textitem>
 		<textitem xpos="70.75" ypos="319.5" font="Helvetica-Bold" size="9" align="center">{arpNumber1a}</textitem>
 		<textitem xpos="70.75" ypos="311.75" font="Helvetica-Bold" size="9" align="center">{arpNumber1b}</textitem>
-	
-
-		
+			
 		<textitem xpos="108.5" ypos="314" font="Helvetica" size="9.5" align="left">{pin1}</textitem>
 		<textitem xpos="108.5" ypos="319.5" font="Helvetica" size="9" align="left">{pin1a}</textitem>
 		<textitem xpos="108.5" ypos="311.75" font="Helvetica" size="9" align="left">{pin1b}</textitem>
@@ -187,12 +185,9 @@
 		<textitem xpos="675.5" ypos="278" font="Helvetica" size="9.5" align="right">{sef3}</textitem>
 		<textitem xpos="745" ypos="278" font="Helvetica" size="9.5" align="right">{totalTax3}</textitem>
 
-		<textitem xpos="70.75" ypos="260" font="Helvetica-Bold" size="9.5" 
-align="center">{arpNumber4}</textitem>
-		<textitem xpos="70.75" ypos="265.5" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber4a}</textitem>
-		<textitem xpos="70.75" ypos="257.75" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber4b}</textitem>
+		<textitem xpos="70.75" ypos="260" font="Helvetica-Bold" size="9.5" align="center">{arpNumber4}</textitem>
+		<textitem xpos="70.75" ypos="265.5" font="Helvetica-Bold" size="9" align="center">{arpNumber4a}</textitem>
+		<textitem xpos="70.75" ypos="257.75" font="Helvetica-Bold" size="9" align="center">{arpNumber4b}</textitem>
 
 		<textitem xpos="108.5" ypos="260" font="Helvetica" size="9.5" align="left">{pin4}</textitem>
 		<textitem xpos="108.5" ypos="265.5" font="Helvetica" size="9" align="left">{pin4a}</textitem>
@@ -212,12 +207,9 @@ align="center">{arpNumber4b}</textitem>
 		<textitem xpos="675.5" ypos="260" font="Helvetica" size="9.5" align="right">{sef4}</textitem>
 		<textitem xpos="745" ypos="260" font="Helvetica" size="9.5" align="right">{totalTax4}</textitem>
 
-		<textitem xpos="70.75" ypos="242" font="Helvetica-Bold" size="9.5" 
-align="center">{arpNumber5}</textitem>
-		<textitem xpos="70.75" ypos="247.5" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber5a}</textitem>
-		<textitem xpos="70.75" ypos="239.75" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber5b}</textitem>
+		<textitem xpos="70.75" ypos="242" font="Helvetica-Bold" size="9.5" align="center">{arpNumber5}</textitem>
+		<textitem xpos="70.75" ypos="247.5" font="Helvetica-Bold" size="9" align="center">{arpNumber5a}</textitem>
+		<textitem xpos="70.75" ypos="239.75" font="Helvetica-Bold" size="9" align="center">{arpNumber5b}</textitem>
 
 		<textitem xpos="108.5" ypos="242" font="Helvetica" size="9.5" align="left">{pin5}</textitem>
 		<textitem xpos="108.5" ypos="247.5" font="Helvetica" size="9" align="left">{pin5a}</textitem>
@@ -237,14 +229,11 @@ align="center">{arpNumber5b}</textitem>
 		<textitem xpos="675.5" ypos="242" font="Helvetica" size="9.5" align="right">{sef5}</textitem>
 		<textitem xpos="745" ypos="242" font="Helvetica" size="9.5" align="right">{totalTax5}</textitem>
 
-		<textitem xpos="70.75" ypos="224" font="Helvetica-Bold" size="9.5" 
-align="center">{arpNumber6}</textitem>
-		<textitem xpos="70.75" ypos="229.5" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber6a}</textitem>
-		<textitem xpos="70.75" ypos="221.75" font="Helvetica-Bold" size="9" 
-align="center">{arpNumber6b}</textitem>
+		<textitem xpos="70.75" ypos="224" font="Helvetica-Bold" size="9.5" align="center">{arpNumber6}</textitem>
+		<textitem xpos="70.75" ypos="229.5" font="Helvetica-Bold" size="9" align="center">{arpNumber6a}</textitem>
+		<textitem xpos="70.75" ypos="221.75" font="Helvetica-Bold" size="9" align="center">{arpNumber6b}</textitem>
 
-		<textitem xpos="108.5" ypos="224" font="Helvetica" size="9" align="left">{pin6}</textitem>
+		<textitem xpos="108.5" ypos="224" font="Helvetica" size="9.5" align="left">{pin6}</textitem>
 		<textitem xpos="108.5" ypos="229.5" font="Helvetica" size="9" align="left">{pin6a}</textitem>
 		<textitem xpos="108.5" ypos="221.75" font="Helvetica" size="9" align="left">{pin6b}</textitem>
 
@@ -266,6 +255,7 @@ align="center">{arpNumber6b}</textitem>
 		<textitem xpos="352.5" ypos="206" font="Helvetica-Bold" size="10" align="left">TOTAL</textitem>
 		<textitem xpos="473.5" ypos="206" font="Helvetica" size="9.5" align="right">{totalMarketValue}</textitem>
 		<textitem xpos="547" ypos="206" font="Helvetica" size="9.5" align="right">{totalAssessedValue}</textitem>
+		<textitem xpos="500" ypos="206" font="Times-Italic" size="9.5" align="left">{totalOnLastPage}</textitem>
 		<textitem xpos="612" ypos="206" font="Helvetica" size="9.5" align="right">{totalBasic}</textitem>
 		<textitem xpos="675.5" ypos="206" font="Helvetica" size="9.5" align="right">{totalSef}</textitem>
 		<textitem xpos="745" ypos="206" font="Helvetica" size="9.5" align="right">{totalTaxes}</textitem>
