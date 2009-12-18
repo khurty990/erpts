@@ -148,6 +148,16 @@ function validateForm(iform){
 		iform.treasurerLastName.focus();
 		return false;
 		}
+	if(iform.ordinanceNo.value==""){
+		alert("ordinanceNo Required.");
+		iform.ordinanceNo.focus();
+		return false;
+		}
+	if(iform.ordinanceDate.value==""){
+		alert("ordinanceDate Required.");
+		iform.ordinanceDate.focus();
+		return false;
+		}
 
 	iform.submit();
 
@@ -538,6 +548,39 @@ function validateForm(iform){
 		    </td></tr>
 			</table>
 
+<br>
+
+			<table id="ordinance" border=0 cellpadding=1 cellspacing=0 width="90%" align=center>
+			<tr><td bgcolor="#777777">
+
+				<table border=0 cellpadding=4 cellspacing=0 width="100%">
+				<tr bgcolor="#CCCCCC">
+					<td class="fields" align=left width="33%">
+						<b>PROPERTY TAX ORDINANCE</b>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr bgcolor="#FFFFFF">
+					<td class="fields" align=right>					 
+						<b>Number:</b>
+					</td>
+					<td class="fileds_comment" align=left>
+						<input type="text" size=30 name="ordinanceNo" value="{ordinanceNo}">
+					</td>
+				</tr>
+				<tr bgcolor="#FFFFFF">
+					<td class="fields" align=right>					 
+						Date:
+					</td>
+					<td class="fileds_comment" align=left>
+						<input type="text" size=30 name="ordinanceDate" value="{ordinanceDate}">
+					</td>
+				</tr>
+				
+				</table>
+
+		    </td></tr>
+			</table>
 			<br>
 
 			<center>

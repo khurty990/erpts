@@ -19,6 +19,7 @@
 		iform.firstName.focus();
 		return false;
 	}
+/* RC 20091006 Remove mandatory
 	if (iform.middleName.value=="") {
 		alert("middleName Required.");
 		iform.middleName.focus();
@@ -34,13 +35,13 @@
 	if (!buffer1[0].checked && !buffer1[1].checked && !buffer1[2].checked) {
 		alert("Marital Status Required.");
 		return false;
-	}
+	} */
   	if (iform.tin.value=="") {
 		alert("TIN required.");
 		iform.tin.focus();
 		return false;
 	} 
-/*
+
 	if (iform.number.value=="") {
 		alert("Number is required.");
 		iform.number.focus();
@@ -61,11 +62,12 @@
 		iform.municipalityCity.focus();
 		return false;
 	}
+/*
 	if (iform.district.value=="") {
 		alert("District is required.");
 		iform.district.focus();
 		return false;
-	}
+	} */
 	if (iform.province.value=="") {
 		alert("Province is required.");
 		iform.province.focus();
@@ -76,11 +78,13 @@
 		iform.telephone.focus();
 		return false;
 	}
+/*	
 	if (iform.mobileNumber.value=="") {
 		alert("Cell Number is required.");
 		iform.mobileNumber.focus();
 		return false;
-	}
+	} */
+/*	
 	 if (iform.email.value=="") {
 		alert("Email address required.");
 		iform.email.focus();
@@ -110,16 +114,17 @@ function checkValues(which){
 		which.firstName.focus();
 		return false;
 	}
+/* RC 20091006 Remove mandatory
 	if (which.middleName.value=='') {
 		alert('Middlename required');
 		which.middleName.focus();
 		return false;
-	}
+	} 
 	if (which.gender.value=='') {
 		alert('Gender required');
 		which.gender.focus();
 		return false;
-	}
+	} */
 	return true;
 }
 function setDefaults(){

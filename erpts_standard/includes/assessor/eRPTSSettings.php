@@ -34,6 +34,9 @@ class eRPTSSettings
 	var $provincialTreasurerFirstName;
 	var $provincialTreasurerMiddleName;
 	var $provincialTreasurerLastName;
+	
+	var $ordinanceNo;  // RC 20091007 Added for standardization
+	var $ordinanceDate;
 
 	var $domDocument;
 	var $db;
@@ -117,6 +120,12 @@ class eRPTSSettings
 	function setProvincialTreasurerMiddleName($tempVar){
 		$this->provincialTreasurerMiddleName = $tempVar;
 	}
+	function setOrdinanceNo($tempVar){  //RC 20091007 Added for standardization
+		$this->ordinanceNo = $tempVar;
+	}
+	function setOrdinanceDate($tempVar){  //RC 20091007 Added for standardization
+		$this->ordinanceDate = $tempVar;
+	}
 
 	//DOM
 	function setDocNode($elementName,$elementValue,$domDoc,$indexNode){
@@ -190,7 +199,10 @@ class eRPTSSettings
 		$this->setDocNode("provincialTreasurerFirstName",$this->provincialTreasurerFirstName,$this->domDocument,$rec);
 		$this->setDocNode("provincialTreasurerMiddleName",$this->provincialTreasurerMiddleName,$this->domDocument,$rec);
 		$this->setDocNode("provincialTreasurerLastName",$this->provincialTreasurerLastName,$this->domDocument,$rec);
-	}
+
+		$this->setDocNode("ordinanceNo",$this->ordinanceNo,$this->domDocument,$rec);  // RC 20091007
+		$this->setDocNode("ordinanceDate",$this->ordinanceDate,$this->domDocument,$rec);  // RC 20091007
+		}
 	function parseDomDocument($domDoc){
 		$ret = true;
 		$baseNode = $domDoc->document_element();
@@ -286,6 +298,12 @@ class eRPTSSettings
 	function getProvincialTreasurerLastName(){
 		return $this->provincialTreasurerLastName;
 	}
+	function getOrdinanceNo(){  //RC 20091007 Added for standardization
+		return $this->ordinanceNo;
+	}
+	function getOrdinanceDate(){  //RC 20091007 Added for standardization
+		return $this->ordinanceDate;
+	}
 	
 	function getChiefExecutiveFullName(){
 		$fullName = $this->chiefExecutiveLastName .", ". $this->chiefExecutiveFirstName ." ". $this->chiefExecutiveMiddleName;
@@ -351,6 +369,8 @@ class eRPTSSettings
 			$this->provincialTreasurerMiddleName = $this->db->f("provincialTreasurerMiddleName");
 			$this->provincialTreasurerLastName = $this->db->f("provincialTreasurerLastName");
 
+			$this->ordinanceNo = $this->db->f("ordinanceNo");
+			$this->ordinanceDate = $this->db->f("ordinanceDate");
 			//*/
 			foreach ($this->db->Record as $key => $value){
 				$this->$key = $value;
@@ -386,8 +406,10 @@ class eRPTSSettings
 			", provincialTreasurerFirstName".
 			", provincialTreasurerMiddleName".
 			", provincialTreasurerLastName".
+			", ordinanceNo".
+			", ordinanceDate".
 			") ".
-			"values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"
+			"values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');"
 			, ERPTS_SETTINGS_TABLE
 
 			, fixQuotes($this->eRPTSSettingsID)
@@ -413,6 +435,8 @@ class eRPTSSettings
 			, fixQuotes($this->provincialTreasurerFirstName)
 			, fixQuotes($this->provincialTreasurerMiddleName)
 			, fixQuotes($this->provincialTreasurerLastName)
+			, fixQuotes($this->ordinanceNo)
+			, fixQuotes($this->ordinanceDate)
 		);
 		
 		$this->setDB();
@@ -478,6 +502,8 @@ class eRPTSSettings
 			", provincialTreasurerFirstName = '%s'".
 			", provincialTreasurerMiddleName = '%s'".
 			", provincialTreasurerLastName = '%s'".
+			", ordinanceNo = '%s'".
+			", ordinanceDate = '%s'".
 			" where eRPTSSettingsID = '%s';",
 			ERPTS_SETTINGS_TABLE
 			, fixQuotes($this->lguName)
@@ -502,6 +528,8 @@ class eRPTSSettings
 			, fixQuotes($this->provincialTreasurerFirstName)
 			, fixQuotes($this->provincialTreasurerMiddleName)
 			, fixQuotes($this->provincialTreasurerLastName)
+			, fixQuotes($this->ordinanceNo)
+			, fixQuotes($this->ordinanceDate)
 
 			, $this->eRPTSSettingsID
 		);
