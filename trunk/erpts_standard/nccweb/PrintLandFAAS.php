@@ -43,7 +43,8 @@ class PrintLandFAAS{
 			"arpNumber" => ""
 			,"propertyIndexNumber" => ""
 			,"octTctNumber" => ""
-			,"surveyNumber" => ""
+			,"Numbersurvey" => ""
+			,"Numberlot" => ""
 			//added 03042008
 			,"taxDeclarationNumber" => ""
 			,"cancelsTDNumber" => ""
@@ -448,7 +449,7 @@ class PrintLandFAAS{
 		$this->formArray["afsID"] = $afsID;
         
 		$this->formArray["propertyID"] = $propertyID;
-        $this->formArray["propertyType"] = $propertyType;
+        	$this->formArray["propertyType"] = $propertyType;
 		$this->formArray["print"] = $print;
 
 		$this->pl = 0;
@@ -674,6 +675,9 @@ class PrintLandFAAS{
 		$this->formArray["ownerAddress2"] = $address2;
 
 	}  **/
+
+
+
 // replacement code to display person name
 	function displayOwnerList($domDoc){
 		$owner = new Owner;
@@ -708,9 +712,13 @@ class PrintLandFAAS{
 			}
 			else{
 			}
+		//==================OWNER ADDRESS INFORMATION
 
 		$this->formArray["owner"] = $ownerName;
-		$this->formArray["ownerAddress1"] = $address1;
+		$this->formArray["ownerAddress"] = $address;
+		
+
+
 	}
 
 
@@ -740,6 +748,7 @@ class PrintLandFAAS{
 						$this->formArray["district"] = $od->locationAddress->getDistrict();
 						$this->formArray["cityMunicipality"] = $od->locationAddress->getMunicipalityCity();
 						$this->formArray["province"] = $od->locationAddress->getProvince();
+						
 					}
 
 					$ODEncode = new SoapObject(NCCBIZ."ODEncode.php", "urn:Object");
@@ -787,25 +796,29 @@ class PrintLandFAAS{
 
 			foreach ($landList as $key => $land){
 				if($this->pl==0){
-				//$this->formArray["taxDeclarationNumber"] = $land->getTaxDeclarationNumber();
-					//$this->formArray["propertyIndexNumber"] = $land->getPropertyIndexNumber();
-					$this->formArray["octTctNumber"] = $land->getOctTctNumber();
-					$this->formArray["surveyNumber"] = $land->getSurveyNumber();
 
-					$this->formArray["north"] = $land->getNorth();
-					$this->formArray["east"] = $land->getEast();
-					$this->formArray["south"] = $land->getSouth();
-					$this->formArray["west"] = $land->getWest();
+//$this->formArray["taxDeclarationNumber"] = $land->getTaxDeclarationNumber();
+		
+//$this->formArray["propertyIndexNumber"] = $land->getPropertyIndexNumber();
+	
+				$this->formArray["Numberlot"] = $land->propertyAdministrator->getemail();
+				$this->formArray["octTctNumber"] = $land->getOctTctNumber();
+				$this->formArray["Numbersurvey"] = $land->getSurveyNumber();
+
+				$this->formArray["north"] = $land->getNorth();
+				$this->formArray["east"] = $land->getEast();
+				$this->formArray["south"] = $land->getSouth();
+				$this->formArray["west"] = $land->getWest();
 					
-					//$this->formArray["taxability"] = $land->getTaxability();
-					//$this->formArray["effectivity"] = $land->getEffectivity();
+				//$this->formArray["taxability"] = $land->getTaxability();
+				//$this->formArray["effectivity"] = $land->getEffectivity();
 
-					//$this->formArray["memoranda"] = $td->getMemoranda();
+				//$this->formArray["memoranda"] = $td->getMemoranda();
 
 					if (is_a($land->propertyAdministrator,Person)){
 						if($land->propertyAdministrator->getLastName()!=""){
 							$this->formArray["administrator"] = $land->propertyAdministrator->getFullName();
-						}
+					}
 						if (is_a($land->propertyAdministrator->addressArray[0],"address")){
 							$address1 = $land->propertyAdministrator->addressArray[0]->getNumber();
 
@@ -842,12 +855,12 @@ class PrintLandFAAS{
 					{
 						$recommendingApproval = new Person;
 						$recommendingApproval->selectRecord($land->recommendingApproval);
-						$this->formArray["recommendingApproval"] = $recommendingApproval->getFullName();
+						$this->formArray["recommendingApproval"] = strtoupper($recommendingApproval->getFullName());
 						$this->recommendingApproval = $recommendingApproval->getFullName();
 					}
 					else{
 						$recommendingApproval = $land->recommendingApproval;
-						$this->formArray["recommendingApproval"] = $recommendingApproval;
+						$this->formArray["recommendingApproval"] = strtoupper($recommendingApproval);
 						$this->recommendingApproval = $recommendingApproval;
 					}
 
@@ -858,12 +871,12 @@ class PrintLandFAAS{
 					{
 						$approvedBy = new Person;
 						$approvedBy->selectRecord($land->approvedBy);
-						$this->formArray["approvedBy"] = $approvedBy->getFullName();
+						$this->formArray["approvedBy"] = strtoupper($approvedBy->getFullName());
 						$this->approvedBy = $approvedBy->getFullName();
 					}
 					else{
 						$approvedBy = $land->approvedBy;
-						$this->formArray["approvedBy"] = $approvedBy;
+						$this->formArray["approvedBy"] = strtoupper($approvedBy);
 						$this->approvedBy = $approvedBy;
 					}
 					$this->formArray["dateApprovedBy"] = $land->getApprovedByDate();
@@ -884,7 +897,7 @@ class PrintLandFAAS{
 					$this->formArray["dateAssessedBy"] = $land->getAppraisedByDate();
 				}
 
-				// Land Appraisal
+// Land Appraisal
 				$this->formArray["landstart"] -= 19;
 				$offset = $this->formArray["landstart"];
 				// 5 Change to 11
@@ -954,7 +967,7 @@ class PrintLandFAAS{
 									.$runArea
 									.'</textitem>'."\r\n";
 
-					// actualUse
+					// actualUse==========with round off=========
 					$landActualUses = new LandActualUses;
 					if(is_numeric($land->getActualUse())){
 						$landActualUses->selectRecord($land->getActualUse());
@@ -1065,14 +1078,15 @@ class PrintLandFAAS{
 					
 					$this->formArray["propertyTotal"] = $this->formArray["propertyTotal"] + toFloat($land->getAssessedValue());
 					
-/*
-			$summkind = '';
+
+/*			$summkind = '';
 			$summuse = '';
 			$summadj = 0;
 			$summlvl = 0;
 			$summasv = 0;
-*/
-					//if ($summuse <> $landActualUses->getDescription()) {
+
+*/					//if ($summuse <> $landActualUses->getDescription()) {
+//Printing of Property Assessment Summ
 					$thislvl = (double)$land->getAssessmentLevel();
 					$thisuse = $landActualUses->getDescription();
 					if($summlvl <> $thislvl || $summuse <> $thisuse) {
@@ -1121,7 +1135,7 @@ class PrintLandFAAS{
 				$l++;
 				$this->pl++;
 			}
-
+//This is for the Value Adjustment Factor
 			if ($markval > 0) {
 				$adjcount++;
 				$this->formArray["adjstart"] -= 14;
@@ -1158,8 +1172,9 @@ class PrintLandFAAS{
 				$adjitems.= '<lineitem x1="50" y1="'.($offset-5).'" x2="550" y2="'.($offset-5).'">blurb</lineitem>';
 			}
 
+//EN - This is for the Property Assesment Summary
 
-			if ($summasv > 0) {
+			if ($summasv > 0) { //EN 20090930 change summasv to markval (reversed 20091001)
 				$summcount++;
 				$this->formArray["summstart"] -= 14;
 				$offset = $this->formArray["summstart"];
@@ -1178,7 +1193,7 @@ class PrintLandFAAS{
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
 								// summadj change to adjmark
-								.number_format($adjmark,2)
+								.number_format($summadj,2)//change back to summadj from adjmark - E.N.
 								.'</textitem>'."\r\n";
 				$summitems.= '<textitem xpos="475" ypos="'
 								.$offset
@@ -1186,7 +1201,8 @@ class PrintLandFAAS{
 								.number_format($summlvl,2)
 								.'</textitem>'."\r\n";
 				// Inserted 08222008
-				$summasv = ($adjmark * ($summlvl/100));
+				$summasv = round(($summadj * ($summlvl/100)),-1);  //EN - round to nearest ten peso 2009-09-30
+										//EN - change $adjmark to $summadj 2009-09-30
 				$summitems.= '<textitem xpos="545" ypos="'
 								.$offset
 								.'" font="Helvetica" size="8" align="right">'
@@ -1268,7 +1284,7 @@ class PrintLandFAAS{
 							$this->formArray["adminAddress2"] = $address2;
 						}
 						$this->formArray["adminTelno"] = $plantsTrees->propertyAdministrator->getTelephone();
-					}
+						}
 
 					if($this->recommendingApproval==""){
 						if(is_numeric($plantsTrees->recommendingApproval))
@@ -1292,13 +1308,13 @@ class PrintLandFAAS{
 						{
 							$approvedBy = new Person;
 							$approvedBy->selectRecord($plantsTrees->approvedBy);
-							$this->formArray["approvedBy"] = $approvedBy->getFullName();
+							$this->formArray["approvedBy"] =$approvedBy->getFullName();
 							$this->approvedBy = $approvedBy->getFullName();
 						}
 						else{
 							$approvedBy = $approvedBy->recommendingApproval;
 							$this->formArray["approvedBy"] = $approvedBy;
-							$this->approvedBy = $approvedBy;
+							$this->approvedBy = "Jacinta SA. Pascual";
 						}
 					}
 
@@ -1569,7 +1585,7 @@ $adjmark = $plantTotal + $valuadj;
 				.'" font="Helvetica" size="8" align="right">'
 				.number_format($summlvl,2)
 				.'</textitem>'."\r\n";
-	$summasv = ($adjmark * ($summlvl/100));
+	$summasv = round(($adjmark * ($summlvl/100)),-1); //EN - round to nearest ten peso 2009-09-30
 	$summitems.= '<textitem xpos="545" ypos="'.$offset
 				.'" font="Helvetica" size="8" align="right">'
 				.number_format($summasv,2)
@@ -1673,10 +1689,10 @@ $adjmark = $plantTotal + $valuadj;
 		$testpdf = new PDFWriter;
         $testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
         if(isset($this->formArray["print"])){
-        	$testpdf->writePDF($name);//,$this->formArray["print"]);
+        	$testpdf->writePDF("LandFAAS.pdf");//,$this->formArray["print"]);
         }
         else {
-        	$testpdf->writePDF($name);
+        	$testpdf->writePDF("LandFAAS.pdf");
         }
 		//header("location: ".$testpdf->pdfPath);
 		exit;

@@ -9,21 +9,20 @@
 <!--
   function validateForm(iform) {
   	if (iform.propertyIndexNumber.value=="") {
-		alert("Property Index Number Required.");
+		alert("Property Index Number is Required.");
 		iform.propertyIndexNumber.focus();
 		return false;
 	}
-
-	
   	if (iform.certificateOfTitleNumber.value=="") {
 		alert("Certificate of Title Number required.");
 		iform.certificateOfTitleNumber.focus();
 		return false;
 	} 
-	else if (iform.email.value=="") {
+	if (iform.email.value=="") {  // RC 20091002 remove leading else
+/* RC 20091006 remove mandatory
 		alert("Email address required.");
 		iform.email.focus();
-		return false;
+		return false;  */
 	} 
 	else if (!checkEmail(iform.email.value)) {
 		alert("Invalid email address.");
@@ -85,11 +84,12 @@
 		iform.firstName.focus();
 		return false;
 	}
-  	if (iform.middleName.value=="") {
+/* RC 20091002  remove requirement for middle name
+	if (iform.middleName.value=="") {
 		alert("Middlename required.");
 		iform.middleName.focus();
 		return false;
-	}
+	} */
 
     /*buffer=iform.gender;
 	if (!buffer[0].checked && !buffer[1].checked) {
@@ -302,7 +302,7 @@ function refreshParent() {
               (west) </td>
           </tr>
           <tr bgcolor="#F6F6F6" align="left"> 
-            <td class="fileds_comment" bgcolor="#F6F6F6" colspan="3">Adminisrator</td>
+            <td class="fileds_comment" bgcolor="#F6F6F6" colspan="3">Administrator</td>
           </tr>
           <tr bgcolor="#F6F6F6"> 
             <td class="fileds_comment" align="right" rowspan="3" bgcolor="#F6F6F6">Name</td>

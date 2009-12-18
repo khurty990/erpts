@@ -55,6 +55,8 @@ class eRPTSSettingsEncode{
 			,"provincialTreasurerMiddleName" => ""
 			,"provincialTreasurerLastName" => ""
 
+			,"ordinanceNo" => ""
+			,"ordinanceDate" => ""
 			,"formAction" => $formAction
 		);
 
@@ -135,7 +137,8 @@ class eRPTSSettingsEncode{
 							$erptsSettings->setProvincialTreasurerFirstName($this->formArray["provincialTreasurerFirstName"]);
 							$erptsSettings->setProvincialTreasurerMiddleName($this->formArray["provincialTreasurerMiddleName"]);
 							$erptsSettings->setProvincialTreasurerLastName($this->formArray["provincialTreasurerLastName"]);
-
+							$erptsSettings->setOrdinanceNo($this->formArray["ordinanceNo"]);
+							$erptsSettings->setOrdinanceDate($this->formArray["ordinanceDate"]);
 
 							$erptsSettings->setDomDocument();
 
@@ -178,6 +181,9 @@ class eRPTSSettingsEncode{
 					$erptsSettings->setProvincialTreasurerMiddleName($this->formArray["provincialTreasurerMiddleName"]);
 					$erptsSettings->setProvincialTreasurerLastName($this->formArray["provincialTreasurerLastName"]);
 					
+					$erptsSettings->setOrdinanceNo($this->formArray["ordinanceNo"]);
+					$erptsSettings->setOrdinanceDate($this->formArray["ordinanceDate"]);
+
 					$erptsSettings->setDomDocument();
 			
 					$doc = $erptsSettings->getDomDocument();
@@ -234,6 +240,8 @@ class eRPTSSettingsEncode{
 						$this->formArray["provincialTreasurerFirstName"] = $erptsSettings->getProvincialTreasurerFirstName();
 						$this->formArray["provincialTreasurerMiddleName"] = $erptsSettings->getProvincialTreasurerMiddleName();
 						$this->formArray["provincialTreasurerLastName"] = $erptsSettings->getProvincialTreasurerLastName();
+						$this->formArray["ordinanceNo"] = $erptsSettings->getOrdinanceNo();
+						$this->formArray["ordinanceDate"] = $erptsSettings->getOrdinanceDate();
 					}
 				}
 		}
