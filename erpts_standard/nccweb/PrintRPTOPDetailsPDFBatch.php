@@ -48,7 +48,7 @@ class PrintRPTOPDetailsPDF{
 		$this->tpl->set_file("rptsTemplate", "rptopDetails.xml") ;
 		$this->tpl->set_var("TITLE", "RPTOP Batch Details");
 
-		$this->pageNumber = 0 ;
+		$this->pageNumber = 0 ;  // the PDF Page Number
 
 	
        	$this->formArray = array(
@@ -214,6 +214,36 @@ class PrintRPTOPDetailsPDF{
 		}
 	}
 	
+	function clearDetails() {
+		$ictr = 1;
+		while ($ictr < 7) {
+			$this->formArray["arpNumber".$ictr] = "";
+			$this->formArray["arpNumber".$ictr."a"] = "";
+			$this->formArray["arpNumber".$ictr."b"] = "";
+			$this->formArray["pin".$ictr] = "";
+			$this->formArray["pin".$ictr."a"] = "";
+			$this->formArray["pin".$ictr."b"] = "";
+			$this->formArray["location".$ictr] = "";
+			$this->formArray["location".$ictr."a"] = "";
+			$this->formArray["location".$ictr."b"] = "";
+			$this->formArray["classification".$ictr] = "";
+			$this->formArray["area".$ictr] = "";
+			$this->formArray["lotNo".$ictr] = "";
+			$this->formArray["marketValue".$ictr] = "";
+			$this->formArray["assessedValue".$ictr] = "";
+			$this->formArray["basic".$ictr] = "";
+			$this->formArray["sef".$ictr] = "";
+			$this->formArray["totalTax".$ictr] = "";
+			$ictr++;
+		}
+	}
+
+	function clearForm(){
+		foreach ($this->formArray as $key => $value){
+			$this->formArray[$key] = "";
+		}
+	}
+	
 	function setForm(){
 		$this->setLguDetails();
 		$this->formatCurrency("marketValue1");
@@ -265,11 +295,7 @@ class PrintRPTOPDetailsPDF{
 		}
 
 		$this->tpl->parse("PageBlock", "Page", true);
-
-		foreach ($this->formArray as $key => $value){
-			$this->formArray[$key] = "";
-		}
-
+		
 	}
 
 
@@ -350,20 +376,20 @@ class PrintRPTOPDetailsPDF{
 			$this->pageNumber++;
 
 
-		if (!$xmlStr = $RPTOPDetails->getRPTOP($this->formArray["rptopID"])){
-			exit("xml failed");
-		}
-		else{
-			//echo($xmlStr);
-			if(!$domDoc = domxml_open_mem($xmlStr)) {
-				exit("error xmlDoc");
+			if (!$xmlStr = $RPTOPDetails->getRPTOP($this->formArray["rptopID"])){
+				exit("xml failed");
 			}
-			else {
-				$rptop = new RPTOP;
-				$rptop->parseDomDocument($domDoc);
-				//print_r($rptop);
-				foreach($rptop as $key => $value){
-					switch ($key){
+			else{
+				//echo($xmlStr);
+				if(!$domDoc = domxml_open_mem($xmlStr)) {
+					exit("error xmlDoc");
+				}
+				else {
+					$rptop = new RPTOP;
+					$rptop->parseDomDocument($domDoc);
+					//print_r($rptop);
+					foreach($rptop as $key => $value){
+						switch ($key){
 						case "owner":
 							//$RPTOPEncode = new SoapObject(NCCBIZ."RPTOPEncode.php", "urn:Object");
 							if (is_a($value,"Owner")){
@@ -417,6 +443,8 @@ class PrintRPTOPDetailsPDF{
 										$this->formArray["tdPageNumber"] = $tdPageNumber;
 										$this->formArray["tdTotalPages"] = $tdTotalPages;
 										$this->setForm();  // generate page of output
+										$this->clearDetails(); // clear the values from Form
+										$this->pageNumber++;  //increment PDF Page Number
 										$tdPageNumber++;
 										$tdCtr = 1;		//reset count for lines on new page of RPTOP
 									}
@@ -637,17 +665,18 @@ class PrintRPTOPDetailsPDF{
 		}
 
 
-		$this->setForm();
+		$this->setForm(); // send XML to file
+		$this->clearForm(); // clear the XML form values
 
 		} // end batch loop
 		
-        $this->tpl->parse("templatePage", "rptsTemplate");
-        $this->tpl->finish("templatePage");
+		$this->tpl->parse("templatePage", "rptsTemplate");
+		$this->tpl->finish("templatePage");
 
 		$testpdf = new PDFWriter;
-        $testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
+        	$testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
 
-		$testpdf->writePDF("RPTOPBatch");
+		$testpdf->writePDF("RPTOPBatch.pdf");
 		// popup the IE Save to File thingee... 
 		exit;
     }
