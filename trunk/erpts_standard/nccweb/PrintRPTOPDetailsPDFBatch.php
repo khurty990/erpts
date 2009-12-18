@@ -46,7 +46,7 @@ class PrintRPTOPDetailsPDF{
 		$this->tpl = new rpts_Template(getcwd(),"keep");
 
 		$this->tpl->set_file("rptsTemplate", "rptopDetails.xml") ;
-		$this->tpl->set_var("TITLE", "Print Land FAAS");
+		$this->tpl->set_var("TITLE", "RPTOP Batch Details");
 
 		$this->pageNumber = 0 ;
 
@@ -406,8 +406,20 @@ class PrintRPTOPDetailsPDF{
 							break;
 						case "tdArray":
 							$tdCtr = 1;
+							$tdPageNumber = 1; // RC 20091012 Modified to handle multiple page RPTOPS
+							$totalBasic = 0;
+							$totalSef = 0;
+							$totalTaxes = 0;
 							if (count($value)){
+								$tdTotalPages = intval((count($value) - 1)/6) + 1;  //RC 20091012 Calculate 1 to 6 = 1.
 								foreach($value as $tkey => $tvalue){
+									if ($tdCtr > 6){ // RC 20091012 Deal with multiple page RPTOP (i.e. more than 6 TDs)
+										$this->formArray["tdPageNumber"] = $tdPageNumber;
+										$this->formArray["tdTotalPages"] = $tdTotalPages;
+										$this->setForm();  // generate page of output
+										$tdPageNumber++;
+										$tdCtr = 1;		//reset count for lines on new page of RPTOP
+									}
 									$this->formArray["arpNumber".$tdCtr] = $tvalue->getTaxDeclarationNumber();
 
 									// word wrap arpNumber
@@ -463,9 +475,9 @@ class PrintRPTOPDetailsPDF{
 											$this->formArray["pin".$tdCtr] = $afs->getPropertyIndexNumber();
 
 											// word wrap pin
-											if(strlen($this->formArray["pin".$tdCtr]) > 13){
-												$this->formArray["pin".$tdCtr."a"] = substr($this->formArray["pin".$tdCtr], 0,12);
-												$this->formArray["pin".$tdCtr."b"] = substr($this->formArray["pin".$tdCtr], 12);
+											if(strlen($this->formArray["pin".$tdCtr]) > 25){
+												$this->formArray["pin".$tdCtr."a"] = substr($this->formArray["pin".$tdCtr], 0,25);
+												$this->formArray["pin".$tdCtr."b"] = substr($this->formArray["pin".$tdCtr], 25);
 												$this->formArray["pin".$tdCtr] = "";
 											}
 
@@ -582,10 +594,14 @@ class PrintRPTOPDetailsPDF{
 													$this->formArray["basic".$tdCtr] = $due->getBasicTax();
 													$this->formArray["sef".$tdCtr] = $due->getSEFTax();
 													$this->formArray["totalTax".$tdCtr] = $due->getTaxDue();
-		
+													
+													/* RC 20091012 revised to not print total until last page of RPTOP 
 													$this->formArray["totalBasic"] += $due->getBasicTax();
 													$this->formArray["totalSef"] += $due->getSEFTax();
-													$this->formArray["totalTaxes"] += $due->getTaxDue();
+													$this->formArray["totalTaxes"] += $due->getTaxDue();  */
+													$totalBasic += $due->getBasicTax();
+													$totalSef += $due->getSEFTax();
+													$totalTaxes += $due->getTaxDue();
 												}
 											}
 
@@ -601,7 +617,12 @@ class PrintRPTOPDetailsPDF{
 						$this->formArray[$key] = $value;
 					}
 				}
+				$this->formArray["tdPageNumber"] = $tdPageNumber;
+				$this->formArray["tdTotalPages"] = $tdTotalPages;
 
+				$this->formArray["totalBasic"] += $totalBasic;   // RC 20091012 set values for last page of RPTOP
+				$this->formArray["totalSef"] += $totalSef;
+				$this->formArray["totalTaxes"] += $totalTaxes;
 				$this->formArray["totalMarketValue"] = $this->formArray["landTotalMarketValue"]
 											+ $this->formArray["plantTotalMarketValue"]
 											+ $this->formArray["bldgTotalMarketValue"]

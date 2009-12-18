@@ -44,11 +44,13 @@ class PrintImprovementsBuildingsFAAS{
 			,"address1" => ""
 			,"address2" => ""
 			,"telno" => ""
+			,"ownerTIN" => ""
 
 			,"administrator" => ""
 			,"adminAddress1" => ""
 			,"adminAddress2" => ""
 			,"adminTelno" => ""
+			,"adminTIN" => ""
 
 			,"number" => ""
 			,"street" => ""
@@ -58,9 +60,11 @@ class PrintImprovementsBuildingsFAAS{
 			,"province" => ""
 
 			,"landOwner" => ""
+			,"landOctTctNumber" => ""   // RC 20091009
 			,"landSurveyNumber" => ""
 			,"landArpNumber" => ""
 			,"landArea" => ""
+			,"lot" => ""
 
 			,"foundation" => ""
 			,"windows" => ""
@@ -155,6 +159,12 @@ class PrintImprovementsBuildingsFAAS{
 			,"presARP" => ""
 			,"initARP" => ""
 			,"dateARP" => ""
+			
+			
+			// RC 20091010 Blank out missing items in 2006 FAAS Format
+			, "bldgPermitDate" => ""
+			, "CCIssueDate" => ""
+			, "COIssueDate" => ""
 
 		);
 
@@ -163,7 +173,7 @@ class PrintImprovementsBuildingsFAAS{
 		$this->formArray["afsID"] = $afsID;
         
 		$this->formArray["propertyID"] = $propertyID;
-        $this->formArray["propertyType"] = $propertyType;
+        	$this->formArray["propertyType"] = $propertyType;
 		$this->formArray["print"] = $print;
 
 		foreach ($http_post_vars as $key=>$value) {
@@ -248,11 +258,11 @@ class PrintImprovementsBuildingsFAAS{
 						$address2.= $personValue->addressArray[0]->getProvince();
 
 						$telno = $personValue->getTelephone();
-
-						$ownerName = $personValue->getProperName();
+						$ownerTIN =  $personValue->getTin();
+						$ownerName = $personValue->getFullName();
 					}
 					else{
-						$ownerName = $ownerName." , ".$personValue->getProperName();
+						$ownerName = $ownerName." , ".$personValue->getFullName();
 					}
 				}
 			}
@@ -281,7 +291,7 @@ class PrintImprovementsBuildingsFAAS{
 						$address2 .= $companyValue->addressArray[0]->getProvince();
 
 						$telno = $companyValue->getTelephone();
-
+						$ownerTIN =  $companyValue->getTin();
 						$ownerName = $companyValue->getCompanyName();
 					}
 					else{
@@ -296,7 +306,9 @@ class PrintImprovementsBuildingsFAAS{
 			$this->formArray["owner"] = $ownerName;
 			$this->formArray["address1"] = $address1;
 			$this->formArray["address2"] = $address2;
+			$this->formArray["ownerTIN"] = $ownerTIN;
 			$this->formArray["telno"] = $telno;
+
 	}
 	function displayODAFS($afsID){
 		$AFSDetails = new SoapObject(NCCBIZ."AFSDetails.php", "urn:Object");
@@ -324,7 +336,8 @@ class PrintImprovementsBuildingsFAAS{
 						$this->formArray["cityMunicipality"] = $od->locationAddress->getMunicipalityCity();
 						$this->formArray["province"] = $od->locationAddress->getProvince();
 					}
-
+					$this->formArray["lotNumber"] = $od->getLotNumber();
+					
 					$ODEncode = new SoapObject(NCCBIZ."ODEncode.php", "urn:Object");
 					$this->formArray["ownerID"] = $ODEncode->getOwnerID($this->formArray["odID"]);
 					$xmlStr = $od->owner->domDocument->dump_mem(true);
@@ -347,7 +360,7 @@ class PrintImprovementsBuildingsFAAS{
 	function displayLandPINDetails(){
 		// attempt to capture AFS with associated landPIN
 		$afs = new AFS;
-		if($afs->selectRecord("","","","WHERE ".AFS_TABLE.".propertyIndexNumber = '".fixQuotes($this->formArray["landPIN"])."'")){
+		if($afs->selectRecord("","","","WHERE ".AFS_TABLE.".arpNumber = '".fixQuotes($this->formArray["landPIN"])."'")){
 
 			// attempt to capture first landOwner name
 			$od = new OD;
@@ -367,13 +380,16 @@ class PrintImprovementsBuildingsFAAS{
 			}
 
 			// capture landArpNumber
-			$this->formArray["landArpNumber"] = $afs->getArpNumber();
-
+				
+				$this->formArray["landArpNumber"] = $afs->getArpNumber();
+				
 			// capture first land details
 			if(is_array($afs->landArray)){
 				$landArray = $afs->landArray;
 				$land = $landArray[0];
+				$this->formArray["landOctTctNumber"] = $land->getOctTctNumber();
 				$this->formArray["landSurveyNumber"] = $land->getSurveyNumber();
+				//$this->formArray["lot"] = $land->get;
 				$this->formArray["landArea"] = $land->getArea() . " " . $land->getUnit();
 			}
 		}
@@ -382,6 +398,7 @@ class PrintImprovementsBuildingsFAAS{
 			$this->formArray["landSurveyNumber"] = "";
 			$this->formArray["landArpNumber"] = "";
 			$this->formArray["landArea"] = "";
+//			$this->formArray["lot"] = "";
 		}
 	}
 
@@ -440,26 +457,15 @@ class PrintImprovementsBuildingsFAAS{
 					$this->formArray["totalBuildingArea"] = $improvementsBuildings->getTotalBuildingArea();
 					$this->formArray["numberOfStoreys"] = $improvementsBuildings->getNumberOfStoreys();
 					$this->formArray["cctNumber"] = $improvementsBuildings->getCctNumber();
-					
-					// NCC Modification checked and implemented by K2 : November 18, 2005
-		 			// details:
-		 			//		commented out line 448, changed lines 451 to 455
-		 			
-					//$this->formArray["bldgCore1"] = $improvementsBuildings->getBuildingCoreAndAdditionalItems();
-					$this->formArray["bldgCore1"] = number_format($improvementsBuildings->getUnitValue(),2);
-					$this->formArray["depMarketValue"] = $improvementsBuildings->getDepreciatedMarketValue();
-					$this->formArray["marketValue"] = number_format($improvementsBuildings->getMarketValue(),2);
-					$this->formArray["addItems"] = number_format($improvementsBuildings->getAddItems(),2);
-					$this->formArray["subTotal"] = "";
 
-					$this->formArray["adjustments"] = number_format($improvementsBuildings->getMarketValue() + $improvementsBuildings->getAddItems(),2);
-					
+					$this->formArray["bldgCoreUnitCost"] = number_format($improvementsBuildings->getUnitValue(),2);
+					$this->formArray["coreBuildingCost"] = number_format($improvementsBuildings->getMarketValue(),2);
+					$this->formArray["addItems"] = $improvementsBuildings->getbuildingCoreAndAdditionalItems();
+					$this->formArray["additionalItemsCost"] = number_format($improvementsBuildings->getaddItems(),2);
+					$this->formArray["totalConstructionCost"] = number_format($improvementsBuildings->getMarketValue() + $improvementsBuildings->getAddItems(),2);
 					$this->formArray["depreciationRate"] = $improvementsBuildings->getDepreciationRate();
-					$this->formArray["subTotal2"] = "";
-
-					$this->formArray["depreciationRate"] = $improvementsBuildings->getDepreciationRate();
-
 					$this->formArray["accumulatedDepreciation"] = $improvementsBuildings->getAccumulatedDepreciation();
+					$this->formArray["depMarketValue"] = $improvementsBuildings->getDepreciatedMarketValue();
 
 					if (is_a($improvementsBuildings->propertyAdministrator,Person)){
 						if($improvementsBuildings->propertyAdministrator->getLastName()!=""){
@@ -486,6 +492,8 @@ class PrintImprovementsBuildingsFAAS{
 							$this->formArray["adminAddress2"] = $address2;
 						}
 						$this->formArray["adminTelno"] = $improvementsBuildings->propertyAdministrator->getTelephone();
+						$this->formArray["adminTIN"] = $improvementsBuildings->propertyAdministrator->getTin();
+
 					}
 
 					// recommendingApproval
@@ -648,10 +656,10 @@ class PrintImprovementsBuildingsFAAS{
 		$testpdf = new PDFWriter;
         $testpdf->setOutputXML($this->tpl->get("templatePage"),"test");
         if(isset($this->formArray["print"])){
-        	$testpdf->writePDF($name);//,$this->formArray["print"]);
+        	$testpdf->writePDF("ImprovementsBuildingsFAAS.pdf");//,$this->formArray["print"]);
         }
         else {
-        	$testpdf->writePDF($name);
+        	$testpdf->writePDF("ImprovementsBuildingsFAAS.pdf");
         }		
 //		header("location: ".$testpdf->pdfPath);
 		exit;

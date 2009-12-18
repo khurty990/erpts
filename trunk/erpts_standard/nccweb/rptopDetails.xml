@@ -7,10 +7,12 @@
 	<page height="592" width="784" number="{pageNumber}" orientation="0">
 
 		<!--Begin of Inserted code-->
-		<image xpos="250" ypos="525" width="60" height="60" src="images/argao logo.jpg"></image>
+		<!--FPLR 2001011 removed
+		<image xpos="250" ypos="525" width="60" height="60" src="images/LGUlogo200x200.jpg"></image>-->
                 <!--End of Inserted Code-->
 		<textitem xpos="392" ypos="562" font="Helvetica-Bold" size="11" align="center">Republic of the Philippines</textitem>
-		<textitem xpos="752" ypos="562" font="Helvetica-Bold" size="11" align="right">annex A</textitem>
+		<!--FPLR 20091011 removed
+		<textitem xpos="752" ypos="562" font="Helvetica-Bold" size="11" align="right">annex A</textitem>-->
 		<textitem xpos="392" ypos="550" font="Helvetica-Bold" size="11" align="center">Province of {province}</textitem>
 		<textitem xpos="392" ypos="535" font="Helvetica-Bold" size="13" align="center">{lguType} OF {lguName}</textitem>
 
@@ -50,10 +52,12 @@
 		<!-- END FirstPageText -->
 
 		<!-- BEGIN ContinuedFromPreviousPageText -->
-		<textitem xpos="32" ypos="422" font="Helvetica" size="10" align="left">(..continued from previous page)</textitem>
+		<!--FPLR 20091011 removed
+		<textitem xpos="32" ypos="422" font="Helvetica" size="10" align="left">(..continued from previous page)</textitem>-->
 		<!-- END ContinuedFromPreviousPageText -->
 
 		<!-- BEGIN ContinuedNextPageText -->
+<!--RC 20091011 Removed
 		<textitem xpos="59" ypos="204" font="Helvetica-Bold" size="10" align="left">.</textitem>
 		<textitem xpos="59" ypos="194" font="Helvetica-Bold" size="10" align="left">.</textitem>
 		<textitem xpos="59" ypos="184" font="Helvetica-Bold" size="10" align="left">.</textitem>
@@ -61,7 +65,8 @@
 		<textitem xpos="59" ypos="164" font="Helvetica-Bold" size="10" align="left">.</textitem>
 		<textitem xpos="59" ypos="154" font="Helvetica-Bold" size="10" align="left">.</textitem>
 		<textitem xpos="59" ypos="144" font="Helvetica-Bold" size="10" align="left">.</textitem>
-		<textitem xpos="59" ypos="124" font="Helvetica-Bold" size="10" align="left">(continued on next page...)</textitem>
+-->		<!--FPLR 20091011 removed 
+		<textitem xpos="59" ypos="124" font="Helvetica-Bold" size="10" align="left">(continued on next page...)</textitem>-->
 		<!-- END ContinuedNextPageText -->
 
 		<lineitem x1="32" y1="392" x2="752" y2="392">top-border-1</lineitem>
@@ -97,13 +102,16 @@
 		<textitem xpos="656.75" ypos="350" font="Helvetica-Bold" size="12" align="center">TAXES  DUE</textitem>
 
 		<textitem xpos="70.75" ypos="332" font="Helvetica" size="9.5" align="center">TD No.</textitem>
-		<textitem xpos="137.25" ypos="337.5" font="Helvetica" size="9.5" align="center">Property</textitem>
-		<textitem xpos="137.25" ypos="329.75" font="Helvetica" size="9.5" align="center">Index No.</textitem>
-		<textitem xpos="232.5" ypos="332" font="Helvetica" size="9.5" align="center">Location</textitem>
-		<textitem xpos="322.75" ypos="337.5" font="Helvetica" size="9.5" align="center">Classi-</textitem>
-		<textitem xpos="322.75" ypos="329.75" font="Helvetica" size="9.5" align="center">fication</textitem>
+		<textitem xpos="162.25" ypos="332" font="Helvetica" size="9.5" align="center">Property Index No.</textitem>
+		<!--RLB 20091011 removed 
+	<textitem xpos="137.25" ypos="329.75" font="Helvetica" size="9.5" align="center">Index No.</textitem>-->
+		<textitem xpos="281" ypos="332" font="Helvetica" size="9.5" align="center">Location</textitem>
+		<textitem xpos="368" ypos="332" font="Helvetica" size="9.5" align="center">Classification</textitem>
+		<!--RLB 20091011 removed
+<textitem xpos="322.75" ypos="329.75" font="Helvetica" size="9.5" align="center">fication</textitem>-->
+		<!--FPLR 2009 removed 
 		<textitem xpos="376.25" ypos="337.5" font="Helvetica" size="9.5" align="center">Area/</textitem>
-		<textitem xpos="376.25" ypos="329.75" font="Helvetica" size="9.5" align="center">Lot No.</textitem>
+		<textitem xpos="376.25" ypos="329.75" font="Helvetica" size="9.5" align="center">Lot No.</textitem>-->
 		<textitem xpos="439.75" ypos="332" font="Helvetica" size="9.5" align="center">Market Value</textitem>
 		<textitem xpos="513.25" ypos="332" font="Helvetica" size="9.5" align="center">Assessed Value</textitem>
 
@@ -111,135 +119,143 @@
 		<textitem xpos="646.75" ypos="332" font="Helvetica" size="9.5" align="center">SEF Tax</textitem>
 		<textitem xpos="713.25" ypos="332" font="Helvetica" size="9.5" align="center">Total</textitem>
 
-		<textitem xpos="65" ypos="314" font="Helvetica-Bold" size="9.5" align="center">{arpNumber1}</textitem>
-		<textitem xpos="65" ypos="319.5" font="Helvetica-Bold" size="9" align="center">{arpNumber1a}</textitem>
-		<textitem xpos="65" ypos="311.75" font="Helvetica-Bold" size="9" align="center">{arpNumber1b}</textitem>
+		<textitem xpos="70.75" ypos="314" font="Helvetica-Bold" size="9.5" align="center">{arpNumber1}</textitem>
+		<textitem xpos="70.75" ypos="319.5" font="Helvetica-Bold" size="9" align="center">{arpNumber1a}</textitem>
+		<textitem xpos="70.75" ypos="311.75" font="Helvetica-Bold" size="9" align="center">{arpNumber1b}</textitem>
+	
 
+		
 		<textitem xpos="108.5" ypos="314" font="Helvetica" size="9.5" align="left">{pin1}</textitem>
 		<textitem xpos="108.5" ypos="319.5" font="Helvetica" size="9" align="left">{pin1a}</textitem>
 		<textitem xpos="108.5" ypos="311.75" font="Helvetica" size="9" align="left">{pin1b}</textitem>
 
-		<textitem xpos="172" ypos="314" font="Helvetica-Bold" size="8" align="left">{location1}</textitem>
-		<textitem xpos="172" ypos="319.5" font="Helvetica-Bold" size="8" align="left">{location1a}</textitem>
-		<textitem xpos="172" ypos="311.75" font="Helvetica-Bold" size="8" align="left">{location1b}</textitem>
+		<textitem xpos="232" ypos="314" font="Helvetica-Bold" size="8" align="left">{location1}</textitem>
+		<textitem xpos="232" ypos="319.5" font="Helvetica-Bold" size="8" align="left">{location1a}</textitem>
+		<textitem xpos="232" ypos="311.75" font="Helvetica-Bold" size="8" align="left">{location1b}</textitem>
 
-		<textitem xpos="299" ypos="314" font="Helvetica" size="9.5" align="left">{classification1}</textitem>
+		<textitem xpos="336" ypos="314" font="Helvetica" size="9.5" align="left">{classification1}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="319.5" font="Helvetica" size="9.5" align="left">{area1}</textitem>
-		<textitem xpos="352.5" ypos="311.75" font="Helvetica" size="9.5" align="left">{lotNo1}</textitem>
+		<textitem xpos="352.5" ypos="311.75" font="Helvetica" size="9.5" align="left">{lotNo1}</textitem>-->
 		<textitem xpos="473.5" ypos="314" font="Helvetica" size="9.5" align="right">{marketValue1}</textitem>
 		<textitem xpos="547" ypos="314" font="Helvetica" size="9.5" align="right">{assessedValue1}</textitem>
 		<textitem xpos="612" ypos="314" font="Helvetica" size="9.5" align="right">{basic1}</textitem>
 		<textitem xpos="675.5" ypos="314" font="Helvetica" size="9.5" align="right">{sef1}</textitem>
 		<textitem xpos="745" ypos="314" font="Helvetica" size="9.5" align="right">{totalTax1}</textitem>
 
-		<textitem xpos="65" ypos="296" font="Helvetica-Bold" size="9.5" align="center">{arpNumber2}</textitem>
-		<textitem xpos="65" ypos="301.5" font="Helvetica-Bold" size="9" align="center">{arpNumber2a}</textitem>
-		<textitem xpos="65" ypos="293.75" font="Helvetica-Bold" size="9" align="center">{arpNumber2b}</textitem>
+		<textitem xpos="70.75" ypos="296" font="Helvetica-Bold" size="9.5" align="center">{arpNumber2}</textitem>
+		<textitem xpos="70.75" ypos="301.5" font="Helvetica-Bold" size="9" align="center">{arpNumber2a}</textitem>
+		<textitem xpos="70.75" ypos="293.75" font="Helvetica-Bold" size="9" align="center">{arpNumber2b}</textitem>
 
 		<textitem xpos="108.5" ypos="296" font="Helvetica" size="9.5" align="left">{pin2}</textitem>
 		<textitem xpos="108.5" ypos="301.5" font="Helvetica" size="9" align="left">{pin2a}</textitem>
 		<textitem xpos="108.5" ypos="293.75" font="Helvetica" size="9" align="left">{pin2b}</textitem>
 
-		<textitem xpos="172" ypos="296" font="Helvetica-Bold" size="8" align="left">{location2}</textitem>
-		<textitem xpos="172" ypos="301.5" font="Helvetica-Bold" size="8" align="left">{location2a}</textitem>
-		<textitem xpos="172" ypos="293.75" font="Helvetica-Bold" size="8" align="left">{location2b}</textitem>
+		<textitem xpos="232" ypos="296" font="Helvetica-Bold" size="8" align="left">{location2}</textitem>
+		<textitem xpos="232" ypos="301.5" font="Helvetica-Bold" size="8" align="left">{location2a}</textitem>
+		<textitem xpos="232" ypos="293.75" font="Helvetica-Bold" size="8" align="left">{location2b}</textitem>
 
-		<textitem xpos="299" ypos="296" font="Helvetica" size="9.5" align="left">{classification2}</textitem>
+		<textitem xpos="336" ypos="296" font="Helvetica" size="9.5" align="left">{classification2}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="301.5" font="Helvetica" size="9.5" align="left">{area2}</textitem>
-		<textitem xpos="352.5" ypos="293.75" font="Helvetica" size="9.5" align="left">{lotNo2}</textitem>
+		<textitem xpos="352.5" ypos="293.75" font="Helvetica" size="9.5" align="left">{lotNo2}</textitem>-->
 		<textitem xpos="473.5" ypos="296" font="Helvetica" size="9.5" align="right">{marketValue2}</textitem>
 		<textitem xpos="547" ypos="296" font="Helvetica" size="9.5" align="right">{assessedValue2}</textitem>
 		<textitem xpos="612" ypos="296" font="Helvetica" size="9.5" align="right">{basic2}</textitem>
 		<textitem xpos="675.5" ypos="296" font="Helvetica" size="9.5" align="right">{sef2}</textitem>
 		<textitem xpos="745" ypos="296" font="Helvetica" size="9.5" align="right">{totalTax2}</textitem>
 
-		<textitem xpos="65" ypos="278" font="Helvetica-Bold" size="9.5" align="center">{arpNumber3}</textitem>
-		<textitem xpos="65" ypos="283.5" font="Helvetica-Bold" size="9" align="center">{arpNumber3a}</textitem>
-		<textitem xpos="65" ypos="275.75" font="Helvetica-Bold" size="9" align="center">{arpNumber3b}</textitem>
+		<textitem xpos="70.75" ypos="278" font="Helvetica-Bold" size="9.5" align="center">{arpNumber3}</textitem>
+		<textitem xpos="70.75" ypos="283.5" font="Helvetica-Bold" size="9" align="center">{arpNumber3a}</textitem>
+		<textitem xpos="70.75" ypos="275.75" font="Helvetica-Bold" size="9" align="center">{arpNumber3b}</textitem>
 
 		<textitem xpos="108.5" ypos="278" font="Helvetica" size="9.5" align="left">{pin3}</textitem>
 		<textitem xpos="108.5" ypos="283.5" font="Helvetica" size="9" align="left">{pin3a}</textitem>
 		<textitem xpos="108.5" ypos="275.75" font="Helvetica" size="9" align="left">{pin3b}</textitem>
 
-		<textitem xpos="172" ypos="278" font="Helvetica-Bold" size="8" align="left">{location3}</textitem>
-		<textitem xpos="172" ypos="283.5" font="Helvetica-Bold" size="8" align="left">{location3a}</textitem>
-		<textitem xpos="172" ypos="275.75" font="Helvetica-Bold" size="8" align="left">{location3b}</textitem>
+		<textitem xpos="232" ypos="278" font="Helvetica-Bold" size="8" align="left">{location3}</textitem>
+		<textitem xpos="232" ypos="283.5" font="Helvetica-Bold" size="8" align="left">{location3a}</textitem>
+		<textitem xpos="232" ypos="275.75" font="Helvetica-Bold" size="8" align="left">{location3b}</textitem>
 
-		<textitem xpos="299" ypos="278" font="Helvetica" size="9.5" align="left">{classification3}</textitem>
+		<textitem xpos="336" ypos="278" font="Helvetica" size="9.5" align="left">{classification3}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="283.5" font="Helvetica" size="9.5" align="left">{area3}</textitem>
-		<textitem xpos="352.5" ypos="275.75" font="Helvetica" size="9.5" align="left">{lotNo3}</textitem>
+		<textitem xpos="352.5" ypos="275.75" font="Helvetica" size="9.5" align="left">{lotNo3}</textitem>-->
 		<textitem xpos="473.5" ypos="278" font="Helvetica" size="9.5" align="right">{marketValue3}</textitem>
 		<textitem xpos="547" ypos="278" font="Helvetica" size="9.5" align="right">{assessedValue3}</textitem>
 		<textitem xpos="612" ypos="278" font="Helvetica" size="9.5" align="right">{basic3}</textitem>
 		<textitem xpos="675.5" ypos="278" font="Helvetica" size="9.5" align="right">{sef3}</textitem>
 		<textitem xpos="745" ypos="278" font="Helvetica" size="9.5" align="right">{totalTax3}</textitem>
 
-		<textitem xpos="65" ypos="260" font="Helvetica-Bold" size="9.5" 
+		<textitem xpos="70.75" ypos="260" font="Helvetica-Bold" size="9.5" 
 align="center">{arpNumber4}</textitem>
-		<textitem xpos="65" ypos="265.5" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="265.5" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber4a}</textitem>
-		<textitem xpos="65" ypos="257.75" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="257.75" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber4b}</textitem>
 
 		<textitem xpos="108.5" ypos="260" font="Helvetica" size="9.5" align="left">{pin4}</textitem>
 		<textitem xpos="108.5" ypos="265.5" font="Helvetica" size="9" align="left">{pin4a}</textitem>
 		<textitem xpos="108.5" ypos="257.75" font="Helvetica" size="9" align="left">{pin4b}</textitem>
 
-		<textitem xpos="172" ypos="260" font="Helvetica-Bold" size="8" align="left">{location4}</textitem>
-		<textitem xpos="172" ypos="265.5" font="Helvetica-Bold" size="8" align="left">{location4a}</textitem>
-		<textitem xpos="172" ypos="257.75" font="Helvetica-Bold" size="8" align="left">{location4b}</textitem>
+		<textitem xpos="232" ypos="260" font="Helvetica-Bold" size="8" align="left">{location4}</textitem>
+		<textitem xpos="232" ypos="265.5" font="Helvetica-Bold" size="8" align="left">{location4a}</textitem>
+		<textitem xpos="232" ypos="257.75" font="Helvetica-Bold" size="8" align="left">{location4b}</textitem>
 
-		<textitem xpos="299" ypos="260" font="Helvetica" size="9.5" align="left">{classification4}</textitem>
+		<textitem xpos="336" ypos="260" font="Helvetica" size="9.5" align="left">{classification4}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="265.5" font="Helvetica" size="9.5" align="left">{area4}</textitem>
-		<textitem xpos="352.5" ypos="257.75" font="Helvetica" size="9.5" align="left">{lotNo4}</textitem>
+		<textitem xpos="352.5" ypos="257.75" font="Helvetica" size="9.5" align="left">{lotNo4}</textitem>-->
 		<textitem xpos="473.5" ypos="260" font="Helvetica" size="9.5" align="right">{marketValue4}</textitem>
 		<textitem xpos="547" ypos="260" font="Helvetica" size="9.5" align="right">{assessedValue4}</textitem>
 		<textitem xpos="612" ypos="260" font="Helvetica" size="9.5" align="right">{basic4}</textitem>
 		<textitem xpos="675.5" ypos="260" font="Helvetica" size="9.5" align="right">{sef4}</textitem>
 		<textitem xpos="745" ypos="260" font="Helvetica" size="9.5" align="right">{totalTax4}</textitem>
 
-		<textitem xpos="65" ypos="242" font="Helvetica-Bold" size="9.5" 
+		<textitem xpos="70.75" ypos="242" font="Helvetica-Bold" size="9.5" 
 align="center">{arpNumber5}</textitem>
-		<textitem xpos="65" ypos="247.5" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="247.5" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber5a}</textitem>
-		<textitem xpos="65" ypos="239.75" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="239.75" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber5b}</textitem>
 
 		<textitem xpos="108.5" ypos="242" font="Helvetica" size="9.5" align="left">{pin5}</textitem>
 		<textitem xpos="108.5" ypos="247.5" font="Helvetica" size="9" align="left">{pin5a}</textitem>
 		<textitem xpos="108.5" ypos="239.75" font="Helvetica" size="9" align="left">{pin5b}</textitem>
 
-		<textitem xpos="172" ypos="242" font="Helvetica-Bold" size="8" align="left">{location5}</textitem>
-		<textitem xpos="172" ypos="247.5" font="Helvetica-Bold" size="8" align="left">{location5a}</textitem>
-		<textitem xpos="172" ypos="239.75" font="Helvetica-Bold" size="8" align="left">{location5b}</textitem>
+		<textitem xpos="232" ypos="242" font="Helvetica-Bold" size="8" align="left">{location5}</textitem>
+		<textitem xpos="232" ypos="247.5" font="Helvetica-Bold" size="8" align="left">{location5a}</textitem>
+		<textitem xpos="232" ypos="239.75" font="Helvetica-Bold" size="8" align="left">{location5b}</textitem>
 
-		<textitem xpos="299" ypos="242" font="Helvetica" size="9.5" align="left">{classification5}</textitem>
+		<textitem xpos="336" ypos="242" font="Helvetica" size="9.5" align="left">{classification5}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="247.5" font="Helvetica" size="9.5" align="left">{area5}</textitem>
-		<textitem xpos="352.5" ypos="239.75" font="Helvetica" size="9.5" align="left">{lotNo5}</textitem>
+		<textitem xpos="352.5" ypos="239.75" font="Helvetica" size="9.5" align="left">{lotNo5}</textitem>-->
 		<textitem xpos="473.5" ypos="242" font="Helvetica" size="9.5" align="right">{marketValue5}</textitem>
 		<textitem xpos="547" ypos="242" font="Helvetica" size="9.5" align="right">{assessedValue5}</textitem>
 		<textitem xpos="612" ypos="242" font="Helvetica" size="9.5" align="right">{basic5}</textitem>
 		<textitem xpos="675.5" ypos="242" font="Helvetica" size="9.5" align="right">{sef5}</textitem>
 		<textitem xpos="745" ypos="242" font="Helvetica" size="9.5" align="right">{totalTax5}</textitem>
 
-		<textitem xpos="65" ypos="224" font="Helvetica-Bold" size="9.5" 
+		<textitem xpos="70.75" ypos="224" font="Helvetica-Bold" size="9.5" 
 align="center">{arpNumber6}</textitem>
-		<textitem xpos="65" ypos="229.5" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="229.5" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber6a}</textitem>
-		<textitem xpos="65" ypos="221.75" font="Helvetica-Bold" size="9" 
+		<textitem xpos="70.75" ypos="221.75" font="Helvetica-Bold" size="9" 
 align="center">{arpNumber6b}</textitem>
 
 		<textitem xpos="108.5" ypos="224" font="Helvetica" size="9" align="left">{pin6}</textitem>
 		<textitem xpos="108.5" ypos="229.5" font="Helvetica" size="9" align="left">{pin6a}</textitem>
 		<textitem xpos="108.5" ypos="221.75" font="Helvetica" size="9" align="left">{pin6b}</textitem>
 
-		<textitem xpos="172" ypos="224" font="Helvetica-Bold" size="8" align="left">{location6}</textitem>
-		<textitem xpos="172" ypos="229.5" font="Helvetica-Bold" size="8" align="left">{location6a}</textitem>
-		<textitem xpos="172" ypos="221.75" font="Helvetica-Bold" size="8" align="left">{location6b}</textitem>
+		<textitem xpos="232" ypos="224" font="Helvetica-Bold" size="8" align="left">{location6}</textitem>
+		<textitem xpos="232" ypos="229.5" font="Helvetica-Bold" size="8" align="left">{location6a}</textitem>
+		<textitem xpos="232" ypos="221.75" font="Helvetica-Bold" size="8" align="left">{location6b}</textitem>
 
-		<textitem xpos="299" ypos="224" font="Helvetica" size="9.5" align="left">{classification6}</textitem>
+		<textitem xpos="336" ypos="224" font="Helvetica" size="9.5" align="left">{classification6}</textitem>
+		<!--FPLR 2009 removed
 		<textitem xpos="352.5" ypos="229.5" font="Helvetica" size="9.5" align="left">{area6}</textitem>
-		<textitem xpos="352.5" ypos="221.75" font="Helvetica" size="9.5" align="left">{lotNo6}</textitem>
+		<textitem xpos="352.5" ypos="221.75" font="Helvetica" size="9.5" align="left">{lotNo6}</textitem>-->
 		<textitem xpos="473.5" ypos="224" font="Helvetica" size="9.5" align="right">{marketValue6}</textitem>
 		<textitem xpos="547" ypos="224" font="Helvetica" size="9.5" align="right">{assessedValue6}</textitem>
 		<textitem xpos="612" ypos="224" font="Helvetica" size="9.5" align="right">{basic6}</textitem>
@@ -256,13 +272,15 @@ align="center">{arpNumber6b}</textitem>
 
 		<lineitem x1="403" y1="202" x2="748" y2="202">row-line-10</lineitem>
         <!--Begin of Inserted Code-->
-	<image xpos="172" ypos="140" width="55" height="60" src="images/assessorsig.jpg"></image>
+	<!--FPLR 20091011 removed
+	<image xpos="172" ypos="140" width="55" height="60" src="images/assessorsig.jpg"></image>->>-->
 	<!--End of Inserted Code-->
 	<textitem xpos="200.75" ypos="152" font="Helvetica-Bold" size="11" align="center">{municipalAssessor}</textitem>
 	<textitem xpos="200.75" ypos="136" font="Helvetica" size="10" align="center">Municipal Assessor</textitem>
 	<lineitem x1="125.5" y1="148" x2="276" y2="148">municipalAssessor line</lineitem>
         <!--Begin of Inserted Code-->
-	<image xpos="621" ypos="140" width="55" height="60" src="images/treasurersig.jpg"></image>
+	<!--FPLR 20091011 removed
+	<image xpos="621" ypos="140" width="55" height="60" src="images/treasurersig.jpg"></image>-->
 	<!--End of Inserted Code-->
 	<textitem xpos="651.75" ypos="152" font="Helvetica-Bold" size="11" align="center">{municipalTreasurer}</textitem>
 	<textitem xpos="651.75" ypos="136" font="Helvetica" size="10" align="center">Municipal Treasurer</textitem>
@@ -285,9 +303,10 @@ align="center">{arpNumber6b}</textitem>
 		<lineitem x1="36" y1="220" x2="748" y2="220">row-line-9</lineitem>
 
 		<lineitem x1="105.5" y1="346" x2="105.5" y2="220">col-line-1</lineitem>
-		<lineitem x1="169" y1="346" x2="169" y2="220">col-line-2</lineitem>
-		<lineitem x1="296" y1="346" x2="296" y2="220">col-line-3</lineitem>
-		<lineitem x1="349.5" y1="346" x2="349.5" y2="220">col-line-4</lineitem>
+		<lineitem x1="229" y1="346" x2="229" y2="220">col-line-2</lineitem>
+		<lineitem x1="333" y1="346" x2="333" y2="220">col-line-3</lineitem>
+		<!--RLB 20091011 removed
+		<lineitem x1="349.5" y1="346" x2="349.5" y2="220">col-line-4</lineitem>-->
 		<lineitem x1="403" y1="346" x2="403" y2="220">col-line-5-</lineitem>
 		<lineitem x1="476.5" y1="346" x2="476.5" y2="220">col-line-6</lineitem>
 		<lineitem x1="550" y1="388" x2="550" y2="116">col-line-7-1</lineitem>
